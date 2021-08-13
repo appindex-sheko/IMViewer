@@ -6,6 +6,7 @@ import Workflow from "../views/Workflow.vue";
 import UPRN from "../views/Uprn.vue";
 import User from "../views/User.vue";
 import Editor from "../views/Editor.vue";
+import Query from "../views/Query.vue";
 import Login from "../components/user/Login.vue";
 import Register from "../components/user/Register.vue";
 import UserDetails from "../components/user/UserDetails.vue";
@@ -133,6 +134,21 @@ const routes: Array<RouteRecordRaw> = [
     ],
     meta: {
       requiresAuth: true
+    }
+  },
+  {
+    path: "/query",
+    name: "Query",
+    component: Query,
+    children: [
+      {
+        path: "/query",
+        name: "Query",
+        component: Query
+      },
+    ],
+    meta: {
+      requiresAuth: false
     }
   },
   {
