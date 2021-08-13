@@ -6,118 +6,156 @@
 
   <!-- Content Wrapper -->
   <main id="query-main-container">
-
     <!-- Tab: Home -->
-    <div id="home-tab" v-if="activeTab == 'home'" class="content-container">
-
+    <div id="home-page" v-if="activePage == 'home'" class="content-container">
       <!-- Header -->
 
-      <!-- Folder Path  -->
-      <Breadcrumb id="folder-path" :home="bcHomeItem" :model="bcItems" />
-      <!-- /Folder Path  -->
-
-      <!-- Action buttons + Options -->
-      <div class="button-toolbar p-pt-5 p-pb-3 p-d-flex p-jc-between">
-        <div class="p-d-inline">
-          <Button
-            icon="pi pi-plus"
-            class="p-mr-3 button-medium"
-            type="button"
-            label="New"
-            @click="toggleNewOverlay"
-          />
-          <Button
-            v-if="selectedItems.length != 0"
-            icon="pi pi-pencil "
-            class="p-mr-3 p-button-warning button-medium"
-            type="button"
-            label="Edit"
-            @click="editSelected"
-          />
-          <Button
-            v-if="selectedItems.length != 0"
-            icon="pi pi-trash "
-            class="p-mr-3 p-button-outlined p-button-danger button-medium"
-            type="button"
-            label="Delete"
-            @click="deleteSelected"
-          />
-        </div>
-
-        <div class="p-d-inline">
-          <Button
-            label="Import"
-            icon="pi pi-plus"
-            class="p-button-success button-medium p-mr-3"
-            @click="importSelected"
-          />
-          <Button
-            label="Export"
-            icon="pi pi-upload"
-            class="p-button-help button-medium"
-            @click="exportSelected"
-          />
-        </div>
+      <!-- Searchbar -->
+      <div id="search-bar">
+        <InputText
+          id="search-bar-input"
+          type="text"
+          placeholder="Search"
+          v-model="searchString"
+        />
       </div>
-      <OverlayPanel id="new-overlay" ref="new-overlay">
-        <div class="p-d-flex p-flex-column">
-          <Button
-            label="Query"
-            icon="pi pi-search"
-            class="p-button-primary p-button-outlined button-medium p-mx-2 p-mb-2"
-            @click="handleCreateNewQuery"
-          />
-          <Button
-            label="Folder"
-            icon="pi pi-folder"
-            class="p-button-primary p-button-outlined button-medium p-mx-2"
-            @click="handleCreateNewFolder"
-          />
-        </div>
-      </OverlayPanel>
-      <!-- /Action buttons + Options -->
+      <!-- /Searchbar -->
 
       <!-- /Header -->
 
+      <!-- Tabs  -->
+      <div id="tab-bar">
+        <div
+          :class="[
+            'tab-button',
+            'p-d-inline',
+            'non-selectable',
+            { active: (activeTab = 'my-queries') },
+          ]"
+          @click="activeTab == 'my-queries'"
+        >
+        <font-awesome-icon icon="bookmark" />
+        <font-awesome-icon
+              class="center-icon"
+              style="padding: 5px"
+              
+            />
 
-<!-- Content  -->
+          My Queries
+        </div>
+        <div
+          :class="[
+            'tab-button',
+            'p-d-inline',
+            'non-selectable',
+            { active: (activeTab == 'query-library')}
+          ]"
+          @click="activeTab = 'query-library'"
+        >
+         <font-awesome-icon icon="book" />
+          Query Library
+        </div>
+      </div>
+      <!-- /Tabs  -->
 
-<QueryTable id="query-table" :tableheight="tableHeight"> </QueryTable>
+      <div
+        id="tab-my-queries"
+        v-if="activeTab == 'my-queries'"
+        class="content-tab"
+      >
+        <!-- Action buttons + Options -->
+        <div class="button-toolbar p-pt-5 p-pb-3 p-d-flex p-jc-between">
+          <div class="p-d-inline">
+            <Button
+              icon="pi pi-plus"
+              class="p-mr-3 button-medium"
+              type="button"
+              label="New"
+              @click="toggleNewOverlay"
+            />
+            <Button
+              icon="pi pi-pencil "
+              class="p-mr-3 p-button-warning button-medium"
+              type="button"
+              label="Edit"
+              @click="editSelected"
+            />
+            <Button
+              icon="pi pi-trash "
+              class="p-mr-3 p-button-outlined p-button-danger button-medium"
+              type="button"
+              label="Delete"
+              @click="deleteSelected"
+            />
+          </div>
 
+          <div class="p-d-inline">
+            <Button
+              label="Import"
+              icon="pi pi-plus"
+              class="p-button-success button-medium p-mr-3"
+              @click="importSelected"
+            />
+            <Button
+              label="Export"
+              icon="pi pi-upload"
+              class="p-button-help button-medium"
+              @click="exportSelected"
+            />
+          </div>
+        </div>
+        <OverlayPanel id="new-overlay" ref="new-overlay">
+          <div class="p-d-flex p-flex-column">
+            <Button
+              label="Query"
+              icon="pi pi-search"
+              class="p-button-primary p-button-outlined button-medium p-mx-2 p-mb-2"
+              @click="handleCreateNewQuery"
+            />
+            <Button
+              label="Folder"
+              icon="pi pi-folder"
+              class="p-button-primary p-button-outlined button-medium p-mx-2"
+              @click="handleCreateNewFolder"
+            />
+          </div>
+        </OverlayPanel>
+        <!-- /Action buttons + Options -->
 
-<!-- /Content  -->
+        <!-- Content  -->
 
+        <QueryTable id="query-table" tableheight="100" ref="querytable">
+        </QueryTable>
 
+        <!-- /Content  -->
+      </div>
     </div>
     <!-- /Tab: Home -->
 
     <!-- Tab: New Query -->
-    <div id="new-query-tab" v-if="activeTab == 'new-query'" class="content-container">
-      
+    <div
+      id="new-query-tab"
+      v-if="activePage == 'new-query'"
+      class="content-container"
+    >
       <!-- Header -->
-          <div class="button-toolbar p-d-flex p-jc-between p-ai-center">
-       
-        <div class="p-d-inline"> 
-          
+      <div class="button-toolbar p-d-flex p-jc-between p-ai-center">
+        <div class="p-d-inline"></div>
+
+        <div class="title p-d-inline">
+          {{ pageTitle }}
         </div>
 
-        <div class="title p-d-inline"> 
-          {{pageTitle}}
-        </div>
-
-         <Button
+        <Button
           icon="pi pi-check"
           class="p-mr-3 button-medium"
           type="button"
           label="Save"
           @click="handleSave"
         />
-
-
       </div>
       <!-- /Header -->
     </div>
-
 
     <!-- Content  -->
 
@@ -135,7 +173,7 @@ import SideNav from "@/components/home/SideNav.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import LoggerService from "@/services/LoggerService";
 
-import Breadcrumb from "primevue/breadcrumb";
+import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Dialog from "primevue/dialog";
 import QueryTable from "@/components/querybuilder/QueryTable.vue";
@@ -145,22 +183,23 @@ export default defineComponent({
   components: {
     SideNav,
     ConfirmDialog,
-    Breadcrumb,
     OverlayPanel,
-    QueryTable
+    QueryTable,
+    InputText,
   },
   $refs: {
     OverlayPanel: HTMLElement,
+    QueryTable: HTMLElement,
   },
   data() {
     return {
-      activeTab: "home",
+      activePage: "home",
+      activeTab: "my-queries",
       pageTitle: "New Query",
       tableHeight: 600,
       selectedItems: [],
-      bcHomeItem: { icon: "pi pi-home", to: "/Query/" },
-      bcItems: [{ label: "QOF" }, { label: "Diabetes" }],
       displayNewQuery: false,
+      searchString: "",
     };
   },
   mounted() {
@@ -171,18 +210,26 @@ export default defineComponent({
       (this.$refs["new-overlay"] as any).toggle(event);
     },
     handleCreateNewQuery(): void {
-      this.activeTab = "new-query";
-      this.pageTitle = "New Query";
-
+      this.activePage = "new-query";
     },
     handleSave(): void {
-      this.activeTab = "home";
+      this.activePage = "home";
+    },
+    deleteSelected(): void {
+      (this.$refs["querytable"] as any).deleteSelected();
     },
   },
 });
 </script>
 
 <style scoped>
+.non-selectable {
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Likely future */
+}
+
 #query-main-container {
   margin: 0.5rem;
   padding: 2rem;
@@ -196,14 +243,43 @@ export default defineComponent({
 .content-container {
   width: 100%;
   height: 100%;
-
 }
 
-#query-table{
+#search-bar,
+#tab-bar {
+  width: 100%;
+  text-align: center;
+}
+
+#search-bar-input {
+  width: 400px;
+}
+
+.tab-button {
+  font-size: 20px;
+  padding: 0 20px 0 20px;
+  margin: 0 20px 20px 0;
+  border-bottom: solid 2px transparent;
+}
+
+.tab-button:hover {
+  color: #2196f3;
+}
+
+.tab-button.active {
+  color: #2196f3;
+  border-bottom: solid 2px #2196f3;
+}
+
+#tab-bar {
+  border-bottom: solid 1px #f5f7f8;
+  margin-top: 20px;
+}
+
+#query-table {
   margin-top: 20px;
   margin-bottom: 10px;
 }
-
 
 #folder-path::v-deep * {
   font-size: 16px;
@@ -213,15 +289,9 @@ export default defineComponent({
   font-size: 16px;
 }
 
-
 .title {
   font-size: 24px;
   font-weight: bold;
   color: #4b5563d1; /*darker: #4B5563*/
-
 }
-
-
-
-
 </style>

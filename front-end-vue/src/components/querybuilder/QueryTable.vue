@@ -1,6 +1,6 @@
 <template>
-  <div id="query-table" :style="{ height: tableHeight + 'px' }">
-    <div class="query-row p-d-flex" v-for="item in queryData" :key="item.id">
+  <div id="query-table" :style="{height: tableHeight + 'px'}">
+    <div class="query-row p-d-flex" v-for="item in queryData"  :key="item.id">
       <div class="row-cell row-checkbox">
         <input
           class="checkbox"
@@ -38,13 +38,14 @@ export default defineComponent({
   name: "QueryTable",
   data() {
     return {
-      tableHeight: 600,
+      tableHeight: 700,
       selectedRows: [] as any,
-      queryData: {} as any,
+      queryData: [] as any,
     };
   },
-  mounted() {
+  async mounted() {
     this.fetchQueryData();
+    this.setTableHeight();
   },
   methods: {
     async fetchQueryData(): Promise<void> {
@@ -58,6 +59,16 @@ export default defineComponent({
             LoggerService.error("Failed to fetch Query data", err)
           );
         });
+    },
+    setTableHeight(): void {
+      const queryTable = document.getElementById(
+        "query-table"
+      ) as HTMLElement;
+      //this.tableHeight = queryTable.getBoundingClientRect().height;
+    },
+    deleteSelected():void{
+      console.log("delete");
+      this.queryData = this.queryData.filter((query: any) => !this.selectedRows.includes(query.id));
     },
   },
 });
@@ -150,7 +161,6 @@ export default defineComponent({
 }
 
 .row-tag {
-
   padding: 5px;
   margin-right: 10px;
   background-color: #dee2e6 !important;
