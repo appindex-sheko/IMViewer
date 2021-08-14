@@ -14,7 +14,13 @@
           id="search-bar-input"
           type="text"
           placeholder="Search"
-          v-model="searchString"
+          v-model="searchInputText"
+          v-tooltip.bottom="'Enter Search Terms to Find Relevant Queries'"
+        />
+        <Button
+          icon="pi pi-sliders-h"
+          class="p-ml-3 p-button-secondary p-button-outlined"
+          v-tooltip.bottom="'Filter Search Results'"
         />
       </div>
       <!-- /Searchbar -->
@@ -67,7 +73,7 @@
             />
             <Button
               icon="pi pi-pencil "
-              class="p-mr-3 p-button-warning button-medium"
+              class="p-mr-3 p-button-outlined p-button-warning button-medium"
               type="button"
               label="Edit"
               @click="editSelected"
@@ -85,13 +91,13 @@
             <Button
               label="Import"
               icon="pi pi-plus"
-              class="p-button-success button-medium p-mr-3"
+              class="p-button-secondary p-button-outlined button-medium p-mr-3"
               @click="importSelected"
             />
             <Button
               label="Export"
               icon="pi pi-upload"
-              class="p-button-help button-medium"
+              class="p-button-secondary p-button-outlined button-medium"
               @click="exportSelected"
             />
           </div>
@@ -116,7 +122,12 @@
 
         <!-- Content  -->
 
-        <QueryTable id="query-table" tableheight="650" ref="querytable">
+        <QueryTable
+          id="query-table"
+          tableheight="650"
+          ref="querytable"
+          :searchstring="searchInputText"
+        >
         </QueryTable>
 
         <!-- /Content  -->
@@ -132,7 +143,6 @@
         Query Library - Empty Currently
       </div>
       <!-- /Tab: Query Library  -->
-      
     </div>
     <!-- /Page: Home -->
 
@@ -176,6 +186,7 @@ import { ref, onMounted, defineComponent } from "vue";
 import SideNav from "@/components/home/SideNav.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import LoggerService from "@/services/LoggerService";
+import Tooltip from "primevue/tooltip";
 
 import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
@@ -203,7 +214,7 @@ export default defineComponent({
       tableHeight: 600,
       selectedItems: [],
       displayNewQuery: false,
-      searchString: "",
+      searchInputText: "",
     };
   },
   mounted() {
@@ -245,7 +256,7 @@ export default defineComponent({
   width: 100%;
   overflow-y: auto;
   background-color: #ffffff;
-  border: 1px solid #dee2e6;
+  border: 1px solid #dde1e2;
 }
 
 .content-container {
@@ -285,7 +296,7 @@ export default defineComponent({
   margin-top: 20px;
   padding-bottom: 11px;
   text-align: center;
-  border-bottom: solid 1px #f5f7f8;
+  border-bottom: solid 1px #dde1e2;
 }
 
 #query-table {

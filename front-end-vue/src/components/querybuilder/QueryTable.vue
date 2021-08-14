@@ -1,6 +1,6 @@
 <template>
   <div id="query-table" :style="{ height: tableheight + 'px' }">
-    <div class="query-row p-d-flex" v-for="item in queryData" :key="item.id">
+    <div class="query-row p-d-flex" v-for="item in filteredQueries" :key="item.id">
       <div class="row-cell row-checkbox">
         <input
           class="checkbox"
@@ -10,7 +10,7 @@
         />
       </div>
       <div class="row-data p-d-flex p-jc-between">
-        <div class="row-cell row-name p-d-inline" v-tooltip="item.name">
+        <div class="row-cell row-name p-d-inline" v-tooltip.top="item.name">
           {{ item.name }}
         </div>
         <div
@@ -19,7 +19,10 @@
         >
           {{ item.description }}
         </div>
-        <div class="row-cell row-tags p-d-inline" v-tooltip="item.tags.join(', ')">
+        <div
+          class="row-cell row-tags p-d-inline"
+          v-tooltip.top="item.tags.join(', ')"
+        >
           <div class="p-d-flex p-d-row-reverse">
             <div class="row-tag p-d-inline" :key="tag" v-for="tag in item.tags">
               {{ tag }}
@@ -42,7 +45,7 @@ import Checkbox from "primevue/checkbox";
 
 export default defineComponent({
   name: "QueryTable",
-  props: ["tableheight"],
+  props: ["tableheight", "searchstring"],
   data() {
     return {
       selectedRows: [] as any,
@@ -51,6 +54,16 @@ export default defineComponent({
   },
   async mounted() {
     this.fetchQueryData();
+  },
+  computed: {
+    filteredQueries(): any {
+      if (this.searchstring) {
+          return this.queryData.filter((query: any) => query.description.toLowerCase().includes(this.searchstring) || query.name.toLowerCase().includes(this.searchstring));
+      } else {
+        return this.queryData;
+      }
+        
+    },
   },
   methods: {
     async fetchQueryData(): Promise<void> {
@@ -98,12 +111,8 @@ export default defineComponent({
   /* outline: 1px solid slategrey; */
 }
 
-#query-table:first-child {
-  border-bottom: solid 1px #f5f7f8;
-}
-
 #query-table > * {
-  border-bottom: solid 1px #f5f7f8;
+  border-bottom: solid 1px #dde1e2;
   overflow-y: auto;
 }
 
@@ -141,7 +150,7 @@ export default defineComponent({
 }
 
 .row-name {
-  width: 175px;
+  width: 150px;
   overflow: hidden;
   font-weight: bold;
   margin-right: 20px;
@@ -155,9 +164,10 @@ export default defineComponent({
 }
 
 .row-tags {
-     overflow: hidden;
- padding-right: 20px;
+  overflow: hidden;
+  padding-right: 30px;
   max-width: 400px;
+
   margin-right: 5px;
   margin-top: 15px;
 }
@@ -175,7 +185,7 @@ export default defineComponent({
   border-radius: 5px;
 }
 
-/* This is the same as name description and tags  */
+/* This is the same as name + description + tags  */
 .row-data {
   overflow-x: hidden;
   width: 100%;
