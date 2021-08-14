@@ -1,25 +1,29 @@
 <template>
-  <div id="query-table" :style="{height: tableHeight + 'px'}">
-    <div class="query-row p-d-flex" v-for="item in queryData"  :key="item.id">
+  <div id="query-table" :style="{ height: tableheight + 'px' }">
+    <div class="query-row p-d-flex" v-for="item in queryData" :key="item.id">
       <div class="row-cell row-checkbox">
         <input
           class="checkbox"
           type="checkbox"
           :value="item.id"
           v-model="selectedRows"
-       
         />
       </div>
       <div class="row-data p-d-flex p-jc-between">
-        <div class="row-cell row-name p-d-inline">
+        <div class="row-cell row-name p-d-inline" v-tooltip="item.name">
           {{ item.name }}
         </div>
-        <div class="row-cell row-description p-d-inline">
+        <div
+          class="row-cell row-description p-d-inline"
+          v-tooltip.top="item.description"
+        >
           {{ item.description }}
         </div>
-        <div class="row-cell row-tags p-d-inline">
-          <div class="row-tag p-d-inline" :key="tag" v-for="tag in item.tags">
-            {{ tag }}
+        <div class="row-cell row-tags p-d-inline" v-tooltip="item.tags.join(', ')">
+          <div class="p-d-flex p-d-row-reverse">
+            <div class="row-tag p-d-inline" :key="tag" v-for="tag in item.tags">
+              {{ tag }}
+            </div>
           </div>
         </div>
       </div>
@@ -32,20 +36,21 @@ import { defineComponent } from "vue";
 import QueryBuilderService from "@/services/QueryBuilderService";
 import LoggerService from "@/services/LoggerService";
 
+import Tooltip from "primevue/tooltip";
+
 import Checkbox from "primevue/checkbox";
 
 export default defineComponent({
   name: "QueryTable",
+  props: ["tableheight"],
   data() {
     return {
-      tableHeight: 700,
       selectedRows: [] as any,
       queryData: [] as any,
     };
   },
   async mounted() {
     this.fetchQueryData();
-    this.setTableHeight();
   },
   methods: {
     async fetchQueryData(): Promise<void> {
@@ -60,15 +65,11 @@ export default defineComponent({
           );
         });
     },
-    setTableHeight(): void {
-      const queryTable = document.getElementById(
-        "query-table"
-      ) as HTMLElement;
-      //this.tableHeight = queryTable.getBoundingClientRect().height;
-    },
-    deleteSelected():void{
+    deleteSelected(): void {
       console.log("delete");
-      this.queryData = this.queryData.filter((query: any) => !this.selectedRows.includes(query.id));
+      this.queryData = this.queryData.filter(
+        (query: any) => !this.selectedRows.includes(query.id)
+      );
     },
   },
 });
@@ -108,19 +109,21 @@ export default defineComponent({
 
 .checkbox {
   border: 2px solid #ced4da;
-    background: #ffffff;
-    width: 20px;
-    height: 20px;
-    color: #495057;
-    border-radius: 3px;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  background: #ffffff;
+  width: 20px;
+  height: 20px;
+  color: #495057;
+  border-radius: 3px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .checkbox:hover {
-  border-color: #2196F3;
+  border-color: #2196f3;
 }
 
 .query-row {
+  padding-right: 20px;
   margin-right: 10px;
   /* padding: 15px 0 15px 15px; */
 }
@@ -138,7 +141,8 @@ export default defineComponent({
 }
 
 .row-name {
-  width: 150px;
+  width: 175px;
+  overflow: hidden;
   font-weight: bold;
   margin-right: 20px;
 }
@@ -151,6 +155,9 @@ export default defineComponent({
 }
 
 .row-tags {
+     overflow: hidden;
+ padding-right: 20px;
+  max-width: 400px;
   margin-right: 5px;
   margin-top: 15px;
 }
@@ -161,6 +168,7 @@ export default defineComponent({
 }
 
 .row-tag {
+  white-space: nowrap;
   padding: 5px;
   margin-right: 10px;
   background-color: #dee2e6 !important;

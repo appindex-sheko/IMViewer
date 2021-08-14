@@ -6,10 +6,8 @@
 
   <!-- Content Wrapper -->
   <main id="query-main-container">
-    <!-- Tab: Home -->
+    <!-- Page: Home -->
     <div id="home-page" v-if="activePage == 'home'" class="content-container">
-      <!-- Header -->
-
       <!-- Searchbar -->
       <div id="search-bar">
         <InputText
@@ -21,25 +19,18 @@
       </div>
       <!-- /Searchbar -->
 
-      <!-- /Header -->
-
-      <!-- Tabs  -->
+      <!-- Tabs Header  -->
       <div id="tab-bar">
         <div
           :class="[
             'tab-button',
             'p-d-inline',
             'non-selectable',
-            { active: (activeTab = 'my-queries') },
+            { active: activeTab == 'my-queries' },
           ]"
-          @click="activeTab == 'my-queries'"
+          @click="activeTab = 'my-queries'"
         >
-        <font-awesome-icon icon="bookmark" />
-        <font-awesome-icon
-              class="center-icon"
-              style="padding: 5px"
-              
-            />
+          <font-awesome-icon style="margin-right: 10px" icon="bookmark" />
 
           My Queries
         </div>
@@ -48,16 +39,17 @@
             'tab-button',
             'p-d-inline',
             'non-selectable',
-            { active: (activeTab == 'query-library')}
+            { active: activeTab == 'query-library' },
           ]"
           @click="activeTab = 'query-library'"
         >
-         <font-awesome-icon icon="book" />
+          <font-awesome-icon style="margin-right: 10px" icon="book" />
           Query Library
         </div>
       </div>
-      <!-- /Tabs  -->
+      <!-- /Tabs Header -->
 
+      <!-- Tab: My Queries  -->
       <div
         id="tab-my-queries"
         v-if="activeTab == 'my-queries'"
@@ -124,15 +116,27 @@
 
         <!-- Content  -->
 
-        <QueryTable id="query-table" tableheight="100" ref="querytable">
+        <QueryTable id="query-table" tableheight="650" ref="querytable">
         </QueryTable>
 
         <!-- /Content  -->
       </div>
-    </div>
-    <!-- /Tab: Home -->
+      <!-- . Tab: My Queries  -->
 
-    <!-- Tab: New Query -->
+      <!-- Tab: Query Library  -->
+      <div
+        id="tab-query-library"
+        v-if="activeTab == 'query-library'"
+        class="content-tab"
+      >
+        Query Library - Empty Currently
+      </div>
+      <!-- /Tab: Query Library  -->
+      
+    </div>
+    <!-- /Page: Home -->
+
+    <!-- Page: New Query -->
     <div
       id="new-query-tab"
       v-if="activePage == 'new-query'"
@@ -223,6 +227,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.icon {
+  padding: 15px;
+}
+
 .non-selectable {
   -webkit-user-select: none; /* Chrome all / Safari all */
   -moz-user-select: none; /* Firefox all */
@@ -245,19 +253,20 @@ export default defineComponent({
   height: 100%;
 }
 
-#search-bar,
-#tab-bar {
+#search-bar {
   width: 100%;
   text-align: center;
 }
 
 #search-bar-input {
   width: 400px;
+  text-align: center;
 }
 
 .tab-button {
-  font-size: 20px;
-  padding: 0 20px 0 20px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0 20px 10px 20px;
   margin: 0 20px 20px 0;
   border-bottom: solid 2px transparent;
 }
@@ -272,8 +281,11 @@ export default defineComponent({
 }
 
 #tab-bar {
-  border-bottom: solid 1px #f5f7f8;
+  width: 100%;
   margin-top: 20px;
+  padding-bottom: 11px;
+  text-align: center;
+  border-bottom: solid 1px #f5f7f8;
 }
 
 #query-table {
