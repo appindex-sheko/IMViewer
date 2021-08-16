@@ -15,13 +15,26 @@
           type="text"
           placeholder="Search"
           v-model="searchInputText"
-          v-tooltip.bottom="'Enter Search Terms to Find Relevant Queries'"
+          v-tooltip.bottom="
+            'Enter search terms to find queries by name or description'
+          "
         />
         <Button
           icon="pi pi-sliders-h"
           class="p-ml-3 p-button-secondary p-button-outlined"
-          v-tooltip.bottom="'Filter Search Results'"
+          v-tooltip.bottom="'Filter search results'"
+          @click="toggleFilterOverlay"
         />
+        <OverlayPanel id="filter-overlay" ref="filter-overlay">
+          <div class="overlay-title">Filter Results</div>
+          
+          <div class="filter-container p-d-flex p-flex-column">
+            <div class="p-my-2">
+              <div>Tags</div>
+            <Chips class="p-my-2" v-model="filterTags" />
+            </div>
+          </div>
+        </OverlayPanel>
       </div>
       <!-- /Searchbar -->
 
@@ -89,13 +102,7 @@
 
           <div class="p-d-inline">
             <Button
-              label="Import"
-              icon="pi pi-plus"
-              class="p-button-secondary p-button-outlined button-medium p-mr-3"
-              @click="importSelected"
-            />
-            <Button
-              label="Export"
+              label="Share"
               icon="pi pi-upload"
               class="p-button-secondary p-button-outlined button-medium"
               @click="exportSelected"
@@ -105,14 +112,14 @@
         <OverlayPanel id="new-overlay" ref="new-overlay">
           <div class="p-d-flex p-flex-column">
             <Button
-              label="Query"
+              label="Create Query"
               icon="pi pi-search"
               class="p-button-primary p-button-outlined button-medium p-mx-2 p-mb-2"
               @click="handleCreateNewQuery"
             />
             <Button
-              label="Folder"
-              icon="pi pi-folder"
+              label="Import Query"
+              icon="pi pi-plus"
               class="p-button-primary p-button-outlined button-medium p-mx-2"
               @click="handleCreateNewFolder"
             />
@@ -127,6 +134,7 @@
           tableheight="650"
           ref="querytable"
           :searchstring="searchInputText"
+          :filtertags="filterTags"
         >
         </QueryTable>
 
@@ -188,6 +196,9 @@ import ConfirmDialog from "primevue/confirmdialog";
 import LoggerService from "@/services/LoggerService";
 import Tooltip from "primevue/tooltip";
 
+import Chips from "primevue/chips";
+import MegaMenu from "primevue/megamenu";
+
 import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Dialog from "primevue/dialog";
@@ -201,6 +212,7 @@ export default defineComponent({
     OverlayPanel,
     QueryTable,
     InputText,
+    Chips,
   },
   $refs: {
     OverlayPanel: HTMLElement,
@@ -215,6 +227,7 @@ export default defineComponent({
       selectedItems: [],
       displayNewQuery: false,
       searchInputText: "",
+      filterTags: null,
     };
   },
   mounted() {
@@ -223,6 +236,9 @@ export default defineComponent({
   methods: {
     toggleNewOverlay(event: any): void {
       (this.$refs["new-overlay"] as any).toggle(event);
+    },
+    toggleFilterOverlay(event: any): void {
+      (this.$refs["filter-overlay"] as any).toggle(event);
     },
     handleCreateNewQuery(): void {
       this.activePage = "new-query";
@@ -294,7 +310,7 @@ export default defineComponent({
 #tab-bar {
   width: 100%;
   margin-top: 20px;
-  padding-bottom: 11px;
+  padding-bottom: 10px;
   text-align: center;
   border-bottom: solid 1px #dde1e2;
 }
@@ -304,8 +320,9 @@ export default defineComponent({
   margin-bottom: 10px;
 }
 
-#folder-path::v-deep * {
-  font-size: 16px;
+
+.filter-container {
+  max-width: 300px;
 }
 
 .button-medium::v-deep * {
@@ -317,4 +334,12 @@ export default defineComponent({
   font-weight: bold;
   color: #4b5563d1; /*darker: #4B5563*/
 }
+
+.overlay-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4b5563d1; /*darker: #4B5563*/
+}
+
+
 </style>

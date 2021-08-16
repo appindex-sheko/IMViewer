@@ -1,6 +1,10 @@
 <template>
   <div id="query-table" :style="{ height: tableheight + 'px' }">
-    <div class="query-row p-d-flex" v-for="item in filteredQueries" :key="item.id">
+    <div
+      class="query-row p-d-flex"
+      v-for="item in filteredQueries"
+      :key="item.id"
+    >
       <div class="row-cell row-checkbox">
         <input
           class="checkbox"
@@ -39,13 +43,11 @@ import { defineComponent } from "vue";
 import QueryBuilderService from "@/services/QueryBuilderService";
 import LoggerService from "@/services/LoggerService";
 
-import Tooltip from "primevue/tooltip";
-
 import Checkbox from "primevue/checkbox";
 
 export default defineComponent({
   name: "QueryTable",
-  props: ["tableheight", "searchstring"],
+  props: ["tableheight", "searchstring", "filtertags"],
   data() {
     return {
       selectedRows: [] as any,
@@ -57,12 +59,43 @@ export default defineComponent({
   },
   computed: {
     filteredQueries(): any {
+      var filteredData = this.queryData;
+
       if (this.searchstring) {
-          return this.queryData.filter((query: any) => query.description.toLowerCase().includes(this.searchstring) || query.name.toLowerCase().includes(this.searchstring));
-      } else {
-        return this.queryData;
+        filteredData = this.queryData.filter(
+          (query: any) =>
+            query.description.toLowerCase().includes(this.searchstring) ||
+            query.name.toLowerCase().includes(this.searchstring)
+        );
       }
-        
+
+      // if (this.filtertags) {
+      //   filteredData = filteredData.filter(
+      //     (query: any) =>
+      //       function() {
+      //         let queryTags = query.tags.filter((asd: string) =>
+      //           (this.filtertags : Array<string>).includes(this.asd)
+      //         );
+      //         return queryTags.length == 0;
+      //       }
+      //   );
+      // }
+
+      //  query.tags.some((queryTag: string) => (this.filterTags: Array<string>).some((filterTag: string) =>  filterTag.toLowerCase() == queryTag.toLowerCase())
+      
+      if (this.filtertags != null) {
+ 
+        filteredData = filteredData.filter((query: any) =>
+          query.tags.some((queryTag: string) =>
+            this.filtertags.some(
+              (filterTag: string) =>
+                filterTag.toLowerCase() == queryTag.toLowerCase()
+            )
+          )
+        );
+      }
+
+      return filteredData;
     },
   },
   methods: {
