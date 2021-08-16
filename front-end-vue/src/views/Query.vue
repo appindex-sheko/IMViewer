@@ -26,12 +26,12 @@
           @click="toggleFilterOverlay"
         />
         <OverlayPanel id="filter-overlay" ref="filter-overlay">
-          <div class="overlay-title">Filter Results</div>
-          
+          <div class="overlay-title">Filters</div>
+
           <div class="filter-container p-d-flex p-flex-column">
             <div class="p-my-2">
               <div>Tags</div>
-            <Chips class="p-my-2" v-model="filterTags" />
+              <Chips class="p-my-2" v-model="filterTags" />
             </div>
           </div>
         </OverlayPanel>
@@ -230,8 +230,12 @@ export default defineComponent({
       filterTags: null,
     };
   },
-  mounted() {
-    // this.$router.push({ name: "QueryBuilder" });
+  created() {
+    this.$store.commit("updateSideNavHierarchyFocus", {
+          name: "QueryBuilder",
+          fullName: "Query Builder",
+          iri: "http://endhealth.info/im#QueryBuilder"
+        });
   },
   methods: {
     toggleNewOverlay(event: any): void {
@@ -320,7 +324,6 @@ export default defineComponent({
   margin-bottom: 10px;
 }
 
-
 .filter-container {
   max-width: 300px;
 }
@@ -340,6 +343,4 @@ export default defineComponent({
   font-weight: bold;
   color: #4b5563d1; /*darker: #4B5563*/
 }
-
-
 </style>

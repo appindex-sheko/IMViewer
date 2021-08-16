@@ -61,6 +61,7 @@ export default defineComponent({
     filteredQueries(): any {
       var filteredData = this.queryData;
 
+      //filter for search string
       if (this.searchstring) {
         filteredData = this.queryData.filter(
           (query: any) =>
@@ -69,6 +70,7 @@ export default defineComponent({
         );
       }
 
+      //filter for tags
       if (this.filtertags != null) {
         if (this.filtertags.length > 0) {
           filteredData = filteredData.filter((query: any) =>
