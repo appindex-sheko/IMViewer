@@ -69,30 +69,17 @@ export default defineComponent({
         );
       }
 
-      // if (this.filtertags) {
-      //   filteredData = filteredData.filter(
-      //     (query: any) =>
-      //       function() {
-      //         let queryTags = query.tags.filter((asd: string) =>
-      //           (this.filtertags : Array<string>).includes(this.asd)
-      //         );
-      //         return queryTags.length == 0;
-      //       }
-      //   );
-      // }
-
-      //  query.tags.some((queryTag: string) => (this.filterTags: Array<string>).some((filterTag: string) =>  filterTag.toLowerCase() == queryTag.toLowerCase())
-      
       if (this.filtertags != null) {
- 
-        filteredData = filteredData.filter((query: any) =>
-          query.tags.some((queryTag: string) =>
-            this.filtertags.some(
-              (filterTag: string) =>
-                filterTag.toLowerCase() == queryTag.toLowerCase()
+        if (this.filtertags.length > 0) {
+          filteredData = filteredData.filter((query: any) =>
+            query.tags.some((queryTag: string) =>
+              this.filtertags.some(
+                (filterTag: string) =>
+                  filterTag.toLowerCase() == queryTag.toLowerCase()
+              )
             )
-          )
-        );
+          );
+        }
       }
 
       return filteredData;
