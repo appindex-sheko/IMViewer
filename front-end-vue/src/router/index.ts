@@ -6,7 +6,8 @@ import Workflow from "../views/Workflow.vue";
 import UPRN from "../views/Uprn.vue";
 import User from "../views/User.vue";
 import Editor from "../views/Editor.vue";
-import Dataset from "../views/Dataset.vue";
+import DatasetBrowser from "../views/DatasetBrowser.vue";
+import DatasetWizard from "../views/DatasetWizard.vue";
 import Login from "../components/user/Login.vue";
 import Register from "../components/user/Register.vue";
 import UserDetails from "../components/user/UserDetails.vue";
@@ -139,14 +140,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/dataset",
     name: "Dataset",
-    component: Dataset,
-    children: [
-      {
-        path: "/dataset",
-        name: "Dataset",
-        component: Dataset
-      },
-    ],
+    component: DatasetBrowser,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: "/dataset/new",
+    name: "DatasetWizard",
+    component: DatasetWizard,
     meta: {
       requiresAuth: false
     }

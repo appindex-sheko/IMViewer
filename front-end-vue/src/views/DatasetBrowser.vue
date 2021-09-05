@@ -5,7 +5,7 @@
   <!-- /General UI -->
 
   <!-- Content Wrapper -->
-  <main id="query-main-container">
+  <main id="main-container">
     <!-- Page: Home -->
     <div id="home-page" v-if="activePage == 'home'" class="content-container">
       <!-- Searchbar -->
@@ -81,8 +81,8 @@
               icon="pi pi-plus"
               class="p-mr-3 button-medium"
               type="button"
-              label="New"
-              @click="toggleNewOverlay"
+              label="Add"
+              @click="toggleAddOverlay"
             />
             <Button
               icon="pi pi-pencil "
@@ -112,16 +112,16 @@
         <OverlayPanel id="new-overlay" ref="new-overlay">
           <div class="p-d-flex p-flex-column">
             <Button
-              label="Create Query"
-              icon="pi pi-search"
+              label="New Dataset"
+             
               class="p-button-primary p-button-outlined button-medium p-mx-2 p-mb-2"
-              @click="handleCreateNewQuery"
+              @click="handleNewDataset"
             />
             <Button
-              label="Import Query"
-              icon="pi pi-plus"
+              label="Import Existing Dataset"
+             
               class="p-button-primary p-button-outlined button-medium p-mx-2"
-              @click="handleCreateNewFolder"
+              @click="handleImportDataset"
             />
           </div>
         </OverlayPanel>
@@ -202,10 +202,10 @@ import MegaMenu from "primevue/megamenu";
 import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Dialog from "primevue/dialog";
-import QueryTable from "@/components/querybuilder/QueryTable.vue";
+import QueryTable from "@/components/dataset/QueryTable.vue";
 
 export default defineComponent({
-  name: "Query",
+  name: "DatasetBrowser",
   components: {
     SideNav,
     ConfirmDialog,
@@ -239,13 +239,13 @@ export default defineComponent({
         });
   },
   methods: {
-    toggleNewOverlay(event: any): void {
+    toggleAddOverlay(event: any): void {
       (this.$refs["new-overlay"] as any).toggle(event);
     },
     toggleFilterOverlay(event: any): void {
       (this.$refs["filter-overlay"] as any).toggle(event);
     },
-    handleCreateNewQuery(): void {
+    handleNewDataset(): void {
       this.activePage = "new-query";
     },
     handleSave(): void {
@@ -270,7 +270,7 @@ export default defineComponent({
   user-select: none; /* Likely future */
 }
 
-#query-main-container {
+#main-container {
   margin: 0.5rem;
   padding: 2rem;
   height: calc(100vh - 1rem);

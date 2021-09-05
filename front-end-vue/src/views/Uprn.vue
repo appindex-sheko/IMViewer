@@ -29,8 +29,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import SideNav from "@/components/home/SideNav.vue";
-import AddressLookup from "@/components/uprn/AddressLookup.vue";
-import FileWorkflow from "@/components/uprn/FileWorkflow.vue";
+import AddressLookup from "@/views/uprn/AddressLookup.vue"; 
+import FileWorkflow from "@/views/uprn/FileWorkflow.vue";
 import LoggerService from "@/services/LoggerService";
 
 export default defineComponent({
