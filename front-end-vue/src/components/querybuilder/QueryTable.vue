@@ -162,6 +162,7 @@ export default defineComponent({
 .query-row:hover {
   box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
     0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+  /* border: solid 0.1px #dde1e2; */
   background: #fefefe;
   z-index: 2;
 }

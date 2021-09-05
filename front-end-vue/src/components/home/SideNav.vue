@@ -162,11 +162,11 @@ export default defineComponent({
           iri: "http://endhealth.info/im#QT_QueryTemplates"
         },
         {
-          icon: ["fas", "magic"],
-          name: "QueryBuilder",
-          fullName: "Query Builder",
-          route: "Query",
-          iri: "http://endhealth.info/im#QueryBuilder"
+          icon: ["fas", "table"],
+          name: "Datasets",
+          fullName: "Datasets",
+          route: "Dataset",
+          iri: "http://endhealth.info/im#Dataset"
         }
         // {
         //   icon: ["fas", "tasks"],
@@ -225,7 +225,7 @@ export default defineComponent({
         item.name === "Ontology" ||
         item.name === "Sets" ||
         item.name === "Queries" ||
-        item.name === "QueryBuilder"
+        item.name === "Datasets"
       ) {
         this.$store.commit("updateSideNavHierarchyFocus", {
           name: item.name,

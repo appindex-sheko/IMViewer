@@ -6,7 +6,7 @@ import Workflow from "../views/Workflow.vue";
 import UPRN from "../views/Uprn.vue";
 import User from "../views/User.vue";
 import Editor from "../views/Editor.vue";
-import Query from "../views/Query.vue";
+import Dataset from "../views/Dataset.vue";
 import Login from "../components/user/Login.vue";
 import Register from "../components/user/Register.vue";
 import UserDetails from "../components/user/UserDetails.vue";
@@ -137,14 +137,14 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: "/query",
-    name: "Query",
-    component: Query,
+    path: "/dataset",
+    name: "Dataset",
+    component: Dataset,
     children: [
       {
-        path: "/query",
-        name: "Query",
-        component: Query
+        path: "/dataset",
+        name: "Dataset",
+        component: Dataset
       },
     ],
     meta: {

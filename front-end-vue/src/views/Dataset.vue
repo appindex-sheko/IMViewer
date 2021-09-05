@@ -51,19 +51,19 @@
         >
           <font-awesome-icon style="margin-right: 10px" icon="bookmark" />
 
-          My Queries
+          Datasets
         </div>
         <div
           :class="[
             'tab-button',
             'p-d-inline',
             'non-selectable',
-            { active: activeTab == 'query-library' },
+            { active: activeTab == 'dataset-library' },
           ]"
-          @click="activeTab = 'query-library'"
+          @click="activeTab = 'dataset-library'"
         >
           <font-awesome-icon style="margin-right: 10px" icon="book" />
-          Query Library
+          Dataset Library
         </div>
       </div>
       <!-- /Tabs Header -->
@@ -144,8 +144,8 @@
 
       <!-- Tab: Query Library  -->
       <div
-        id="tab-query-library"
-        v-if="activeTab == 'query-library'"
+        id="tab-dataset-library"
+        v-if="activeTab == 'dataset-library'"
         class="content-tab"
       >
         Query Library - Empty Currently
@@ -231,10 +231,11 @@ export default defineComponent({
     };
   },
   created() {
+    this.$store.commit("updateSelectedEntityType", "QueryBuilder");
     this.$store.commit("updateSideNavHierarchyFocus", {
-          name: "QueryBuilder",
-          fullName: "Query Builder",
-          iri: "http://endhealth.info/im#QueryBuilder"
+          name: "Datasets",
+          fullName: "Datasets",
+          iri: "http://endhealth.info/im#Dataset"
         });
   },
   methods: {
