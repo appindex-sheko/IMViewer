@@ -5,30 +5,53 @@
   <!-- /General UI -->
 
   <!-- Main Content Wrapper -->
-  <main id="main-container">
+  <div id="main-container">
+    <!-- Header -->
+    <header class="p-d-flex">
+      <Stepper :activeIndex="activePage - 1" :items="stepperItems" />
+      <div class="p-d-flex p-flex-column p-jc-center p-ai-center">
+        <Button
+          label="Save"
+          icon="pi pi-save"
+          class="p-button-primary p-button-outlined button-medium"
+          @click="handleSave"
+        />
+      </div>
+    </header>
+    <!-- /Header -->
 
-    <Stepper :activeIndex=activeStepperIndex :items="stepperItems"/>
+    <main>
+      <!-- Step 1 -->
+      <div id="step1" v-if="activePage == 1" class="page">
+        step 1
+      </div>
+      <!-- /Step 1-->
 
-    <!-- Step 1 -->
-    <div
-      id="step1"
-      v-if="activePage == 'step1'"
-      class="content-container"
-    ></div>
-    <!-- /Step 1-->
+      <!-- Step 2 -->
+      <div id="step2" v-if="activePage == 2" class="page">
+        step 2
+      </div>
+      <!-- /Step 2-->
 
-    <!-- Step 2 -->
-    <div
-      id="step2"
-      v-if="activePage == 'step2'"
-      class="content-container"
-    ></div>
-    <!-- /Step 12-->
+      <!-- Footer  -->
+      <footer class="p-d-flex p-jc-between">
+        <Button
+          label="Back"
+          icon="pi pi-chevron-left"
+          class="p-button-primary p-button-outlined button-medium"
+          @click="handleBack"
+        />
+        <Button
+          label="Next"
+          icon="pi pi-chevron-right"
+          class="p-button-primary  button-medium"
+          @click="handleNext"
+        />
+      </footer>
 
-    <!-- /Content  -->
-
-    <!-- /Step 2 -->
-  </main>
+      <!-- Footer  -->
+    </main>
+  </div>
   <!-- /Main Content Wrapper -->
 </template>
 
@@ -37,10 +60,8 @@ import { ref, onMounted, defineComponent } from "vue";
 
 import SideNav from "@/components/home/SideNav.vue";
 import ConfirmDialog from "primevue/confirmdialog";
-
-
-
 import Stepper from "@/components/dataset/Stepper.vue";
+
 
 export default defineComponent({
   name: "DatasetWizard",
@@ -51,39 +72,27 @@ export default defineComponent({
   },
   data() {
     return {
-      activePage: "step1",
-      pageTitle: "New Query",
-      activeStepperIndex: 0,
-      stepperItems: [{
-                label: 'Details',
-            },
-            {
-                label: 'Data Sources',
-            },
-            {
-                label: 'Dataset',
-            },
-            {
-                label: 'Sharing',
-            }]
+      activePage: 1,
+      stepperItems: [
+        {
+          label: "Details",
+        },
+        {
+          label: "Data Sources",
+        },
+        {
+          label: "Dataset",
+        },
+        {
+          label: "Sharing",
+        },
+      ],
     };
-  },
-  created() {
-    this.$store.commit("updateSelectedEntityType", "DatasetWizard");
-    this.$store.commit("updateSideNavHierarchyFocus", {
-      name: "DatasetWizard",
-      fullName: "DatasetWizard",
-      iri: "http://endhealth.info/im#DatasetWizard",
-    });
   },
 });
 </script>
 
 <style scoped>
-.icon {
-  padding: 15px;
-}
-
 .non-selectable {
   -webkit-user-select: none; /* Chrome all / Safari all */
   -moz-user-select: none; /* Firefox all */
@@ -93,37 +102,33 @@ export default defineComponent({
 
 #main-container {
   margin: 0.5rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
   height: calc(100vh - 1rem);
   width: 100%;
   overflow-y: auto;
-  background-color: #ffffff;
+  background-color: #f8f9fb;
   border: 1px solid #dde1e2;
 }
 
-.content-container {
-  width: 100%;
-  height: 100%;
+#main-container::-webkit-scrollbar {
+  width: 10px;
 }
 
-.tab-bar {
+#main-container::-webkit-scrollbar-thumb {
+  background-color: #d3d3d3;
+  /* outline: 1px solid slategrey; */
+}
+
+.button-medium::v-deep * {
+  font-size: 16px;
+}
+
+div.page {
   width: 100%;
+}
+
+footer {
   margin-top: 20px;
-  padding-bottom: 10px;
-  text-align: center;
-  border-bottom: solid 1px #dde1e2;
 }
 
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #4b5563d1; /*darker: #4B5563*/
-}
-
-.overlay-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #4b5563d1; /*darker: #4B5563*/
-}
 </style>
-

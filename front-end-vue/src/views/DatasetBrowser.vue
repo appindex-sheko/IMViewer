@@ -7,7 +7,7 @@
   <!-- Content Wrapper -->
   <main id="main-container">
     <!-- Page: Home -->
-    <div id="home-page" v-if="activePage == 'home'" class="content-container">
+    <div id="home-page" v-if="activePage == 'home'" class="page">
       <!-- Searchbar -->
       <div id="search-bar">
         <InputText
@@ -158,14 +158,14 @@
     <div
       id="new-query-tab"
       v-if="activePage == 'new-query'"
-      class="content-container"
+      class="page"
     >
       <!-- Header -->
       <div class="button-toolbar p-d-flex p-jc-between p-ai-center">
         <div class="p-d-inline"></div>
 
         <div class="title p-d-inline">
-          {{ pageTitle }}
+          Alternative Page 2 - Empty 
         </div>
 
         <Button
@@ -173,7 +173,6 @@
           class="p-mr-3 button-medium"
           type="button"
           label="Save"
-          @click="handleSave"
         />
       </div>
       <!-- /Header -->
@@ -246,10 +245,7 @@ export default defineComponent({
       (this.$refs["filter-overlay"] as any).toggle(event);
     },
     handleNewDataset(): void {
-      this.activePage = "new-query";
-    },
-    handleSave(): void {
-      this.activePage = "home";
+      this.$router.push({ path: '/dataset/new' })
     },
     deleteSelected(): void {
       (this.$refs["querytable"] as any).deleteSelected();
@@ -270,17 +266,18 @@ export default defineComponent({
   user-select: none; /* Likely future */
 }
 
+
 #main-container {
   margin: 0.5rem;
   padding: 2rem;
   height: calc(100vh - 1rem);
   width: 100%;
   overflow-y: auto;
-  background-color: #ffffff;
+  background-color: #F8F9FB;
   border: 1px solid #dde1e2;
 }
 
-.content-container {
+.page {
   width: 100%;
   height: 100%;
 }

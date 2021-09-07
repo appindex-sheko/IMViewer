@@ -1,32 +1,4 @@
 <template>
-  <!-- <div class="stepper-horizontal non-selectable">
-    <div class="step active">
-      <div class="step-circle"><span>1</span></div>
-      <div class="step-title">Checkout</div>
-      <div class="step-bar-left"></div>
-      <div class="step-bar-right"></div>
-    </div>
-    <div class="step active">
-      <div class="step-circle"><span>2</span></div>
-      <div class="step-title">Shipping</div>
-      <div class="step-optional">Optional</div>
-      <div class="step-bar-left"></div>
-      <div class="step-bar-right"></div>
-    </div>
-    <div class="step active">
-      <div class="step-circle"><span>3</span></div>
-      <div class="step-title">Payment</div>
-      <div class="step-bar-left"></div>
-      <div class="step-bar-right"></div>
-    </div>
-    <div class="step">
-      <div class="step-circle"><span>4</span></div>
-      <div class="step-title">Review</div>
-      <div class="step-bar-left"></div>
-      <div class="step-bar-right"></div>
-    </div>
-  </div> -->
-
   <div class="stepper-horizontal non-selectable">
     <div
       v-for="(item, index) in items"
@@ -74,7 +46,6 @@ export default defineComponent({
   display: table;
   width: 100%;
   margin: 0 auto;
-  background-color: #ffffff;
 }
 .stepper-horizontal .step {
   display: table-cell;
@@ -143,7 +114,7 @@ export default defineComponent({
 }
 
 .stepper-horizontal .step .step-title {
-  margin-top: 8px;
+  margin-top: 4px;
   font-size: 16px;
    font-weight: bold;
 }
