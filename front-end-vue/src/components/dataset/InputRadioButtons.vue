@@ -31,11 +31,12 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedItems: [1],
+      selectedItems: [0],
     };
   },
   methods: {
     handleClick(id: number): void {
+      //if multiselection enabled, add/remove radiobutton id from selectItems
       if (this.multiselect) {
         if (this.selectedItems.includes(id)) {
           this.selectedItems = this.selectedItems.filter(function(value) {
@@ -45,6 +46,7 @@ export default defineComponent({
           this.selectedItems = [...this.selectedItems, id];
         }
       } else {
+        //if multiselection disabled
         this.selectedItems = [id];
       }
     },
@@ -89,9 +91,9 @@ ul {
   font-size: 16px;
   font-weight: 700;
   padding: 16px 16px 16px 56px;
-  border: 1px solid #9b6fb6;
+  border: 1px solid #0d89ec; /*purple #9b6fb6 */
   border-radius: 4px;
-  color: #554565;
+  color: #0d89ec; /* purple #554565 */
   width: 100%;
   cursor: pointer;
   position: relative;
@@ -99,9 +101,9 @@ ul {
 }
 
 .radio-button:checked + .radio-button__label {
-  background-color: #f6f3f9;
-  color: #590f85;
-  border: 2px solid #590f85;
+  background-color: #edf7ff; /* light purple #f6f3f9 */
+  color: #0d89ec; /*purple  #590f85 */
+  border: 2px solid #0d89ec; /* purple #590f85*/
 }
 
 .radio-button__label,
@@ -116,9 +118,9 @@ ul {
   font-size: 16px;
   font-weight: 700;
   padding: 16px 16px 16px 56px;
-  border: 1px solid #9b6fb6;
+  border: 1px solid #0d89ec; /* purple #9b6fb6 */
   border-radius: 4px;
-  color: #554565;
+  color: #112950; /* ligher black #554565 */
   width: 100%;
   cursor: pointer;
   position: relative;
@@ -126,11 +128,11 @@ ul {
 }
 
 .radio-button:checked + .radio-button__label:before {
-  border: 2px solid #590f85;
+  border: 2px solid #0d89ec;  /* purple #590f85 */
 }
 
 .radio-button__label:before {
-  border: 1px solid #9b6fb6;
+  border: 1px solid #0d89ec; /*purple  #9b6fb6 */
   height: 24px;
   left: 16px;
   width: 24px;
@@ -158,7 +160,7 @@ ul {
 }
 
 .radio-button:checked + .radio-button__label:after {
-  background-color: #9237cd;
+  background-color: #0d89ec; /*purple #9237cd */
   transform: scale(0.4);
 }
 
@@ -169,6 +171,6 @@ ul {
 }
 
 .radio-button__label:hover {
-  background-color: #f6f3f9;
+  background-color: #edf7ff; /*#f6f3f9*/
 }
 </style>

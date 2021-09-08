@@ -73,7 +73,7 @@
             <InputDescription :description="inputMeta.cohortmembers" />
           </template>
           <template v-slot:right>
-            <InputRadioButtons :items="radioButtonItems.cohortMembers" :multiselect="true" />
+            <InputRadioButtons :items="radioButtonItems.cohortMembers" :multiselect="false" />
              </template>
         </InputSection>
         <!-- /Section: Name  -->
