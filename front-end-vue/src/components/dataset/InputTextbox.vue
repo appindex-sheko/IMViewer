@@ -1,19 +1,11 @@
 <template>
   <div>
-    <!-- <InputText
-      :type="type"
-      class="p-inputtext-lg w-100"
-      :placeholder="placeholder"
-      @blur="validateInput"
-      v-model="inputValue"
-    /> -->
-    <input :type="type" class="w-100" :placeholder="placeholder" @blur="handleBlur" v-model="inputValue" :maxlength="maxlength"/>
-    
+
+    <input :type="type" :class="['w-100', (hasUserInteracted && !validateMinLength ? 'p-invalid' : '')]" :placeholder="placeholder" @blur="handleBlur" v-model="inputValue" :maxlength="maxlength"/>
     <div class="message">
       <Message v-if="hasUserInteracted && !validateMinLength" severity="error" :closable="false"
-        >The minimum character count is {{ minlength }}</Message
+        >The minimum characters required is {{ minlength }}</Message
       >
-
     </div>
   </div>
 </template>
@@ -24,16 +16,16 @@ import { ref, onMounted, defineComponent } from "vue";
 export default defineComponent({
   name: "InputTextbox",
   props: ["type", "placeholder", "minlength", "maxlength"],
-  methods: {
-    handleBlur(): void {
-      this.hasUserInteracted = true;
-    },  
-  },
   data() {
     return {
       inputValue: "",
       hasUserInteracted: false,
     };
+  },
+   methods: {
+    handleBlur(): void {
+      this.hasUserInteracted = true;
+    },  
   },
   computed: {
     validateMinLength(): boolean {
@@ -52,13 +44,14 @@ export default defineComponent({
 <style scoped>
 
 input {
-  font-size: 1.25rem;
+  font-size: 1.25rem !important;
     padding: 0.625rem 0.625rem; /*for large size */
-    /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; */
-    font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
     color: #495057;
     background: #ffffff;
     /* padding: 0.5rem 0.5rem; */ /*for default size */
+        /* font-size: 1rem; */
     border: 1px solid #ced4da;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     appearance: none;
@@ -77,6 +70,17 @@ input:focus {
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem #a6d5fa;
     border-color: #2196F3;
+}
+
+input.p-invalid:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #facfcb;
+    border-color: #f44336;
+}
+
+input.p-invalid {
+  border-color: #f44336;
 }
 
 .w-100 {

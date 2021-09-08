@@ -22,36 +22,90 @@
 
     <main>
       <!-- Step 1 -->
-      <div id="step1" v-if="activePage == 1" class="page">
+      <div id="step1" v-show="activePage == 1" class="page">
+        <!-- Section: Name  -->
         <InputSection>
           <template v-slot:left>
-              <InputDescription :description="inputMeta.name"/>
+            <InputDescription :description="inputMeta.name" />
           </template>
           <template v-slot:right>
-            <InputTextbox class="w-dynamic" type="text" :placeholder="inputMeta.name.placeholder"  maxlength="35" />
+            <InputTextbox
+              class="w-dynamic"
+              type="text"
+              :placeholder="inputMeta.name.placeholder"
+              minlength="10"
+              maxlength="35"
+            />
           </template>
         </InputSection>
+        <!-- /Section: Name  -->
+
+        <!-- Section: Description  -->
+        <InputSection>
+          <template v-slot:left>
+            <InputDescription :description="inputMeta.description" />
+          </template>
+          <template v-slot:right>
+            <InputTextbox
+              class="w-dynamic"
+              type="text"
+              :placeholder="inputMeta.description.placeholder"
+              minlength="25"
+              maxlength="500"
+            />
+          </template>
+        </InputSection>
+        <!-- /Section: Description  -->
       </div>
       <!-- /Step 1-->
 
       <!-- Step 2 -->
-      <div id="step2" v-if="activePage == 2" class="page">
-        step 2
+      <div id="step2" v-show="activePage == 2" class="page">
+        Step 2
       </div>
       <!-- /Step 2-->
 
+      <!-- Step 3 -->
+      <div id="step3" v-show="activePage == 3" class="page">
+        <!-- Section: Name  -->
+        <InputSection>
+          <template v-slot:left>
+            <InputDescription :description="inputMeta.cohortmembers" />
+          </template>
+          <template v-slot:right>
+            <InputRadioButtons :items="radioButtonItems.cohortMembers" :multiselect="true" />
+             </template>
+        </InputSection>
+        <!-- /Section: Name  -->
+      </div>
+      <!-- /Step 3-->
+
+      <!-- Step 4 -->
+      <div id="step4" v-show="activePage == 4" class="page">
+        Step 4
+      </div>
+      <!-- /Step 4-->
+
       <!-- Footer  -->
-      <footer class="p-d-flex p-jc-between">
+      <footer
+        :class="[
+          'p-d-flex',
+          'p-jc-between',
+          activePage == 1 ? 'p-flex-row-reverse' : '',
+        ]"
+      >
         <Button
+          v-show="activePage > 1"
           label="Back"
           icon="pi pi-chevron-left"
           class="p-button-primary p-button-outlined button-medium"
           @click="handleBack"
         />
         <Button
+          v-show="activePage != totalPageCount"
           label="Next"
           icon="pi pi-chevron-right"
-          class="p-button-primary  button-medium"
+          class="p-button-primary button-medium"
           @click="handleNext"
         />
       </footer>
@@ -71,6 +125,7 @@ import Stepper from "@/components/dataset/Stepper.vue";
 import InputSection from "@/components/dataset/InputSection.vue";
 import InputDescription from "@/components/dataset/InputDescription.vue";
 import InputTextbox from "@/components/dataset/InputTextbox.vue";
+import InputRadioButtons from "@/components/dataset/InputRadioButtons.vue";
 
 export default defineComponent({
   name: "DatasetWizard",
@@ -81,10 +136,12 @@ export default defineComponent({
     InputSection,
     InputDescription,
     InputTextbox,
+    InputRadioButtons,
   },
   data() {
     return {
       activePage: 1,
+      totalPageCount: 4,
       stepperItems: [
         {
           label: "Details",
@@ -99,19 +156,66 @@ export default defineComponent({
           label: "Sharing",
         },
       ],
+      radioButtonItems: {
+        cohortMembers: [
+          {
+            id: 0,
+            title: "Patient / Client / Service User",
+            explanation: "Patient Explanation",
+          },
+          {
+            id: 1,
+            title: "Person /  Individual",
+            explanation: "Person Explanation",
+          },
+          {
+            id: 2,
+            title: "Household",
+            explanation: "Household Explanation",
+          },
+          {
+            id: 3,
+            title: "Organisation",
+            explanation: "Organisation Explanation",
+          },
+          {
+            id: 4,
+            title: "Appointment",
+            explanation: "Appointment Explanation",
+          },
+          
+          
+        ],
+      },
       inputMeta: {
         name: {
           title: "Name",
-          explanation: "Label your dataset with a short name that is memorable and helps you recognise it later. <br><br> For example: <br> • QOF BP002 2021<br>• ABG Audit 2019",
-          placeholder: "Enter a Name",
-        }
+          explanation:
+            "Label your dataset with a short name that is memorable and helps you recognise it later. <br><br> For example: <br> • QOF BP002 2021<br>• ABG Audit 2019",
+          placeholder: "Enter a Name (35 Character Limit)",
+        },
+        description: {
+          title: "Description",
+          explanation:
+            "Add a detailed summary to describe the your dataset. <br><br> For example: “Patients registered at primary care practices commissioned by Tower Hamlets CCG with a diagnosis of diabetes type 2",
+          placeholder: "Enter a Description (250 Character Limit)",
+        },
+        cohortmembers: {
+          title: "Cohort Members",
+          explanation:
+            "A cohort member is the main component of the health record that is related to all the other data fields in your dataset. <br><br> Tip: If you are looking for all health records associated with an individual regardless of the organisation that holds the record, choose Person instead of Patient.",
+          placeholder: "",
+        },
       },
-      // validationFunctions: {
-      //   name: function(value: any) :any{
-      //     return true;
-      //   }
-      // }  
     };
+  },
+  methods: {
+    handleNext(): void {
+      this.activePage += 1;
+    },
+    handleBack(): void {
+      this.activePage -= 1;
+    },
   },
 });
 </script>
@@ -150,13 +254,10 @@ main {
   margin: 0 auto;
 }
 
-
 div.page {
   width: 100%;
   padding-top: 30px;
 }
-
-
 
 footer {
   margin-top: 20px;
@@ -170,5 +271,4 @@ footer {
   width: 100%;
   max-width: 500px;
 }
-
 </style>
