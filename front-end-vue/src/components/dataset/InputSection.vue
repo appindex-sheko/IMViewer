@@ -26,7 +26,7 @@ export default defineComponent({
 <style scoped>
 
 div.p-grid {
-  margin: 15px 0 !important;
+  margin: 20px 0 15px !important;
 }
 
 div.column {

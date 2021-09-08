@@ -1,5 +1,5 @@
 <template>
-  <ul class="radio-button-list">
+  <ul class="radio-button-list non-selectable">
     <li v-for="item in items" :key="item.id" class="radio-button-list__item">
       <input
         type="radio"
@@ -9,12 +9,15 @@
         ref="radioButton"
       />
       <label
-        class="radio-button__label"
+        class="radio-button__label p-d-flex p-jc-between"
         @click="handleClick(item.id)"
         ref="radioLabel"
       >
-        {{ item.title }}</label
-      >
+        {{ item.title }}
+        <div style="margin-left: 5px" v-tooltip="item.explanation">
+          <font-awesome-icon icon="question-circle" />
+        </div>
+      </label>
     </li>
   </ul>
 </template>
@@ -65,6 +68,7 @@ export default defineComponent({
 ol,
 ul {
   list-style: none;
+  padding: 0;
 }
 
 .radio-button {
@@ -76,15 +80,6 @@ ul {
   padding: 0;
   position: absolute;
   width: 1px;
-}
-
-.radio-button__label,
-.radio-button__label:after,
-.radio-button__label:before {
-  box-sizing: border-box;
-  background-color: #fff;
-  display: block;
-  transition: all 0.2s ease-in-out;
 }
 
 .radio-button__label {
@@ -118,7 +113,8 @@ ul {
   font-size: 16px;
   font-weight: 700;
   padding: 16px 16px 16px 56px;
-  border: 1px solid #0d89ec; /* purple #9b6fb6 */
+  border: 1px solid #ced4da; /* purple #9b6fb6 */
+
   border-radius: 4px;
   color: #112950; /* ligher black #554565 */
   width: 100%;
@@ -128,11 +124,11 @@ ul {
 }
 
 .radio-button:checked + .radio-button__label:before {
-  border: 2px solid #0d89ec;  /* purple #590f85 */
+  border: 2px solid #0d89ec; /* purple #590f85 */
 }
 
 .radio-button__label:before {
-  border: 1px solid #0d89ec; /*purple  #9b6fb6 */
+  border: 1px solid #ced4da; /*purple  #9b6fb6 */
   height: 24px;
   left: 16px;
   width: 24px;
@@ -170,7 +166,12 @@ ul {
   width: 22px;
 }
 
+.radio-button__label:hover:before {
+  border: 1px solid #0d89ec !important; /*purple #590f85 */
+}
+
 .radio-button__label:hover {
+  border: 1px solid #0d89ec;
   background-color: #edf7ff; /*#f6f3f9*/
 }
 </style>

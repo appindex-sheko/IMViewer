@@ -203,7 +203,7 @@ export default defineComponent({
         cohortmembers: {
           title: "Cohort Members",
           explanation:
-            "A cohort member is the main component of the health record that is related to all the other data fields in your dataset. <br><br> Tip: If you are looking for all health records associated with an individual regardless of the organisation that holds the record, choose Person instead of Patient.",
+            "A cohort member is the main component of the health record that is related to all the other data in your dataset. <br><br> Tip: If you are looking for all health records associated with an individual regardless of the organisation that holds the record, choose Person instead of Patient.",
           placeholder: "",
         },
       },

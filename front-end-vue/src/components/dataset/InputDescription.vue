@@ -35,7 +35,7 @@ export default defineComponent({
     color: #112950;
     font-weight: bold;
     font-size: 19px;
-    margin: 10px 10px 5px 0;
+    margin: 0 10px 5px 0;
 }
 
 .explanation {
