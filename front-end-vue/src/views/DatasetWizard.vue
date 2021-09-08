@@ -9,21 +9,28 @@
     <!-- Header -->
     <header class="p-d-flex">
       <Stepper :activeIndex="activePage - 1" :items="stepperItems" />
-      <div class="p-d-flex p-flex-column p-jc-center p-ai-center">
+      <!-- <div class="p-d-flex p-flex-column p-jc-center p-ai-center">
         <Button
           label="Save"
           icon="pi pi-save"
           class="p-button-primary p-button-outlined button-medium"
           @click="handleSave"
         />
-      </div>
+      </div> -->
     </header>
     <!-- /Header -->
 
     <main>
       <!-- Step 1 -->
       <div id="step1" v-if="activePage == 1" class="page">
-        step 1
+        <InputSection>
+          <template v-slot:left>
+              <InputDescription :description="inputMeta.name"/>
+          </template>
+          <template v-slot:right>
+            <InputTextbox class="w-dynamic" type="text" :placeholder="inputMeta.name.placeholder"  maxlength="35" />
+          </template>
+        </InputSection>
       </div>
       <!-- /Step 1-->
 
@@ -61,7 +68,9 @@ import { ref, onMounted, defineComponent } from "vue";
 import SideNav from "@/components/home/SideNav.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import Stepper from "@/components/dataset/Stepper.vue";
-
+import InputSection from "@/components/dataset/InputSection.vue";
+import InputDescription from "@/components/dataset/InputDescription.vue";
+import InputTextbox from "@/components/dataset/InputTextbox.vue";
 
 export default defineComponent({
   name: "DatasetWizard",
@@ -69,6 +78,9 @@ export default defineComponent({
     SideNav,
     ConfirmDialog,
     Stepper,
+    InputSection,
+    InputDescription,
+    InputTextbox,
   },
   data() {
     return {
@@ -87,6 +99,18 @@ export default defineComponent({
           label: "Sharing",
         },
       ],
+      inputMeta: {
+        name: {
+          title: "Name",
+          explanation: "Label your dataset with a short name that is memorable and helps you recognise it later. <br><br> For example: <br> • QOF BP002 2021<br>• ABG Audit 2019",
+          placeholder: "Enter a Name",
+        }
+      },
+      // validationFunctions: {
+      //   name: function(value: any) :any{
+      //     return true;
+      //   }
+      // }  
     };
   },
 });
@@ -119,16 +143,32 @@ export default defineComponent({
   /* outline: 1px solid slategrey; */
 }
 
+main {
+  position: relative;
+  max-width: 1160px;
+  /* padding: 0 10px; */
+  margin: 0 auto;
+}
+
+
+div.page {
+  width: 100%;
+  padding-top: 30px;
+}
+
+
+
+footer {
+  margin-top: 20px;
+}
+
 .button-medium::v-deep * {
   font-size: 16px;
 }
 
-div.page {
+.w-dynamic {
   width: 100%;
-}
-
-footer {
-  margin-top: 20px;
+  max-width: 500px;
 }
 
 </style>
