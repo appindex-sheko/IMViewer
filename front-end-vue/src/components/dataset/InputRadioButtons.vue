@@ -42,7 +42,7 @@ export default defineComponent({
       //if multiselection enabled, add/remove radiobutton id from selectItems
       if (this.multiselect) {
         if (this.selectedItems.includes(id)) {
-          this.selectedItems = this.selectedItems.filter(function(value) {
+          this.selectedItems = this.selectedItems.filter(function(value: any) {
             return value !== id;
           });
         } else {

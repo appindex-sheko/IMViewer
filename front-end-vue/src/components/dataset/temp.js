@@ -12,17 +12,12 @@
       </div>
     </div>
 
-    <div
-      v-for="(list, listIndex) in lists"
-      :key="listIndex"
-      class="table-section"
-    >
+    <div v-for="(list, listIndex) in lists" :key="listIndex" class="table-section">
       <div class="table-section-header p-d-flex p-jc-between">
         <div class="p-d-flex">
           <div
             class="section-toggler non-selectable p-d-flex p-jc-center p-ai-center"
             @click="toggleTableSection(listIndex)"
-            v-tooltip.bottom="list.title"
           >
             <font-awesome-icon
               style="margin-right: 10px"
@@ -40,24 +35,19 @@
             v-if="list.organisationTypes.length > 0"
             title="Organisation Types"
             :totalCount="list.organisationTypes.length"
-            v-tooltip.bottom="
-              list.organisationTypes.map((org) => orgTypeCodeToName(org)).join('<br>')
-            "
-            
+            v-tooltip.bottom="list.title"
           />
           <FilterChip
             v-if="list.ccgs.length > 0"
             title="CCGs"
             :totalCount="list.ccgs.length"
-            v-tooltip.bottom="
-              list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
-            "
+            v-tooltip.bottom="list.title"
           />
           <FilterChip
             v-if="list.postcodes.length > 0"
             title="Postcodes"
             :totalCount="list.postcodes.length"
-            v-tooltip.bottom="list.postcodes.join('<br>')"
+            v-tooltip.bottom="list.title"
           />
         </div>
         <TextButton class="p-mr-3" title="Edit" />
@@ -65,10 +55,13 @@
       <div
         v-show="expandedTableSections.includes(listIndex)"
         class="table-section-body"
+        v-for="(listItem, itemIndex) in filteredItems(listIndex)"
+        :key="itemIndex"
+        
       >
         <div class="table-row p-d-flex">
           <div class="table-data name">
-            Name
+            {{listItem.Name}}
           </div>
           <div class="table-data ods">
             ODS
@@ -103,12 +96,9 @@ export default defineComponent({
       expandedTableSections: [] as any,
     };
   },
-  async created() {
-    console.log("lol");
+  async mounted() {
     this.fetchOrganisationData();
     this.fetchCCGData();
-    this.filteredListItems(0);
-    
   },
   methods: {
     async fetchOrganisationData(): Promise<void> {
@@ -146,74 +136,19 @@ export default defineComponent({
         this.expandedTableSections = [...this.expandedTableSections, index];
       }
     },
-    orgTypeCodeToName(typeCode: number): string {
-      switch (typeCode) {
-        case 0:
-          return "Other";
-        case 1:
-          return "WIC Practice";
-        case 2:
-          return "OOH Practice";
-        case 3:
-          return "WIC + OOH Practice";
-        case 4:
-          return "GP Practice";
-        case 8:
-          return "Public Health Service";
-        case 9:
-          return "= Community Health Service";
-        case 10:
-          return "Hospital Service";
-        case 11:
-          return "Optometry Service";
-        case 12:
-          return "Urgent & Emergency Care";
-        case 13:
-          return "Hospice";
-        case 14:
-          return "Care Home / Nursing Home";
-        case 15:
-          return "Border Force";
-        case 16:
-          return "Young Offender Institution";
-        case 17:
-          return "Secure Training Centre";
-        case 18:
-          return "Secure Children's Home";
-        case 19:
-          return "Immigration Removal Centre";
-        case 20:
-          return "Court";
-        case 21:
-          return "Police Custody";
-        case 22:
-          return "Sexual Assault Referral Centre";
-        case 24:
-          return "Other – Justice Estate";
-        case 25:
-          return "Prison";
-        default:
-          return "Other";
-      }
-    },
-    ccgODSCodeToName(ODSCode: string): any {
-      return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
-    },
   },
   computed: {
     filteredListItems(index: number): any {
-      //var filteredItems = this.organisationData;
-      console.log(this.lists[index]);
+      var filteredItems = this.organisationData;
 
       //filter CCGs
-      // if (this.lists[index].ccgs.length > 0) {
-      //   console.log("CCGs present");
-      //   filteredItems = filteredItems.filter((organisation: any) =>
-      //     this.lists[index].ccgs.includes(organisation.Commissioner)
-      //   );
-      // }
-      // return filteredItems;
-      return true;
+      if (this.lists[index].ccgs.length > 0) {
+        console.log("CCGs present");
+        filteredItems = filteredItems.filter((organisation: any) =>
+          this.lists[index].ccgs.includes(organisation.Commissioner)
+        );
+      }
+      return filteredItems;
     },
   },
 });
@@ -250,7 +185,7 @@ div.table > * {
 }
 
 .table-header {
-  background-color: #f3f3f3;
+  background-color: #eeeeee;
 }
 
 .table-header,
@@ -291,7 +226,7 @@ div.table > * {
 }
 
 .section-toggler:hover {
-  background-color: #f3f3f3;
+  background-color: #eeeeee;
 }
 
 /* .table-section-header:hover {

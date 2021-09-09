@@ -68,15 +68,8 @@
           </template>
           <template v-slot:right>
             <div class="p-d-flex p-jc-end">
-             
+              
               <Button
-              icon="pi pi-trash "
-              class="p-mr-3 p-button-outlined p-button-danger button-medium"
-              type="button"
-              label="Clear All"
-              @click="handleClear"
-            />
-             <Button
                 icon="pi pi-plus"
                 class="button-medium"
                 type="button"
@@ -103,10 +96,11 @@
 
         <OrganisationTable
           id="organisation-table"
-          tableheight="650"
+          tableheight="600"
           ref="organisationtable"
+          :lists="organisationLists"
         />
-        
+
         <!-- /Section: Organisations  -->
       </div>
       <!-- /Step 2-->
@@ -244,13 +238,13 @@ export default defineComponent({
           title: "Name",
           explanation:
             "Label your dataset with a short name that is memorable and helps you recognise it later. <br><br> For example: <br> • QOF BP002 2021<br>• ABG Audit 2019",
-          placeholder: "Enter a Name (35 Character Limit)",
+          placeholder: "Enter a Name",
         },
         description: {
           title: "Description",
           explanation:
             "Add a detailed summary to describe the your dataset. <br><br> For example: “Patients registered at primary care practices commissioned by Tower Hamlets CCG with a diagnosis of diabetes type 2",
-          placeholder: "Enter a Description (250 Character Limit)",
+          placeholder: "Enter a Description",
         },
         organisations: {
           title: "Organisations",
@@ -265,6 +259,14 @@ export default defineComponent({
           placeholder: "",
         },
       },
+      organisationLists: [
+        {
+        title: "Primary Care Organisations commissioned by NHS HARTLEPOOL AND STOCKTON-ON-TEES CCG in the TS17* and TS18* Postcode",
+        ccgs: ["00K"],
+        postcodes: ["TS17*", "TS18*"],
+        organisationTypes: [4]
+        }
+      ],
     };
   },
   methods: {
@@ -291,7 +293,7 @@ export default defineComponent({
 
 #main-container {
   margin: 0.5rem;
-  padding: 1rem 2rem;
+  padding: 2rem 2rem 1rem;
   height: calc(100vh - 1rem);
   width: 100%;
   overflow-y: auto;
