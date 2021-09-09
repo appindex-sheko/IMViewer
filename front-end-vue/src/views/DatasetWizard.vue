@@ -1,6 +1,5 @@
 <template>
   <!-- General UI -->
-  <SideNav />
   <ConfirmDialog></ConfirmDialog>
   <!-- /General UI -->
 
@@ -62,17 +61,20 @@
       <!-- Step 2 -->
       <div id="step2" v-show="activePage == 2" class="page">
         <!-- Section: Organisations  -->
-        <FullscreenDialog v-if="showNewListDialog" id="newListDialog" @close="showNewListDialog = false" title="Create New List">  
+        <FullscreenDialog
+          v-if="showNewListDialog"
+          id="newListDialog"
+          @close="showNewListDialog = false"
+          title="Create New List"
+        >
           <OrganisationSearch />
-          
-           </FullscreenDialog> 
+        </FullscreenDialog>
         <InputSection>
           <template v-slot:left>
             <InputDescription :description="inputMeta.organisations" />
           </template>
           <template v-slot:right>
             <div class="p-d-flex p-jc-end">
-              
               <Button
                 icon="pi pi-plus"
                 class="button-medium"
@@ -167,9 +169,6 @@
 <script lang="ts">
 import { ref, onMounted, defineComponent } from "vue";
 
-
-
-import SideNav from "@/components/home/SideNav.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 
 import DatasetService from "@/services/DatasetService";
@@ -184,11 +183,9 @@ import OrganisationTable from "@/components/dataset/OrganisationTable.vue";
 import FullscreenDialog from "@/components/dataset/FullscreenDialog.vue";
 import OrganisationSearch from "@/components/dataset/OrganisationSearch.vue";
 
-
 export default defineComponent({
   name: "DatasetWizard",
   components: {
-    SideNav,
     ConfirmDialog,
     Stepper,
     InputSection,
@@ -197,12 +194,20 @@ export default defineComponent({
     InputRadioButtons,
     OrganisationTable,
     FullscreenDialog,
-    OrganisationSearch
+    OrganisationSearch,
   },
   $refs: {
     OverlayPanel: HTMLElement,
-  },  
+  },
   async created() {
+
+    this.$store.commit("updateSelectedEntityType", "DatasetBrowser");
+    this.$store.commit("updateSideNavHierarchyFocus", {
+          name: "Datasets",
+          fullName: "Datasets",
+          iri: "http://endhealth.info/im#Dataset"
+        });
+
     this.fetchOrganisationData();
     this.fetchCCGData();
   },
@@ -286,17 +291,19 @@ export default defineComponent({
       },
       organisationLists: [
         {
-        title: "Primary Care Organisations commissioned by NHS HARTLEPOOL AND STOCKTON-ON-TEES CCG in the TS17* and TS18* Postcode",
-        ccgs: ["00K"],
-        postcodes: ["TS17*", "TS18*"],
-        organisationTypes: [4]
+          title:
+            "Primary Care Organisations commissioned by NHS HARTLEPOOL AND STOCKTON-ON-TEES CCG in the TS17* and TS18* Postcode",
+          ccgs: ["00K"],
+          postcodes: ["TS17*", "TS18*"],
+          organisationTypes: [4],
         },
         {
-        title: "Primary Care Organisations commissioned by NHS NORTH CUMBRIA CCG",
-        ccgs: ["01H"],
-        postcodes: [],
-        organisationTypes: [4]
-        }
+          title:
+            "Primary Care Organisations commissioned by NHS NORTH CUMBRIA CCG",
+          ccgs: ["01H"],
+          postcodes: [],
+          organisationTypes: [4],
+        },
       ],
     };
   },
@@ -337,7 +344,7 @@ export default defineComponent({
     handleNewList(): void {
       (this.$refs["add-overlay"] as any).toggle(event);
       this.showNewListDialog = true;
-    }
+    },
   },
 });
 </script>

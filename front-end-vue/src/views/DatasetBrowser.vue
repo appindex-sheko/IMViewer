@@ -1,6 +1,5 @@
 <template>
   <!-- General UI -->
-  <SideNav />
   <ConfirmDialog></ConfirmDialog>
   <!-- /General UI -->
 
@@ -190,7 +189,6 @@
 <script lang="ts">
 import { ref, onMounted, defineComponent } from "vue";
 
-import SideNav from "@/components/home/SideNav.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import LoggerService from "@/services/LoggerService";
 import Tooltip from "primevue/tooltip";
@@ -206,7 +204,6 @@ import QueryTable from "@/components/dataset/QueryTable.vue";
 export default defineComponent({
   name: "DatasetBrowser",
   components: {
-    SideNav,
     ConfirmDialog,
     OverlayPanel,
     QueryTable,
@@ -230,7 +227,7 @@ export default defineComponent({
     };
   },
   created() {
-    this.$store.commit("updateSelectedEntityType", "QueryBuilder");
+    this.$store.commit("updateSelectedEntityType", "DatasetBrowser");
     this.$store.commit("updateSideNavHierarchyFocus", {
           name: "Datasets",
           fullName: "Datasets",
@@ -245,7 +242,7 @@ export default defineComponent({
       (this.$refs["filter-overlay"] as any).toggle(event);
     },
     handleNewDataset(): void {
-      this.$router.push({ path: '/dataset/new' })
+      this.$router.push({ name: "DatasetWizard" })
     },
     deleteSelected(): void {
       (this.$refs["querytable"] as any).deleteSelected();
