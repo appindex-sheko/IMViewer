@@ -33,7 +33,7 @@
               "
             />
             <div>
-              List
+              List ({{filteredListItems(listIndex).length}})
             </div>
           </div>
           <FilterChip
@@ -41,16 +41,18 @@
             title="Organisation Types"
             :totalCount="list.organisationTypes.length"
             v-tooltip.bottom="
-             list.organisationTypes.map((org) => orgTypeCodeToName(org)).join('<br>')              
+              list.organisationTypes
+                .map((org) => orgTypeCodeToName(org))
+                .join('<br>')
             "
-            
           />
           <FilterChip
             v-if="list.ccgs.length > 0"
             title="CCGs"
             :totalCount="list.ccgs.length"
             v-tooltip.bottom="
-              ccgDataLoaded && list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
+              ccgDataLoaded &&
+                list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
             "
           />
           <FilterChip
@@ -66,15 +68,21 @@
         v-show="expandedTableSections.includes(listIndex)"
         class="table-section-body"
       >
-        <div class="table-row p-d-flex">
-          <div class="table-data name">
-            Name
-          </div>
-          <div class="table-data ods">
-            ODS
-          </div>
-          <div class="table-data type">
-            Type
+        <div v-if="organisationDataLoaded">
+          <div
+            class="table-row p-d-flex"
+            v-for="(listItem, itemIndex) in filteredListItems(listIndex)"
+            :key="itemIndex"
+          >
+            <div class="table-data name">
+              {{listItem.Name}}
+            </div>
+            <div class="table-data ods">
+              ODS
+            </div>
+            <div class="table-data type">
+              Type
+            </div>
           </div>
         </div>
       </div>
@@ -101,21 +109,20 @@ export default defineComponent({
       organisationData: [] as any,
       ccgData: [] as any,
       expandedTableSections: [] as any,
-      orgDataLoaded: false,
+      organisationDataLoaded: false,
       ccgDataLoaded: false,
     };
   },
   async created() {
     this.fetchOrganisationData();
-    this.fetchCCGData();    
+    this.fetchCCGData();
   },
   methods: {
     async fetchOrganisationData(): Promise<void> {
       await DatasetService.getOrganisations()
         .then((res) => {
           this.organisationData = JSON.parse(res).organisationData;
-          this.orgDataLoaded = true;
-          console.log(this.organisationData);
+          this.organisationDataLoaded = true;
         })
         .catch((err) => {
           this.$toast.add(
@@ -128,7 +135,6 @@ export default defineComponent({
         .then((res) => {
           this.ccgData = JSON.parse(res).ccgData;
           this.ccgDataLoaded = true;
-          console.log(this.ccgData);
         })
         .catch((err) => {
           this.$toast.add(
@@ -200,23 +206,20 @@ export default defineComponent({
     ccgODSCodeToName(ODSCode: string): any {
       return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
     },
-  },
-  computed: {
-    filteredListItems(index: number): any {
-      //var filteredItems = this.organisationData;
-      console.log(this.lists[index]);
+    filteredListItems(listIndex: number) :any {
+      var filteredItems = this.organisationData;
 
       //filter CCGs
-      // if (this.lists[index].ccgs.length > 0) {
-      //   console.log("CCGs present");
-      //   filteredItems = filteredItems.filter((organisation: any) =>
-      //     this.lists[index].ccgs.includes(organisation.Commissioner)
-      //   );
-      // }
-      // return filteredItems;
-      return true;
+      if (this.lists[listIndex].ccgs.length > 0) {
+        filteredItems = filteredItems.filter((organisation: any) =>
+          this.lists[listIndex].ccgs.includes(organisation.Commissioner)
+        );
+      }
+      return filteredItems;
     },
   },
+  
+  
 });
 </script>
 
