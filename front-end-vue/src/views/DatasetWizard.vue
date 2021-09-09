@@ -62,7 +62,10 @@
       <!-- Step 2 -->
       <div id="step2" v-show="activePage == 2" class="page">
         <!-- Section: Organisations  -->
-        <FullscreenDialog v-if="showNewListDialog" id="newListDialog" @close="showNewListDialog = false" title="Create New List">  Body </FullscreenDialog> 
+        <FullscreenDialog v-if="showNewListDialog" id="newListDialog" @close="showNewListDialog = false" title="Create New List">  
+          <OrganisationSearch />
+          
+           </FullscreenDialog> 
         <InputSection>
           <template v-slot:left>
             <InputDescription :description="inputMeta.organisations" />
@@ -97,8 +100,10 @@
         <OrganisationTable
           id="organisation-table"
           tableheight="600"
-          ref="organisationtable"
           :lists="organisationLists"
+          :collapsible="true"
+          :organisationdata="organisationData"
+          :ccgdata="ccgData"
         />
 
         <!-- /Section: Organisations  -->
@@ -162,8 +167,14 @@
 <script lang="ts">
 import { ref, onMounted, defineComponent } from "vue";
 
+
+
 import SideNav from "@/components/home/SideNav.vue";
 import ConfirmDialog from "primevue/confirmdialog";
+
+import DatasetService from "@/services/DatasetService";
+import LoggerService from "@/services/LoggerService";
+
 import Stepper from "@/components/dataset/Stepper.vue";
 import InputSection from "@/components/dataset/InputSection.vue";
 import InputDescription from "@/components/dataset/InputDescription.vue";
@@ -171,6 +182,8 @@ import InputTextbox from "@/components/dataset/InputTextbox.vue";
 import InputRadioButtons from "@/components/dataset/InputRadioButtons.vue";
 import OrganisationTable from "@/components/dataset/OrganisationTable.vue";
 import FullscreenDialog from "@/components/dataset/FullscreenDialog.vue";
+import OrganisationSearch from "@/components/dataset/OrganisationSearch.vue";
+
 
 export default defineComponent({
   name: "DatasetWizard",
@@ -183,16 +196,25 @@ export default defineComponent({
     InputTextbox,
     InputRadioButtons,
     OrganisationTable,
-    FullscreenDialog
+    FullscreenDialog,
+    OrganisationSearch
   },
   $refs: {
     OverlayPanel: HTMLElement,
+  },  
+  async created() {
+    this.fetchOrganisationData();
+    this.fetchCCGData();
   },
   data() {
     return {
       activePage: 1,
       totalPageCount: 4,
       showNewListDialog: false,
+      organisationData: [] as any,
+      ccgData: [] as any,
+      organisationDataLoaded: true,
+      ccgDataLoaded: true,
       stepperItems: [
         {
           label: "Details",
@@ -279,6 +301,30 @@ export default defineComponent({
     };
   },
   methods: {
+    async fetchOrganisationData(): Promise<void> {
+      await DatasetService.getOrganisations()
+        .then((res) => {
+          this.organisationData = JSON.parse(res).organisationData;
+          this.organisationDataLoaded = true;
+        })
+        .catch((err) => {
+          this.$toast.add(
+            LoggerService.error("Failed to fetch table data", err)
+          );
+        });
+    },
+    async fetchCCGData(): Promise<void> {
+      await DatasetService.getCCGs()
+        .then((res) => {
+          this.ccgData = JSON.parse(res).ccgData;
+          this.ccgDataLoaded = true;
+        })
+        .catch((err) => {
+          this.$toast.add(
+            LoggerService.error("Failed to fetch table data", err)
+          );
+        });
+    },
     handleNext(): void {
       this.activePage += 1;
     },

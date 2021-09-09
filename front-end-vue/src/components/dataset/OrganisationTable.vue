@@ -21,7 +21,11 @@
       :key="listIndex"
       class="table-section"
     >
-      <div class="table-section-header p-d-flex p-jc-between">
+      <!-- List Header  -->
+      <div
+        v-if="collapsible"
+        class="table-section-header p-d-flex p-jc-between"
+      >
         <div class="p-d-flex">
           <div
             class="section-toggler non-selectable p-d-flex p-jc-center p-ai-center"
@@ -36,7 +40,7 @@
                   : 'chevron-up'
               "
             />
-            <div>List ({{ filteredListItems(listIndex).length }})</div>
+            <div>Organisations ({{ filteredListItems(listIndex).length }})</div>
           </div>
           <FilterChip
             v-if="list.organisationTypes.length > 0"
@@ -53,7 +57,6 @@
             title="CCGs"
             :totalCount="list.ccgs.length"
             v-tooltip.bottom="
-              ccgDataLoaded &&
                 list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
             "
           />
@@ -65,15 +68,23 @@
           />
         </div>
         <div class="p-d-flex">
-          <TextButton class="p-mr-3" title="Delete" color="danger" @click="handleDeleteList(listIndex)"/>
+          <TextButton
+            class="p-mr-3"
+            title="Delete"
+            color="danger"
+            @click="handleDeleteList(listIndex)"
+          />
           <TextButton class="p-mr-3" title="Edit" color="primary" />
         </div>
       </div>
+      <!-- List Header  -->
+
+      <!-- List Items  -->
       <div
-        v-show="expandedTableSections.includes(listIndex)"
+        v-show="expandedTableSections.includes(listIndex) | !collapsible"
         class="table-section-body"
       >
-        <div v-if="organisationDataLoaded">
+        <div>
           <div
             class="table-row p-d-flex"
             v-for="(listItem, itemIndex) in filteredListItems(listIndex)"
@@ -91,6 +102,7 @@
           </div>
         </div>
       </div>
+      <!-- / List Items  -->
     </div>
   </div>
 </template>
@@ -104,7 +116,7 @@ import TextButton from "@/components/dataset/TextButton.vue";
 
 export default defineComponent({
   name: "OrganisationTable",
-  props: ["tableheight", "lists"],
+  props: ["tableheight", "lists", "collapsible", "organisationdata", "ccgdata"],
   components: {
     FilterChip,
     TextButton,
@@ -112,42 +124,12 @@ export default defineComponent({
   data() {
     return {
       listData: this.lists,
-      organisationData: [] as any,
-      ccgData: [] as any,
+      organisationData: this.organisationdata,
+      ccgData: this.ccgdata,
       expandedTableSections: [] as any,
-      organisationDataLoaded: false,
-      ccgDataLoaded: false,
     };
   },
-  async created() {
-    this.fetchOrganisationData();
-    this.fetchCCGData();
-  },
   methods: {
-    async fetchOrganisationData(): Promise<void> {
-      await DatasetService.getOrganisations()
-        .then((res) => {
-          this.organisationData = JSON.parse(res).organisationData;
-          this.organisationDataLoaded = true;
-        })
-        .catch((err) => {
-          this.$toast.add(
-            LoggerService.error("Failed to fetch table data", err)
-          );
-        });
-    },
-    async fetchCCGData(): Promise<void> {
-      await DatasetService.getCCGs()
-        .then((res) => {
-          this.ccgData = JSON.parse(res).ccgData;
-          this.ccgDataLoaded = true;
-        })
-        .catch((err) => {
-          this.$toast.add(
-            LoggerService.error("Failed to fetch table data", err)
-          );
-        });
-    },
     toggleTableSection(index: number): void {
       if (this.expandedTableSections.includes(index)) {
         this.expandedTableSections = this.expandedTableSections.filter(function(
@@ -265,6 +247,7 @@ div.table > * {
 }
 
 .table-header,
+.table-section-header,
 .table-row {
   border-bottom: 1px solid #ced4da;
 }
