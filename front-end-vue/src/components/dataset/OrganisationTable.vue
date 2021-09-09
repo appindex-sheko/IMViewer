@@ -219,9 +219,9 @@ export default defineComponent({
       var filteredItems = this.organisationData;
 
       //filter CCGs
-      if (this.lists[listIndex].ccgs.length > 0) {
+      if (this.listData[listIndex].ccgs.length > 0) {
         filteredItems = filteredItems.filter((organisation: any) =>
-          this.lists[listIndex].ccgs.includes(organisation.Commissioner)
+          this.listData[listIndex].ccgs.includes(organisation.Commissioner)
         );
       }
       return filteredItems;

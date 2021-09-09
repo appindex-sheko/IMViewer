@@ -62,6 +62,7 @@
       <!-- Step 2 -->
       <div id="step2" v-show="activePage == 2" class="page">
         <!-- Section: Organisations  -->
+        <FullscreenDialog v-if="showNewListDialog" id="newListDialog" @close="showNewListDialog = false" title="Create New List">  Body </FullscreenDialog> 
         <InputSection>
           <template v-slot:left>
             <InputDescription :description="inputMeta.organisations" />
@@ -93,7 +94,6 @@
             </OverlayPanel>
           </template>
         </InputSection>
-
         <OrganisationTable
           id="organisation-table"
           tableheight="600"
@@ -170,6 +170,7 @@ import InputDescription from "@/components/dataset/InputDescription.vue";
 import InputTextbox from "@/components/dataset/InputTextbox.vue";
 import InputRadioButtons from "@/components/dataset/InputRadioButtons.vue";
 import OrganisationTable from "@/components/dataset/OrganisationTable.vue";
+import FullscreenDialog from "@/components/dataset/FullscreenDialog.vue";
 
 export default defineComponent({
   name: "DatasetWizard",
@@ -181,7 +182,8 @@ export default defineComponent({
     InputDescription,
     InputTextbox,
     InputRadioButtons,
-    OrganisationTable
+    OrganisationTable,
+    FullscreenDialog
   },
   $refs: {
     OverlayPanel: HTMLElement,
@@ -190,6 +192,7 @@ export default defineComponent({
     return {
       activePage: 1,
       totalPageCount: 4,
+      showNewListDialog: false,
       stepperItems: [
         {
           label: "Details",
@@ -285,6 +288,10 @@ export default defineComponent({
     toggleAddOverlay(event: any): void {
       (this.$refs["add-overlay"] as any).toggle(event);
     },
+    handleNewList(): void {
+      (this.$refs["add-overlay"] as any).toggle(event);
+      this.showNewListDialog = true;
+    }
   },
 });
 </script>
