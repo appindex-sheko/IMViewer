@@ -1,15 +1,18 @@
 <template>
   <div class="table" :style="{ height: tableheight + 'px' }">
     <div class="table-header p-d-flex">
-      <div class="table-data name">
-        Name
-      </div>
       <div class="table-data ods">
         ODS
+      </div>
+      <div class="table-data name">
+        Name
       </div>
       <div class="table-data type">
         Type
       </div>
+    </div>
+    <div v-if="lists.length == 0" class="p-d-flex p-jc-center p-mt-5">
+      No organisations have been selected. Click on "Add" to create a list by searching for organisations.
     </div>
 
     <div
@@ -74,14 +77,14 @@
             v-for="(listItem, itemIndex) in filteredListItems(listIndex)"
             :key="itemIndex"
           >
+            <div class="table-data ods">
+              {{listItem.ODSCode}}
+            </div>
             <div class="table-data name">
               {{listItem.Name}}
             </div>
-            <div class="table-data ods">
-              ODS
-            </div>
             <div class="table-data type">
-              Type
+              {{orgTypeCodeToName(listItem.OrganisationType)}}
             </div>
           </div>
         </div>

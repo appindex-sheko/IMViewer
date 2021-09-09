@@ -265,6 +265,12 @@ export default defineComponent({
         ccgs: ["00K"],
         postcodes: ["TS17*", "TS18*"],
         organisationTypes: [4]
+        },
+        {
+        title: "Primary Care Organisations commissioned by NHS NORTH CUMBRIA CCG",
+        ccgs: ["01H"],
+        postcodes: [],
+        organisationTypes: [4]
         }
       ],
     };
