@@ -41,7 +41,7 @@
             title="Organisation Types"
             :totalCount="list.organisationTypes.length"
             v-tooltip.bottom="
-              list.organisationTypes.map((org) => orgTypeCodeToName(org)).join('<br>')
+             list.organisationTypes.map((org) => orgTypeCodeToName(org)).join('<br>')              
             "
             
           />
@@ -50,7 +50,7 @@
             title="CCGs"
             :totalCount="list.ccgs.length"
             v-tooltip.bottom="
-              list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
+              ccgDataLoaded && list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
             "
           />
           <FilterChip
@@ -101,20 +101,20 @@ export default defineComponent({
       organisationData: [] as any,
       ccgData: [] as any,
       expandedTableSections: [] as any,
+      orgDataLoaded: false,
+      ccgDataLoaded: false,
     };
   },
   async created() {
-    console.log("lol");
     this.fetchOrganisationData();
-    this.fetchCCGData();
-    this.filteredListItems(0);
-    
+    this.fetchCCGData();    
   },
   methods: {
     async fetchOrganisationData(): Promise<void> {
       await DatasetService.getOrganisations()
         .then((res) => {
           this.organisationData = JSON.parse(res).organisationData;
+          this.orgDataLoaded = true;
           console.log(this.organisationData);
         })
         .catch((err) => {
@@ -127,6 +127,7 @@ export default defineComponent({
       await DatasetService.getCCGs()
         .then((res) => {
           this.ccgData = JSON.parse(res).ccgData;
+          this.ccgDataLoaded = true;
           console.log(this.ccgData);
         })
         .catch((err) => {
