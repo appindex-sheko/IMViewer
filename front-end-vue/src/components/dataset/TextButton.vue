@@ -1,5 +1,5 @@
 <template>
-  <div class="text-button non-selectable p-d-flex p-jc-center p-ai-center">
+  <div :class="['text-button', 'non-selectable', 'p-d-flex', 'p-jc-center', 'p-ai-center', (color == 'primary' ? 'color-primary': (color == 'warning' ? 'color-warning': (color == 'danger' ? 'color-danger' : '')))]">
     <div>
       {{ title }}
     </div>
@@ -11,7 +11,7 @@ import { ref, defineComponent } from "vue";
 
 export default defineComponent({
   name: "TextButton",
-  props: ["title"],
+  props: ["title", "color"],
 });
 </script>
 
@@ -26,8 +26,18 @@ export default defineComponent({
 div.text-button {
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.color-primary {
   color: #0d89ec;
 }
 
+.color-warning {
+  color: #FBC02D;
+}
+
+.color-danger {
+  color: #D32F2F;
+}
 
 </style>

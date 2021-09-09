@@ -11,12 +11,13 @@
         Type
       </div>
     </div>
-    <div v-if="lists.length == 0" class="p-d-flex p-jc-center p-mt-5">
-      No organisations have been selected. Click on "Add" to create a list by searching for organisations.
+    <div v-if="listData.length == 0" class="p-d-flex p-jc-center p-mt-5">
+      No organisations have been selected. Click on "Add" to create a list by
+      searching for organisations.
     </div>
 
     <div
-      v-for="(list, listIndex) in lists"
+      v-for="(list, listIndex) in listData"
       :key="listIndex"
       class="table-section"
     >
@@ -35,9 +36,7 @@
                   : 'chevron-up'
               "
             />
-            <div>
-              List ({{filteredListItems(listIndex).length}})
-            </div>
+            <div>List ({{ filteredListItems(listIndex).length }})</div>
           </div>
           <FilterChip
             v-if="list.organisationTypes.length > 0"
@@ -65,7 +64,10 @@
             v-tooltip.bottom="list.postcodes.join('<br>')"
           />
         </div>
-        <TextButton class="p-mr-3" title="Edit" />
+        <div class="p-d-flex">
+          <TextButton class="p-mr-3" title="Delete" color="danger" @click="handleDeleteList(listIndex)"/>
+          <TextButton class="p-mr-3" title="Edit" color="primary" />
+        </div>
       </div>
       <div
         v-show="expandedTableSections.includes(listIndex)"
@@ -78,13 +80,13 @@
             :key="itemIndex"
           >
             <div class="table-data ods">
-              {{listItem.ODSCode}}
+              {{ listItem.ODSCode }}
             </div>
             <div class="table-data name">
-              {{listItem.Name}}
+              {{ listItem.Name }}
             </div>
             <div class="table-data type">
-              {{orgTypeCodeToName(listItem.OrganisationType)}}
+              {{ orgTypeCodeToName(listItem.OrganisationType) }}
             </div>
           </div>
         </div>
@@ -109,6 +111,7 @@ export default defineComponent({
   },
   data() {
     return {
+      listData: this.lists,
       organisationData: [] as any,
       ccgData: [] as any,
       expandedTableSections: [] as any,
@@ -155,6 +158,9 @@ export default defineComponent({
       } else {
         this.expandedTableSections = [...this.expandedTableSections, index];
       }
+    },
+    handleDeleteList(listIndex: number): void {
+      this.listData.splice(listIndex, 1);
     },
     orgTypeCodeToName(typeCode: number): string {
       switch (typeCode) {
@@ -209,7 +215,7 @@ export default defineComponent({
     ccgODSCodeToName(ODSCode: string): any {
       return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
     },
-    filteredListItems(listIndex: number) :any {
+    filteredListItems(listIndex: number): any {
       var filteredItems = this.organisationData;
 
       //filter CCGs
@@ -221,8 +227,6 @@ export default defineComponent({
       return filteredItems;
     },
   },
-  
-  
 });
 </script>
 
