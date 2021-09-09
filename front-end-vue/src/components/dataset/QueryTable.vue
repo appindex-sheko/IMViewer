@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import QueryBuilderService from "@/services/QueryBuilderService";
+import DatasetService from "@/services/DatasetService";
 import LoggerService from "@/services/LoggerService";
 
 import Checkbox from "primevue/checkbox";
@@ -89,10 +89,9 @@ export default defineComponent({
   },
   methods: {
     async fetchQueryData(): Promise<void> {
-      await QueryBuilderService.getQueries()
+      await DatasetService.getDatasets()
         .then((res) => {
           this.queryData = JSON.parse(res).queryData;
-          //this.queryData = res.queryData;
         })
         .catch((err) => {
           this.$toast.add(

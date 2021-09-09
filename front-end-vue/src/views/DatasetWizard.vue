@@ -61,7 +61,53 @@
 
       <!-- Step 2 -->
       <div id="step2" v-show="activePage == 2" class="page">
-        Step 2
+        <!-- Section: Organisations  -->
+        <InputSection>
+          <template v-slot:left>
+            <InputDescription :description="inputMeta.organisations" />
+          </template>
+          <template v-slot:right>
+            <div class="p-d-flex p-jc-end">
+             
+              <Button
+              icon="pi pi-trash "
+              class="p-mr-3 p-button-outlined p-button-danger button-medium"
+              type="button"
+              label="Clear All"
+              @click="handleClear"
+            />
+             <Button
+                icon="pi pi-plus"
+                class="button-medium"
+                type="button"
+                label="Add"
+                @click="toggleAddOverlay"
+              />
+            </div>
+            <OverlayPanel id="add-overlay" ref="add-overlay">
+              <div class="p-d-flex p-flex-column">
+                <Button
+                  label="New List"
+                  class="p-button-primary p-button-outlined button-medium p-mx-2 p-mb-2"
+                  @click="handleNewList"
+                />
+                <Button
+                  label="Existing List"
+                  class="p-button-primary p-button-outlined button-medium p-mx-2"
+                  @click="handleExistingList"
+                />
+              </div>
+            </OverlayPanel>
+          </template>
+        </InputSection>
+
+        <OrganisationTable
+          id="organisation-table"
+          tableheight="650"
+          ref="organisationtable"
+        />
+        
+        <!-- /Section: Organisations  -->
       </div>
       <!-- /Step 2-->
 
@@ -73,8 +119,11 @@
             <InputDescription :description="inputMeta.cohortmembers" />
           </template>
           <template v-slot:right>
-            <InputRadioButtons :items="radioButtonItems.cohortMembers" :multiselect="false" />
-             </template>
+            <InputRadioButtons
+              :items="radioButtonItems.cohortMembers"
+              :multiselect="false"
+            />
+          </template>
         </InputSection>
         <!-- /Section: Name  -->
       </div>
@@ -126,6 +175,7 @@ import InputSection from "@/components/dataset/InputSection.vue";
 import InputDescription from "@/components/dataset/InputDescription.vue";
 import InputTextbox from "@/components/dataset/InputTextbox.vue";
 import InputRadioButtons from "@/components/dataset/InputRadioButtons.vue";
+import OrganisationTable from "@/components/dataset/OrganisationTable.vue";
 
 export default defineComponent({
   name: "DatasetWizard",
@@ -137,6 +187,10 @@ export default defineComponent({
     InputDescription,
     InputTextbox,
     InputRadioButtons,
+    OrganisationTable
+  },
+  $refs: {
+    OverlayPanel: HTMLElement,
   },
   data() {
     return {
@@ -183,8 +237,6 @@ export default defineComponent({
             title: "Appointment",
             explanation: "Appointment Explanation",
           },
-          
-          
         ],
       },
       inputMeta: {
@@ -199,6 +251,12 @@ export default defineComponent({
           explanation:
             "Add a detailed summary to describe the your dataset. <br><br> For example: “Patients registered at primary care practices commissioned by Tower Hamlets CCG with a diagnosis of diabetes type 2",
           placeholder: "Enter a Description (250 Character Limit)",
+        },
+        organisations: {
+          title: "Organisations",
+          explanation:
+            "Add the source organisations to the list that hold records for the cohort members of your dataset. <br><br> A dataset can curate data from multiple organisations.",
+          placeholder: "",
         },
         cohortmembers: {
           title: "Cohort Members",
@@ -215,6 +273,9 @@ export default defineComponent({
     },
     handleBack(): void {
       this.activePage -= 1;
+    },
+    toggleAddOverlay(event: any): void {
+      (this.$refs["add-overlay"] as any).toggle(event);
     },
   },
 });

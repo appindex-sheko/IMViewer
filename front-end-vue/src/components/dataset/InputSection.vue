@@ -2,13 +2,13 @@
   <div class="p-grid">
     <div class="column p-col-12 p-md-6">
       <slot name="left">
-        Left Content: Input Description
+      
       </slot>
     </div>
 
     <div class="column p-col-12 p-md-6">
       <slot name="right">
-        Right Content: Input Components
+       
       </slot>
     </div>
 

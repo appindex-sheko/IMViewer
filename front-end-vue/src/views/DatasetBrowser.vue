@@ -135,8 +135,8 @@
           ref="querytable"
           :searchstring="searchInputText"
           :filtertags="filterTags"
-        >
-        </QueryTable>
+        />
+      
 
         <!-- /Content  -->
       </div>
