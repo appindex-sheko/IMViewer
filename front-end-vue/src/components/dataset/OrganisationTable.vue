@@ -57,7 +57,7 @@
             title="CCGs"
             :totalCount="list.ccgs.length"
             v-tooltip.bottom="
-                list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
+                'Test'
             "
           />
           <FilterChip

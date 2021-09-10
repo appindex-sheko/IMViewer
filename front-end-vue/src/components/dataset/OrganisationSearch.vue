@@ -26,12 +26,12 @@
       </template>
       <template v-slot:right>
         <MultiSelect
-          class="w-dynamic"
+          class="w-dynamic multi-large"
           v-model="selectedOrganisationTypes"
           :options="organisationTypes"
-          optionLabel="brand"
+          optionLabel="label"
           :placeholder="inputMeta.organisationType.placeholder"
-          display="chip"
+          
         />
       </template>
     </InputSection>
@@ -52,7 +52,7 @@ import MultiSelect from "primevue/multiselect";
 
 export default defineComponent({
   name: "OrganisationSearch",
-  props: ["prop"],
+  props: ["organisationdata", "ccgdata"],
   components: {
     InputSection,
     InputDescription,
@@ -81,6 +81,30 @@ export default defineComponent({
           placeholder: "Select Organisation Types",
         },
       },
+      organisationTypes: [
+        { value: 0, label: "Other" },
+        { value: 1, label: "WIC Practice" },
+        { value: 2, label: "OOH Practice" },
+        { value: 3, label: "WIC + OOH Practice" },
+        { value: 4, label: "GP Practice" },
+        { value: 8, label: "Public Health Service" },
+        { value: 9, label: "= Community Health Service" },
+        { value: 10, label: "Hospital Service" },
+        { value: 11, label: "Optometry Service" },
+        { value: 12, label: "Urgent & Emergency Care" },
+        { value: 13, label: "Hospice" },
+        { value: 14, label: "Care Home / Nursing Home" },
+        { value: 15, label: "Border Force" },
+        { value: 16, label: "Young Offender Institution" },
+        { value: 17, label: "Secure Training Centre" },
+        { value: 18, label: "Secure Children's Home" },
+        { value: 19, label: "Immigration Removal Centre" },
+        { value: 20, label: "Court" },
+        { value: 21, label: "Police Custody" },
+        { value: 22, label: "Sexual Assault Referral Centre" },
+        { value: 24, label: "Other – Justice Estate" },
+        { value: 25, label: "Prison" },
+      ],
     };
   },
 });
@@ -97,5 +121,22 @@ export default defineComponent({
 .w-dynamic {
   width: 100%;
   max-width: 500px;
+}
+
+/* does bind properly  */
+.p-multiselect-label-container {
+    font-size: 1.25rem !important;
+}
+
+</style>
+
+<style>
+.multi-large .p-multiselect-label {
+padding: 0.625rem 0.625rem !important;
+}
+
+.multi-large .p-multiselect-label-container {
+    font-size: 1.25rem !important;
+    
 }
 </style>

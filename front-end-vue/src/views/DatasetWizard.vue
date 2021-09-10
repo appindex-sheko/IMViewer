@@ -67,7 +67,10 @@
           @close="showNewListDialog = false"
           title="Create New List"
         >
-          <OrganisationSearch />
+          <OrganisationSearch
+            :organisationdata="organisationData"
+            :ccgdata="ccgData"
+          />
         </FullscreenDialog>
         <InputSection>
           <template v-slot:left>
@@ -199,16 +202,7 @@ export default defineComponent({
   $refs: {
     OverlayPanel: HTMLElement,
   },
-  async created() {
-    //not working even though it works on DatasetBrowser
-    
-    // this.$store.commit("updateSelectedEntityType", "DatasetBrowser");
-    // this.$store.commit("updateSideNavHierarchyFocus", {
-    //   name: "Datasets",
-    //   fullName: "Datasets",
-    //   iri: "http://endhealth.info/im#Dataset",
-    // });
-
+  async mounted() {
     this.fetchOrganisationData();
     this.fetchCCGData();
   },
