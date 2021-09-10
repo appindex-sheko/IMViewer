@@ -227,6 +227,7 @@ export default defineComponent({
     };
   },
   created() {
+
     this.$store.commit("updateSelectedEntityType", "DatasetBrowser");
     this.$store.commit("updateSideNavHierarchyFocus", {
           name: "Datasets",
@@ -242,7 +243,8 @@ export default defineComponent({
       (this.$refs["filter-overlay"] as any).toggle(event);
     },
     handleNewDataset(): void {
-      this.$router.push({ name: "DatasetWizard" })
+       this.$router.push({ name: "DatasetWizard" })
+      
     },
     deleteSelected(): void {
       (this.$refs["querytable"] as any).deleteSelected();

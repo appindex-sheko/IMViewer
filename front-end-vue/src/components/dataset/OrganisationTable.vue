@@ -18,7 +18,7 @@
 
     <div
       v-for="(list, listIndex) in listData"
-      :key="listIndex"
+      :key="list.id"
       class="table-section"
     >
       <!-- List Header  -->
@@ -72,7 +72,7 @@
             class="p-mr-3"
             title="Delete"
             color="danger"
-            @click="handleDeleteList(listIndex)"
+            @click="handleDeleteList(list.id)"
           />
           <TextButton class="p-mr-3" title="Edit" color="primary" />
         </div>
@@ -141,8 +141,8 @@ export default defineComponent({
         this.expandedTableSections = [...this.expandedTableSections, index];
       }
     },
-    handleDeleteList(listIndex: number): void {
-      this.listData.splice(listIndex, 1);
+    handleDeleteList(listId: number): void {
+      this.listData = this.listData.filter((list: any) => list.id != listId);
     },
     orgTypeCodeToName(typeCode: number): string {
       switch (typeCode) {

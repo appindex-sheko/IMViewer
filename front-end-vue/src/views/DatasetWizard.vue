@@ -200,13 +200,14 @@ export default defineComponent({
     OverlayPanel: HTMLElement,
   },
   async created() {
-
-    this.$store.commit("updateSelectedEntityType", "DatasetBrowser");
-    this.$store.commit("updateSideNavHierarchyFocus", {
-          name: "Datasets",
-          fullName: "Datasets",
-          iri: "http://endhealth.info/im#Dataset"
-        });
+    //not working even though it works on DatasetBrowser
+    
+    // this.$store.commit("updateSelectedEntityType", "DatasetBrowser");
+    // this.$store.commit("updateSideNavHierarchyFocus", {
+    //   name: "Datasets",
+    //   fullName: "Datasets",
+    //   iri: "http://endhealth.info/im#Dataset",
+    // });
 
     this.fetchOrganisationData();
     this.fetchCCGData();
@@ -291,6 +292,7 @@ export default defineComponent({
       },
       organisationLists: [
         {
+          id: "d058f99e1f074063b0887356baeeb225",
           title:
             "Primary Care Organisations commissioned by NHS HARTLEPOOL AND STOCKTON-ON-TEES CCG in the TS17* and TS18* Postcode",
           ccgs: ["00K"],
@@ -298,6 +300,7 @@ export default defineComponent({
           organisationTypes: [4],
         },
         {
+          id: "94151c672ee64c91ba3e5125b62fc6ba",
           title:
             "Primary Care Organisations commissioned by NHS NORTH CUMBRIA CCG",
           ccgs: ["01H"],

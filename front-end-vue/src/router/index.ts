@@ -142,7 +142,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/datasets",
     name: "Datasets",
     component: Datasets,
-    redirect: { name: "DatasetBrowser" },
     children: [
       {
         path: "browser",

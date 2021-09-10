@@ -165,7 +165,7 @@ export default defineComponent({
           icon: ["fas", "table"],
           name: "Datasets",
           fullName: "Datasets",
-          route: "Datasets",
+          route: "DatasetBrowser",
           iri: "http://endhealth.info/im#Dataset"
         }
         // {

@@ -1,6 +1,9 @@
 <template>
-  <SideNav @hierarchyFocusSelected="focusHierarchy = true" />
-   <router-view />
+
+    <SideNav @hierarchyFocusSelected="focusHierarchy = true" />
+
+    <router-view />
+
 </template>
 
 <script lang="ts">
@@ -8,11 +11,10 @@ import { defineComponent } from "vue";
 import SideNav from "@/components/home/SideNav.vue";
 import SidebarControl from "@/components/home/SidebarControl.vue";
 
-
 export default defineComponent({
   name: "Datasets",
   components: {
-    SideNav
+    SideNav,
   },
 });
 </script>
