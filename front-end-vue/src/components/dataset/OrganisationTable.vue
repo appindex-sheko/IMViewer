@@ -87,8 +87,8 @@
         <div>
           <div
             class="table-row p-d-flex"
-            v-for="(listItem, itemIndex) in filteredListItems(listIndex)"
-            :key="itemIndex"
+            v-for="listItem in filteredListItems(listIndex)"
+            :key="listItem.ODSCode"
           >
             <div class="table-data ods">
               {{ listItem.ODSCode }}
