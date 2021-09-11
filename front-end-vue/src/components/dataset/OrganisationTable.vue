@@ -57,7 +57,7 @@
             title="CCGs"
             :totalCount="list.ccgs.length"
             v-tooltip.bottom="
-                'Test'
+              list.ccgs.map((ccg) => ccgODSCodeToName(ccg)).join('<br>')
             "
           />
           <FilterChip
@@ -195,7 +195,14 @@ export default defineComponent({
       }
     },
     ccgODSCodeToName(ODSCode: string): any {
-      return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
+       console.log(this.listData[0].length);
+       return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
+      // if (this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode)) {
+      //   return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
+      // } else {
+      //   return "None";
+      // }
+     
     },
     filteredListItems(listIndex: number): any {
       var filteredItems = this.organisationData;

@@ -104,6 +104,7 @@
         </InputSection>
         <OrganisationTable
           id="organisation-table"
+          v-if="organisationDataLoaded && ccgDataLoaded"
           tableheight="600"
           :lists="organisationLists"
           :collapsible="true"
@@ -213,8 +214,8 @@ export default defineComponent({
       showNewListDialog: false,
       organisationData: [] as any,
       ccgData: [] as any,
-      organisationDataLoaded: true,
-      ccgDataLoaded: true,
+      organisationDataLoaded: false,
+      ccgDataLoaded: false,
       stepperItems: [
         {
           label: "Details",

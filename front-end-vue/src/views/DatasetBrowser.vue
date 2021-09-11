@@ -226,7 +226,7 @@ export default defineComponent({
       filterTags: null,
     };
   },
-  created() {
+  async mounted() {
     this.$store.commit("updateSelectedEntityType", "DatasetBrowser");
     this.$store.commit("updateSideNavHierarchyFocus", {
           name: "Datasets",
