@@ -303,7 +303,7 @@ export default defineComponent({
   border-bottom: solid 2px #2196f3;
 }
 
-#tab-bar {
+#tab-buttons {
   width: 100%;
   margin-top: 20px;
   padding-bottom: 10px;

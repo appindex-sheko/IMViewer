@@ -84,7 +84,7 @@ export default defineComponent({
   width: 30px;
   height: 30px;
   margin: 0 auto;
-  background-color: #999999;
+  background-color:  #ced4da;
   border-radius: 50%;
   text-align: center;
   line-height: 30px;

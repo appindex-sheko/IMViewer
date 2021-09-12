@@ -261,7 +261,7 @@ div.table::-webkit-scrollbar {
 }
 
 div.table::-webkit-scrollbar-thumb {
-  background-color: #d3d3d3;
+  background-color: #ced4da;
 }
 div.table > * {
   overflow-y: auto;
@@ -279,14 +279,20 @@ div.table > * {
 }
 
 .table-header {
-  padding: 15px 10px;
+  padding: 15px 10px 15px 30px;
 }
 
-.table-row,
+.table-row {
+  padding: 15px 10px 15px 30px;
+  background: #fff;
+}
+
+
 .table-section-header {
   padding: 10px;
   background: #fff;
 }
+
 
 .section-toggler,
 .table-header .table-data.name,
@@ -299,6 +305,7 @@ div.table > * {
   width: 60%;
 }
 .table-data.ods {
+  marin-left: 20px;
   width: 10%;
 }
 .table-data.type {
