@@ -38,7 +38,7 @@
       <!-- /Searchbar -->
 
       <!-- Tabs Header  -->
-      <div id="tab-bar">
+      <div id="tab-buttons">
         <div
           :class="[
             'tab-button',
@@ -155,7 +155,7 @@
 
     <!-- Page: New Query -->
     <div
-      id="new-query-tab"
+      id="new-query-page"
       v-if="activePage == 'new-query'"
       class="page"
     >
@@ -164,7 +164,7 @@
         <div class="p-d-inline"></div>
 
         <div class="title p-d-inline">
-          Alternative Page 2 - Empty 
+          Alternative Page 2 - Empty / Not in use 
         </div>
 
         <Button
@@ -177,9 +177,6 @@
       <!-- /Header -->
     </div>
 
-    <!-- Content  -->
-
-    <!-- /Content  -->
 
     <!-- /Tab: New Query -->
   </main>
@@ -221,7 +218,6 @@ export default defineComponent({
       pageTitle: "New Query",
       tableHeight: 600,
       selectedItems: [],
-      displayNewQuery: false,
       searchInputText: "",
       filterTags: null,
     };

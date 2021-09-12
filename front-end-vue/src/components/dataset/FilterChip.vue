@@ -33,10 +33,15 @@ div.chip {
     padding-right: 10px;
     border-radius: 3px;
     height: 40px;
+    border: 1px solid transparent;
 }
 
 div.chip:hover {
-    background-color: #eeeeee;
+    /* background-color: #eeeeee;*/  /* light beige */
+     border: 1px solid #ced4da;
+    background-color: #f8f9fb;
 }
+
+
 
 </style>

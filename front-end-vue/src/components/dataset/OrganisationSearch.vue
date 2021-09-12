@@ -1,5 +1,5 @@
 <template>
-  <div class="p-pt-3">
+  <div class="main p-pt-3">
     <!-- Section: ODS Code  -->
 
     <InputSection>
@@ -116,6 +116,13 @@ export default defineComponent({
   -moz-user-select: none; /* Firefox all */
   -ms-user-select: none; /* IE 10+ */
   user-select: none; /* Likely future */
+}
+
+div.main {
+  position: relative;
+  max-width: 1160px;
+  /* padding: 0 10px; */
+  margin: 0 auto;
 }
 
 .w-dynamic {

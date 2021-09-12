@@ -3,7 +3,7 @@
   <ConfirmDialog></ConfirmDialog>
   <!-- /General UI -->
 
-  <!-- Main Content Wrapper -->
+  <!-- Content Wrapper -->
   <div id="main-container">
     <!-- Header -->
     <header class="p-d-flex">
@@ -61,6 +61,8 @@
       <!-- Step 2 -->
       <div id="step2" v-show="activePage == 2" class="page">
         <!-- Section: Organisations  -->
+
+        <!-- Full screen Search Dialog /  Create new List of Organisations  -->
         <FullscreenDialog
           v-if="showNewListDialog"
           id="newListDialog"
@@ -72,6 +74,9 @@
             :ccgdata="ccgData"
           />
         </FullscreenDialog>
+           <!--  Full screen Search Dialog / Create new List of Organisations  -->
+
+
         <InputSection>
           <template v-slot:left>
             <InputDescription :description="inputMeta.organisations" />
@@ -102,6 +107,8 @@
             </OverlayPanel>
           </template>
         </InputSection>
+
+        <!-- Organisation Lists included in Dataset defintion  -->
         <OrganisationTable
           id="organisation-table"
           v-if="organisationDataLoaded && ccgDataLoaded"
@@ -111,6 +118,7 @@
           :organisationdata="organisationData"
           :ccgdata="ccgData"
         />
+           <!-- Organisation Lists included in Dataset defintion  -->
 
         <!-- /Section: Organisations  -->
       </div>
@@ -118,7 +126,7 @@
 
       <!-- Step 3 -->
       <div id="step3" v-show="activePage == 3" class="page">
-        <!-- Section: Name  -->
+        <!-- Section: Cohort Members  -->
         <InputSection>
           <template v-slot:left>
             <InputDescription :description="inputMeta.cohortmembers" />
@@ -130,7 +138,7 @@
             />
           </template>
         </InputSection>
-        <!-- /Section: Name  -->
+        <!-- /Section: Cohort Members   -->
       </div>
       <!-- /Step 3-->
 
@@ -167,7 +175,7 @@
       <!-- Footer  -->
     </main>
   </div>
-  <!-- /Main Content Wrapper -->
+  <!-- /Content Wrapper -->
 </template>
 
 <script lang="ts">
@@ -234,28 +242,28 @@ export default defineComponent({
         cohortMembers: [
           {
             id: 0,
-            title: "Patient / Client / Service User",
-            explanation: "Patient Explanation",
+            title: "Patient / Service User",
+            explanation: "<b>Definition</b><br>The records of a person who uses a health or care service at one single organisation. <br><br> <b>Example</b><br> A person may have been registered and/or previously received care at an organisation that has documented that interaction as health data.",
           },
           {
             id: 1,
             title: "Person /  Individual",
-            explanation: "Person Explanation",
+            explanation: "<b>Definition</b><br>Every record of a person at every organisation where they have been a patient. <br><br> <b>Example</b><br> One person may be linked to multiple patient demographics in different health records.",
           },
           {
             id: 2,
             title: "Household",
-            explanation: "Household Explanation",
+            explanation: "<b>Definition</b><br>A collection of individuals (persons) who are the usual occupants of one single place of residence. <br><br><b>Example</b><br>A household may contain zero or more people (persons).",
           },
           {
             id: 3,
             title: "Organisation",
-            explanation: "Organisation Explanation",
+            explanation: "<b>Definition</b><br>The records of a legal entity, service or group  with a common purpose (such as providing care). <br><br> <b>Example</b><br> • A GP practice <br> • A Hospital ",
           },
           {
             id: 4,
             title: "Appointment",
-            explanation: "Appointment Explanation",
+            explanation: "<b>Definition</b><br>The records of a consultation that takes places on premises.",
           },
         ],
       },
@@ -263,25 +271,25 @@ export default defineComponent({
         name: {
           title: "Name",
           explanation:
-            "Label your dataset with a short name that is memorable and helps you recognise it later. <br><br> For example: <br> • QOF BP002 2021<br>• ABG Audit 2019",
+            "<b>Purpose</b><br>Label your dataset with a short name that is memorable and helps you recognise it later. <br><br> <b>Example</b><br> • QOF BP002 2021 <br>• ABG Audit 2019",
           placeholder: "Enter a Name",
         },
         description: {
           title: "Description",
           explanation:
-            "Add a detailed summary to describe the your dataset. <br><br> For example: “Patients registered at primary care practices commissioned by Tower Hamlets CCG with a diagnosis of diabetes type 2",
+            "<b>Purpose</b><br>Add a detailed summary to describe the your dataset. <br><br> <b>Example</b><br> 'Patients registered at primary care practices commissioned by Tower Hamlets CCG with a diagnosis of diabetes type 2' ",
           placeholder: "Enter a Description",
         },
         organisations: {
           title: "Organisations",
           explanation:
-            "Add the source organisations to the list that hold records for the cohort members of your dataset. <br><br> A dataset can curate data from multiple organisations.",
+            "<b>Purpose:</b><br>Create a list of organisations that publish the records of the cohort members of your dataset. <br><br> <b>Example:</b><br> A dataset can curate data from a list of organisations where records patients are stored.",
           placeholder: "",
         },
         cohortmembers: {
           title: "Cohort Members",
           explanation:
-            "A cohort member is the main component of the health record that is related to all the other data in your dataset. <br><br> Tip: If you are looking for all health records associated with an individual regardless of the organisation that holds the record, choose Person instead of Patient.",
+            "<b>Definition</b><br>A cohort member is the main component of the health record that is related to all the other data in your dataset. <br><br><b>Tip</b><br> If you are looking for all health records associated with an individual at every organisation that publishes their data, choose Person instead of Patient.",
           placeholder: "",
         },
       },

@@ -26,7 +26,16 @@ export default defineComponent({
 div.text-button {
   padding-left: 10px;
   padding-right: 10px;
+   border: 1px solid transparent;
+   border-radius: 3px;
+  /* background-color: #edf7ff; */
 }
+
+div.color-primary:hover {
+  border: 1px solid #0d89ec;
+  background-color: #edf7ff;
+}
+
 
 .color-primary {
   color: #0d89ec;
@@ -36,8 +45,19 @@ div.text-button {
   color: #FBC02D;
 }
 
+div.color-warning:hover {
+  border: 1px solid #FBC02D;
+  background-color: #FFFDF8;
+}
+
+
 .color-danger {
   color: #D32F2F;
+}
+
+div.color-danger:hover {
+  border: 1px solid #D32F2F;
+  background-color: #FDF7F7;
 }
 
 </style>

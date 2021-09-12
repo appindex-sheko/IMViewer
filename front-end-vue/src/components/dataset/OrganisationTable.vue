@@ -1,6 +1,6 @@
 <template>
   <div class="table" :style="{ height: tableheight + 'px' }">
-    <div class="table-header p-d-flex">
+    <!-- <div class="table-header p-d-flex">
       <div class="table-data ods">
         ODS
       </div>
@@ -10,7 +10,7 @@
       <div class="table-data type">
         Type
       </div>
-    </div>
+    </div> -->
     <div v-if="listData.length == 0" class="p-d-flex p-jc-center p-mt-5">
       No organisations have been selected. Click on "Add" to create a list by
       searching for organisations.
@@ -20,6 +20,7 @@
       v-for="(list, listIndex) in listData"
       :key="list.id"
       class="table-section"
+     
     >
       <!-- List Header  -->
       <div
@@ -35,7 +36,7 @@
             <font-awesome-icon
               style="margin-right: 10px"
               :icon="
-                expandedTableSections.includes(listIndex)
+                expandedLists.includes(listIndex)
                   ? 'chevron-down'
                   : 'chevron-up'
               "
@@ -69,22 +70,40 @@
         </div>
         <div class="p-d-flex">
           <TextButton
+         
             class="p-mr-3"
             title="Delete"
             color="danger"
             @click="handleDeleteList(list.id)"
+           
           />
-          <TextButton class="p-mr-3" title="Edit" color="primary" />
+          <TextButton
+           
+            class="p-mr-3"
+            title="Edit"
+            color="primary"
+          />
         </div>
       </div>
       <!-- List Header  -->
 
       <!-- List Items  -->
       <div
-        v-show="expandedTableSections.includes(listIndex) | !collapsible"
+        v-show="expandedLists.includes(listIndex) | !collapsible"
         class="table-section-body"
       >
         <div>
+          <div class="table-header p-d-flex">
+            <div class="table-data ods">
+              ODS
+            </div>
+            <div class="table-data name">
+              Name
+            </div>
+            <div class="table-data type">
+              Type
+            </div>
+          </div>
           <div
             class="table-row p-d-flex"
             v-for="listItem in filteredListItems(listIndex)"
@@ -124,21 +143,21 @@ export default defineComponent({
   data() {
     return {
       listData: this.lists,
+      expandedLists: [] as any,  
       organisationData: this.organisationdata,
       ccgData: this.ccgdata,
-      expandedTableSections: [] as any,
     };
   },
   methods: {
     toggleTableSection(index: number): void {
-      if (this.expandedTableSections.includes(index)) {
-        this.expandedTableSections = this.expandedTableSections.filter(function(
+      if (this.expandedLists.includes(index)) {
+        this.expandedLists = this.expandedLists.filter(function(
           value: any
         ) {
           return value !== index;
         });
       } else {
-        this.expandedTableSections = [...this.expandedTableSections, index];
+        this.expandedLists = [...this.expandedLists, index];
       }
     },
     handleDeleteList(listId: number): void {
@@ -195,14 +214,13 @@ export default defineComponent({
       }
     },
     ccgODSCodeToName(ODSCode: string): any {
-       console.log(this.listData[0].length);
-       return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
+      console.log(this.listData[0].length);
+      return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
       // if (this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode)) {
       //   return this.ccgData.find((ccg: any) => ccg.ODSCode == ODSCode).Name;
       // } else {
       //   return "None";
       // }
-     
     },
     filteredListItems(listIndex: number): any {
       var filteredItems = this.organisationData;
@@ -250,7 +268,8 @@ div.table > * {
 }
 
 .table-header {
-  background-color: #f3f3f3;
+  /* background-color: #f3f3f3; */
+  /* background-color: #edf7ff; */
 }
 
 .table-header,
@@ -289,10 +308,13 @@ div.table > * {
 .section-toggler {
   padding: 5px 20px;
   border-radius: 3px;
+  border: 1px solid transparent;
 }
 
 .section-toggler:hover {
-  background-color: #f3f3f3;
+  /* background-color: #f3f3f3; */ /* light beige */
+  border: 1px solid #0d89ec;
+  background-color: #edf7ff;
 }
 
 /* .table-section-header:hover {
