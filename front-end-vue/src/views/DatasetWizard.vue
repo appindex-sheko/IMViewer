@@ -112,7 +112,8 @@
         <OrganisationTable
           id="organisation-table"
           v-if="organisationDataLoaded && ccgDataLoaded"
-          tableheight="600"
+          maxtableheight="600"
+          class="p-mb-5"
           :lists="organisationLists"
           :collapsible="true"
           :organisationdata="organisationData"
@@ -129,11 +130,11 @@
         <!-- Section: Cohort Members  -->
         <InputSection>
           <template v-slot:left>
-            <InputDescription :description="inputMeta.cohortmembers" />
+            <InputDescription :description="inputMeta.mainEntity" />
           </template>
           <template v-slot:right>
             <InputRadioButtons
-              :items="radioButtonItems.cohortMembers"
+              :items="radioButtonItems.mainEntity"
               :multiselect="false"
             />
           </template>
@@ -239,11 +240,11 @@ export default defineComponent({
         },
       ],
       radioButtonItems: {
-        cohortMembers: [
+        mainEntity: [
           {
             id: 0,
             title: "Patient / Service User",
-            explanation: "<b>Definition</b><br>The records of a person who uses a health or care service at one single organisation. <br><br> <b>Example</b><br> A person may have been registered and/or previously received care at an organisation that has documented that interaction as health data.",
+            explanation: "<b>Definition</b><br>The records of a person who uses a health or care service at one distinct organisation. <br><br> <b>Example</b><br> A person may have been registered and/or previously received care at an organisation that has documented that interaction in their health record.",
           },
           {
             id: 1,
@@ -277,19 +278,19 @@ export default defineComponent({
         description: {
           title: "Description",
           explanation:
-            "<b>Purpose</b><br>Add a detailed summary to describe the your dataset. <br><br> <b>Example</b><br> 'Patients registered at primary care practices commissioned by Tower Hamlets CCG with a diagnosis of diabetes type 2' ",
+            "<b>Purpose</b><br>Add a detailed summary that describes your dataset. <br><br> <b>Example</b><br> 'Patients registered at primary care practices commissioned by Tower Hamlets CCG with a diagnosis of diabetes type 2' ",
           placeholder: "Enter a Description",
         },
         organisations: {
           title: "Organisations",
           explanation:
-            "<b>Purpose:</b><br>Create a list of organisations that publish the records of the cohort members of your dataset. <br><br> <b>Example:</b><br> A dataset can curate data from a list of organisations where records patients are stored.",
+            "<b>Purpose</b><br>Create a list of organisations that host/publish their health records as sources of data for your dataset. <br><br> <b>Example</b><br> A dataset can extract data from multiple list of multiple organisations where health records are stored.",
           placeholder: "",
         },
-        cohortmembers: {
-          title: "Cohort Members",
+        mainEntity: {
+          title: "Main Entity",
           explanation:
-            "<b>Definition</b><br>A cohort member is the main component of the health record that is related to all the other data in your dataset. <br><br><b>Tip</b><br> If you are looking for all health records associated with an individual at every organisation that publishes their data, choose Person instead of Patient.",
+            "<b>Definition</b><br>The main entity is the is the main component of the health record that is directly related to all the other data in your dataset. <br> Think of this like your 'main table' that is linked to all the other tables in your dataset. <br><br><b>Tip</b><br> If you are looking for all health records associated with an individual at every organisation that publishes their data, choose Person instead of Patient.",
           placeholder: "",
         },
       },

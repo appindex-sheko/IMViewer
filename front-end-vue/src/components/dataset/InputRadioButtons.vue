@@ -167,7 +167,7 @@ ul {
 }
 
 .radio-button__label:hover:before {
-  border: 1px solid #0d89ec !important; /*purple #590f85 */
+  border: 2px solid #0d89ec !important; /*purple #590f85 */
 }
 
 .radio-button__label:hover {

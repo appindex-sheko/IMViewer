@@ -71,13 +71,13 @@ export default defineComponent({
         odsCode: {
           title: "ODS Code",
           explanation:
-            "Filter organisations by ODS Code. Use * for wildcard. <br><br> For Example: <br> 'A8*' matches any ODS code starting with 'A8' ",
-          placeholder: "Code, use * for wildcard",
+            "<b>Purpose</b><br> Filter organisations by ODS Code. Use * as wildcard. <br><br> <b>Example</b><br> 'A8*' matches any ODS code starting with 'A8' ",
+          placeholder: "Code, use * as wildcard",
         },
         organisationType: {
           title: "Organisation Type",
           explanation:
-            "Filter organisations by Type. <br><br> For example: <br> General Practices or Hospital Services",
+            "<b>Purpose</b><br> Filter organisations by Type. <br><br> <b>Example</b><br>  •  General Practices <br> • Hospital Services",
           placeholder: "Select Organisation Types",
         },
       },
@@ -88,7 +88,7 @@ export default defineComponent({
         { value: 3, label: "WIC + OOH Practice" },
         { value: 4, label: "GP Practice" },
         { value: 8, label: "Public Health Service" },
-        { value: 9, label: "= Community Health Service" },
+        { value: 9, label: "Community Health Service" },
         { value: 10, label: "Hospital Service" },
         { value: 11, label: "Optometry Service" },
         { value: 12, label: "Urgent & Emergency Care" },

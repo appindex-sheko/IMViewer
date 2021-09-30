@@ -1,5 +1,5 @@
 <template>
-  <div class="table" :style="{ height: tableheight + 'px' }">
+  <div class="table" :style="{ maxHeight: maxtableheight + 'px' }">
     <!-- <div class="table-header p-d-flex">
       <div class="table-data ods">
         ODS
@@ -11,7 +11,7 @@
         Type
       </div>
     </div> -->
-    <div v-if="listData.length == 0" class="p-d-flex p-jc-center p-mt-5">
+    <div v-if="listData.length == 0" class="p-d-flex p-jc-center p-py-5">
       No organisations have been selected. Click on "Add" to create a list by
       searching for organisations.
     </div>
@@ -135,7 +135,7 @@ import TextButton from "@/components/dataset/TextButton.vue";
 
 export default defineComponent({
   name: "OrganisationTable",
-  props: ["tableheight", "lists", "collapsible", "organisationdata", "ccgdata"],
+  props: ["tableheight", "maxtableheight", "lists", "collapsible", "organisationdata", "ccgdata"],
   components: {
     FilterChip,
     TextButton,
@@ -248,8 +248,12 @@ export default defineComponent({
 div.table {
   overflow-y: auto;
   border: 1px solid #ced4da;
-  border-radius: 5px;
   background-color: #fff;
+   border-radius: 5px;
+  /* border-top: 1px solid #ced4da;
+  border-bottom: 1px solid #ced4da; */
+ 
+  
 }
 
 div.table::v-deep * {

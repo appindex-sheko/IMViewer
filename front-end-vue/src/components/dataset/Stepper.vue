@@ -68,13 +68,13 @@ export default defineComponent({
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.stepper-horizontal .step:hover .step-circle{
-  background-color: #696868; /* Dark brown #757575;*/
+/* .stepper-horizontal .step:hover .step-circle{
+  background-color: #696868; 
 }
 
 .stepper-horizontal .step:hover .step-title {
      color: #696868;
-}
+} */
 
 .stepper-horizontal .step:first-child .step-bar-left,
 .stepper-horizontal .step:last-child .step-bar-right {
