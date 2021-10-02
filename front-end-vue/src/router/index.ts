@@ -6,6 +6,7 @@ import Workflow from "../views/Workflow.vue";
 import UPRN from "../views/Uprn.vue";
 import User from "../views/User.vue";
 import Editor from "../views/Editor.vue";
+import Search from "../views/Search.vue";
 import Datasets from "../views/Datasets.vue";
 import DatasetBrowser from "../views/DatasetBrowser.vue";
 import DatasetWizard from "../views/DatasetWizard.vue";
@@ -154,6 +155,11 @@ const routes: Array<RouteRecordRaw> = [
         component: DatasetWizard,
       }
     ]
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: Search,
   },
   // {
   //   path: "/dataset",

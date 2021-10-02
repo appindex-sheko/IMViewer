@@ -167,6 +167,13 @@ export default defineComponent({
           fullName: "Datasets",
           route: "DatasetBrowser",
           iri: "http://endhealth.info/im#Dataset"
+        },
+        {
+          icon: ["fas", "search"],
+          name: "Search",
+          fullName: "Search",
+          route: "Search",
+          iri: "http://endhealth.info/im#Search"
         }
         // {
         //   icon: ["fas", "tasks"],
@@ -225,7 +232,8 @@ export default defineComponent({
         item.name === "Ontology" ||
         item.name === "Sets" ||
         item.name === "Queries" ||
-        item.name === "Datasets"
+        item.name === "Datasets" ||
+        item.name === "Search"
       ) {
         this.$store.commit("updateSideNavHierarchyFocus", {
           name: item.name,
