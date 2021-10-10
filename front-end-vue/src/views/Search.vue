@@ -6,23 +6,62 @@
   <!-- Content Wrapper -->
   <main id="main-container" class="">
     <!-- Page: Home -->
-    <div id="new-query-page" v-if="activePageName == 'Home'" class="page">
-      Home
-    </div>
+    <div
+      id="page-home"
+      v-if="activePageName == 'Home'"
+      class="page flex flex-col items-center justify-center h-screen"
+    >
+      <!-- Brand  -->
+      <div
+        id="brand"
+        class="flex items-center justify-center mb-14 text-gray-900 text-5xl font-medium"
+      >
+        Search
+      </div>
+      <!-- /Brand  -->
 
-    <!-- /Tab: Home -->
+      <!-- Searchbox  -->
+      <div id="searchbox-main" class="w-full max-w-3xl flex">
+        <SearchboxHome class="w-full" />
+        <button
+          id="btn-voice"
+          class="transition duration-200 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+        >
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="p-d-inline"
+              fill="none"
+              view-box="0 0 24 24"
+              stroke="currentColor"
+              style="width: 24px; height: 24px; margin-right: 5px"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <!-- /Searchbox  -->
+
+      <!-- Examples  -->
+      <div id="examples" class="mx-auto max-w-3xl my-7 px-4 text-gray-900">
+        <b>Heart rate</b> and <b>blood glucose</b> for patients with
+        <b>diabetes</b>
+      </div>
+      <!-- /Examples  -->
+    </div>
+    <!-- /Page: Home -->
 
     <!-- Page: Results -->
     <div id="home-page" v-if="activePageName == 'Results'" class="page">
       <!-- Searchbar Top -->
-      <div id="search-bar-top">
-        <InputText
-          id="search-bar-input"
-          class="shadow-md"
-          type="text"
-          placeholder="Search"
-          v-model="searchInputText"
-        />
+      <div id="searchox-top">
+        <SearchboxHome ref="searchbox-home" />
       </div>
       <!-- /Searchbar Top -->
 
@@ -65,33 +104,32 @@
       </div>
       <!-- /Tab Buttons -->
 
-
       <!-- Tab: Search -->
-      <div  v-if="activeTabId == 1" class="content-tab">
+      <div v-if="activeTabId == 1" class="content-tab">
         Search
       </div>
       <!-- /Tab: Search  -->
 
       <!-- Tab: Data  -->
-      <div  v-if="activeTabId == 2" class="content-tab">
+      <div v-if="activeTabId == 2" class="content-tab">
         Data
       </div>
       <!-- /Tab: Data  -->
 
       <!-- Tab: Explore  -->
-      <div  v-if="activeTabId == 3" class="content-tab">
+      <div v-if="activeTabId == 3" class="content-tab">
         Explore
       </div>
       <!-- /Tab: Explore  -->
 
       <!-- Tab: Organisations  -->
-      <div  v-if="activeTabId == 4" class="content-tab">
+      <div v-if="activeTabId == 4" class="content-tab">
         Organisations
       </div>
       <!-- /Tab: Organisations  -->
 
       <!-- Tab: Dictionary  -->
-      <div  v-if="activeTabId == 5" class="content-tab">
+      <div v-if="activeTabId == 5" class="content-tab">
         Dictionary
       </div>
       <!-- /Tab: Dictionary  -->
@@ -101,7 +139,6 @@
         Resources
       </div>
       <!-- /Tab: Resources  -->
-      
     </div>
     <!-- /Page: Results-->
   </main>
@@ -118,16 +155,18 @@ import Tooltip from "primevue/tooltip";
 import Chips from "primevue/chips";
 import MegaMenu from "primevue/megamenu";
 
-import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Dialog from "primevue/dialog";
 import QueryTable from "@/components/dataset/QueryTable.vue";
+
+import SearchboxHome from "@/components/search/SearchboxHome.vue";
 
 export default defineComponent({
   name: "Search",
   components: {
     ConfirmDialog,
-    InputText,
+
+    SearchboxHome,
   },
   $refs: {
     OverlayPanel: HTMLElement,
@@ -229,17 +268,13 @@ export default defineComponent({
 
 #main-container {
   /* margin: 0.5rem; */
-  padding: 2rem;
+  padding: 1rem 0;
   /* height: calc(100vh - 1rem); */
   height: 100vh;
   width: 100%;
   overflow-y: auto;
   background-color: #ffffff; /* Grey f8f9fb*/
   /* border: 1px solid #dde1e2; */
-}
-
-#main-container::v-deep * {
-  font-size: 14px;
 }
 
 .page {
@@ -277,9 +312,9 @@ export default defineComponent({
 #tab-buttons {
   width: 100%;
   margin-top: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 6px;
   text-align: center;
-  border-bottom: solid 1px #dde1e2;
+  border-bottom: solid 2px #dde1e2;
 }
 
 #query-table {
