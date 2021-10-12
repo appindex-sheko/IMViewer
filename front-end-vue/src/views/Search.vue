@@ -67,7 +67,7 @@
       class="page"
     >
       <!-- Searchbox  -->
-      <div id="searchbox-top" class="mx-auto max-w-3xl flex mb-4">
+      <div id="searchbox-top" class="mx-auto w-full max-w-4xl flex mb-4">
         <Searchbox class="w-full" v-model="searchString"/>
         <button
           class="transition duration-200 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
@@ -95,14 +95,14 @@
 
       <!-- Tab Buttons  -->
       <div id="tab-buttons">
-        <HorizontalNavbar :items="tabs" />
+        <HorizontalNavbar v-model="activeTabIndex" :items="tabs" />
       </div>
       <!-- /Tab Buttons -->
 
       <!-- Tabs -->
       <div class="">
         <!-- Tab: Search -->
-        <div v-if="activeTabIndex == 1" class="content-tab flex pt-5">
+        <div v-if="activeTabIndex == 0" class="content-tab flex pt-5">
           <div class="w-full max-w-md">Filters Expanded</div>
           <div class="w-full max-w-4xl mx-auto">
             <!-- <div>Filter and sort</div> -->
@@ -113,31 +113,31 @@
         <!-- /Tab: Search  -->
 
         <!-- Tab: Data  -->
-        <div v-if="activeTabIndex == 2" class="content-tab">
+        <div v-if="activeTabIndex == 1" class="content-tab">
           Data
         </div>
         <!-- /Tab: Data  -->
 
         <!-- Tab: Explore  -->
-        <div v-if="activeTabIndex == 3" class="content-tab">
+        <div v-if="activeTabIndex == 2" class="content-tab">
           Explore
         </div>
         <!-- /Tab: Explore  -->
 
         <!-- Tab: Organisations  -->
-        <div v-if="activeTabIndex == 4" class="content-tab">
+        <div v-if="activeTabIndex == 3" class="content-tab">
           Organisations
         </div>
         <!-- /Tab: Organisations  -->
 
         <!-- Tab: Dictionary  -->
-        <div v-if="activeTabIndex == 5" class="content-tab">
+        <div v-if="activeTabIndex == 4" class="content-tab">
           Dictionary
         </div>
         <!-- /Tab: Dictionary  -->
 
         <!-- Tab: Resources  -->
-        <div v-if="activeTabIndex == 6" class="content-tab">
+        <div v-if="activeTabIndex == 5" class="content-tab">
           Resources
         </div>
         <!-- /Tab: Resources  -->
@@ -180,7 +180,7 @@ export default defineComponent({
     return {
       searchString: "",
       activePageName: "Home", //Home //SearchResults
-      activeTabIndex: 1,
+      activeTabIndex: 0,
       tabs: [
         {
           index: 0,

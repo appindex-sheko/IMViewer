@@ -6,9 +6,9 @@
         :key="item.index"
         :class="[
           'tab-button non-selectable inline-flex flex-row items-center justify-center transition duration-600 ease-in-out text-gray-600 hover:text-blue-500 ',
-          { active: activeItemIndex == item.index },
+          { active: modelValue == item.index },
         ]"
-        @click="activeItemIndex = item.index"
+        @click="$emit('update:modelValue', item.index)"
       >
         <!-- Icon -->
         <div class="inline-flex mr-2">
@@ -31,7 +31,8 @@ import TailwindIcon from "@/components/search/TailwindIcon.vue";
 
 export default defineComponent({
   name: "HorizontalNavbar",
-  props: ["items"],
+  props: ["items", "modelValue"],
+  emits: ["update:modelValue"],
   components: {
     TailwindIcon,
   },
