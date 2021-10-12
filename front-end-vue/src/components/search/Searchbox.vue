@@ -1,6 +1,6 @@
 <template>
-  <template v-if="(modelValue == '') & (autoSuggest.length == 0)">
-    <div>
+  <template v-if="modelValue == '' || autoSuggest.length == 0">
+    <div class="w-full">
       <input
         type="text"
         class="searchbox transition duration-500 ease-in-out appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-medium rounded-md hover:shadow-md focus:outline-none focus:z-10 focus:shadow-md focus:border-gray-400 "
@@ -11,21 +11,14 @@
     </div>
   </template>
   <template v-else>
-    <div class="autosuggest flex flex-col">
-      <div>
-        <input
-          type="text"
-          class="searchbox transition duration-500 ease-in-out appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-medium rounded-md hover:shadow-md focus:outline-none focus:z-10 focus:shadow-md focus:border-gray-400 "
-          placeholder="Type to Search"
-          :value="modelValue"
-          @input="$emit('update:modelValue', $event.target.value)"
-        />
-      </div>
-      <div class="">
-        <!-- <div v-for="item in autoSuggest" :key="item.id">
-          {{ item.searchString }}
-        </div> -->
-      </div>
+    <div>
+      <input
+        type="text"
+        class="searchbox transition duration-500 ease-in-out appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-medium rounded-md hover:shadow-md focus:outline-none focus:z-10 focus:shadow-md focus:border-gray-400 "
+        placeholder="Type to Search"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+      />
     </div>
   </template>
 </template>

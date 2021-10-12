@@ -22,7 +22,7 @@
 
       <!-- Searchbox  -->
       <div id="searchbox-main" class="mx-auto w-full max-w-3xl flex px-5-sm">
-        <Searchbox class="w-full" v-model="searchString"/>
+        <Searchbox v-model="searchString"/>
         <button
           class="transition duration-400 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
           @click="activePageName = 'Search'"
@@ -347,7 +347,7 @@ export default defineComponent({
             "https://im.endeavourhealth.net/#/search?q=comborbidities+associated+with+diabetes",
           title: "Browse Organisations",
           description:
-            "View lists of organisations on a map and explore their directory",
+            "View organisations on a map and add them to lists to source data",
           module: "data",
           icon: "tables",
         },
