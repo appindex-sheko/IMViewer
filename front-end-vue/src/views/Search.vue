@@ -103,12 +103,12 @@
       <div class="">
         <!-- Tab: Search -->
         <div v-if="activeTabIndex == 0" class="content-tab flex pt-5">
-          <div class="w-full max-w-md">Filters Expanded</div>
+          <!-- <div class="w-full max-w-md">Filters Expanded</div> -->
           <div class="w-full max-w-4xl mx-auto">
             <!-- <div>Filter and sort</div> -->
             <SearchResults class="w-full" :results="exampleResults" :value="searchString" />
           </div>
-          <div class="w-full max-w-md">See also, more info on hovered item</div>
+          <!-- <div class="w-full max-w-md">See also, more info on hovered item</div> -->
         </div>
         <!-- /Tab: Search  -->
 

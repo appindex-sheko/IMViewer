@@ -12,7 +12,12 @@
       >
         <!-- Icon -->
         <div class="inline-flex mr-2">
-          <TailwindIcon  strokewidth="2" width="24" height="24"  :icon="item.icon" />
+          <TailwindIcon
+            strokewidth="2"
+            width="24"
+            height="24"
+            :icon="item.icon"
+          />
         </div>
 
         <!-- / Icon -->
@@ -71,5 +76,4 @@ export default defineComponent({
   color: #3b82f6;
   border-bottom: solid 3px #3b82f6;
 }
-
 </style>
