@@ -12,11 +12,13 @@
       class="page flex flex-col items-center justify-center"
     >
       <!-- Brand  -->
+     
       <div
         id="brand"
-        class="non-selectable flex items-center justify-center mb-14 text-gray-900 text-5xl font-medium"
+        class="non-selectable flex items-center justify-center mb-10 text-gray-700 text-5xl font-medium"
       >
-        Search
+       <img class="im-logo mr-5" src="/img/Logo-object-empty.27c03592.png" alt="IM logo" data-v-098ea5e8="">
+       
       </div>
       <!-- /Brand  -->
 
