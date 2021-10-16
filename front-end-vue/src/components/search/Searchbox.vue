@@ -1,5 +1,5 @@
 <template>
-  <template v-if="(modelValue == '') | (autoSuggest.length == 0)">
+  <template v-if="modelValue == '' && autocompleteHits.length == 0">
     <div class="w-full">
       <input
         type="text"
@@ -29,19 +29,17 @@
 
       <!-- Autocomplete  -->
       <div
+       v-if="autocompleteData"
         class="autocomplete w-full rounded-t-none rounded-b-md  border border-gray-300 hover:border-gray-300 non-selectable shadow-md "
       >
         <div
-          class="transition duration-500 ease-in-out appearance-none relative w-full px-4 py-3 text-gray-400 font-medium hover:text-gray-900 focus:z-10"
-        >
-          {{ modelValue }}
-        </div>
-        <div
-          v-for="item in autoSuggest"
+          v-for="item in autocompleteData.hits"
           :key="item.id"
-          class="transition duration-500 ease-in-out appearance-none relative w-full px-4 py-3 text-gray-400 font-medium hover:text-gray-900 focus:z-10"
-        >
-          {{ item.searchString }}
+          class="transition duration-500 ease-in-out appearance-none relative w-full px-4 py-3 text-gray-400 font-medium hover:text-gray-900 hover:bg-gray-100 focus:z-10"
+          v-html="item.searchString"
+        >      
+        
+         
         </div>
       </div>
       <!-- / Autocomplete -->
@@ -55,11 +53,11 @@ import { ref, onMounted, defineComponent } from "vue";
 
 export default defineComponent({
   name: "Searchbox",
-  props: ["modelValue"],
+  props: ["modelValue", "autocompleteData"],
   emits: ["update:modelValue"],
   data() {
     return {
-      autoSuggest: [
+      exampleAutocompleteHits: [
         {
           id: 0,
           searchString: "Heart rate",
@@ -74,9 +72,32 @@ export default defineComponent({
             "Heart rate and blood glucose for patients with diabetes",
         },
       ],
-      componentState: "default",
+      initialAutocompleteData: this.autocompleteData,
+      autocompleteHits: [],
+      autocompleteVisible: false,
+      componentState: "default", // Options #"default", #"hovered", #"Focus",
     };
   },
+  watch: {
+    // a computed getter
+    initialAutocompleteData(): any {
+      // `this` points to the vm instance
+      if (this.initialAutocompleteData) {
+        // this.autocompleteHits = this.initialAutocompleteData.data.hits;
+        console.log("new autocomplete", this.initialAutocompleteData);
+      }
+    },
+  },
+  // computed: {
+  //   filteredAutocompleteHits(): any {
+  //     if (this.autocompleteData) {
+  //       return this.initialAutocompleteData;
+
+  //     } else {
+  //       return this.exampleAutocompleteHits;
+  //     }
+  //   }
+  // }
 });
 </script>
 

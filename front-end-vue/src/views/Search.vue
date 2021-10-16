@@ -14,7 +14,7 @@
       <!-- Brand  -->
       <div
         id="brand"
-        class="flex items-center justify-center mb-14 text-gray-900 text-5xl font-medium"
+        class="non-selectable flex items-center justify-center mb-14 text-gray-900 text-5xl font-medium"
       >
         Search
       </div>
@@ -22,10 +22,14 @@
 
       <!-- Searchbox  -->
       <div id="searchbox-main" class="mx-auto w-full max-w-3xl flex px-5-sm">
-        <Searchbox v-model="searchString"/>
+        <Searchbox
+          v-model="searchString"
+          :autocompleteData="autocompleteData"
+        
+        />
         <button
-          class="transition duration-400 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
-          @click="activePageName = 'Search'"
+          class="transition duration-200 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+            @click="fetchAutocomplete()"
         >
           <span class="absolute left-0 inset-y-0 flex items-center pl-3">
             <svg
@@ -61,14 +65,14 @@
     <!-- /Page: Home -->
 
     <!-- Page: Results -->
-    <div
-      id="page-search"
-      v-if="activePageName == 'Search'"
-      class="page"
-    >
+    <div id="page-search" v-if="activePageName == 'Search'" class="page">
       <!-- Searchbox  -->
       <div id="searchbox-top" class="mx-auto w-full max-w-4xl flex mb-4">
-        <Searchbox class="w-full" v-model="searchString"/>
+        <Searchbox
+          class="w-full"
+          v-model="searchString"
+          :autocompleteData="autocompleteData"
+        />
         <button
           class="transition duration-200 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
         >
@@ -106,7 +110,11 @@
           <!-- <div class="w-full max-w-md">Filters Expanded</div> -->
           <div class="w-full max-w-4xl mx-auto">
             <!-- <div>Filter and sort</div> -->
-            <SearchResults class="w-full" :results="exampleResults" :value="searchString" />
+            <SearchResults
+              class="w-full"
+              :results="exampleResults"
+              :value="searchString"
+            />
           </div>
           <!-- <div class="w-full max-w-md">See also, more info on hovered item</div> -->
         </div>
@@ -168,6 +176,8 @@ import TailwindIcon from "@/components/search/TailwindIcon.vue";
 import SearchResults from "@/components/search/SearchResults.vue";
 import HorizontalNavbar from "@/components/search/HorizontalNavbar.vue";
 
+import SearchService from "@/services/SearchService";
+
 export default defineComponent({
   name: "Search",
   components: {
@@ -179,7 +189,7 @@ export default defineComponent({
   data() {
     return {
       searchString: "",
-      activePageName: "Home", //Home //SearchResults
+      activePageName: "Home", //Options #Home #SearchResults
       activeTabIndex: 0,
       tabs: [
         {
@@ -355,11 +365,13 @@ export default defineComponent({
           url:
             "https://im.endeavourhealth.net/#/search?q=comborbidities+associated+with+diabetes",
           title: "View Disease Profile",
-          description: "Find conditions, symptoms, observations and other health record entries associated with diabetes",
+          description:
+            "Find conditions, symptoms, observations and other health record entries associated with diabetes",
           module: "data",
           icon: "tables",
         },
       ],
+      autocompleteData: null,
       tableHeight: 600,
     };
   },
@@ -370,6 +382,28 @@ export default defineComponent({
       fullName: "Search",
       iri: "http://endhealth.info/im#Search",
     });
+  },
+  methods: {
+    async fetchAutocomplete(): Promise<void> {
+      await SearchService.getAutocomplete(this.searchString)
+        .then((res: any) => {
+          console.log("fetched ", res);
+          this.autocompleteData = res.data;
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load autocomplete results", err)
+          );
+        });
+    },
+  },
+  watch: {
+    // whenever question changes, this function will run
+    searchString(newSearchString, oldearchString) {
+      if (newSearchString && newSearchString != "") {
+       this.fetchAutocomplete();
+      }
+    },
   },
 });
 </script>
