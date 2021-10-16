@@ -1,48 +1,35 @@
 <template>
-  <template v-if="modelValue == '' && autocompleteHits.length == 0">
-    <div class="w-full">
+  <!-- Wrapper   -->
+  <div
+    class="searchbox w-full relative transition duration-500 ease-in-out appearance-none rounded-none border border-gray-300 shadow-md relative rounded-md hover:shadow-md focus:z-10 focus:shadow-md focus:border-gray-300"
+  >
+    <!-- Searchbox  -->
+    <div>
       <input
         type="text"
-        class="searchbox transition duration-500 ease-in-out appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-medium rounded-md hover:shadow-md focus:outline-none focus:z-10 focus:shadow-md focus:border-gray-300 "
+        class="relative w-full px-4 py-3 placeholder-gray-400 text-gray-900 font-medium rounded-md  focus:outline-none"
         placeholder="Type to Search"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
       />
     </div>
-  </template>
-  <template v-else>
-    <!-- Wrapper   -->
-    <div
-      class="searchbox w-full relative transition duration-500 ease-in-out appearance-none rounded-none border border-gray-300 shadow-md relative rounded-md hover:shadow-md focus:z-10 focus:shadow-md focus:border-gray-300"
-    >
-      <!-- Searchbox  -->
-      <div>
-        <input
-          type="text"
-          class="relative w-full px-4 py-3 placeholder-gray-400 text-gray-900 font-medium rounded-md  focus:outline-none"
-          placeholder="Type to Search"
-          :value="modelValue"
-          @input="$emit('update:modelValue', $event.target.value)"
-        />
-      </div>
-      <!-- / Searchbox  -->
+    <!-- / Searchbox  -->
 
-      <!-- Autocomplete  -->
+    <!-- Autocomplete  -->
+    <div
+      v-if="filteredHits() && modelValue != ''"
+      class="autocomplete w-full rounded-t-none rounded-b-md  border border-gray-300 hover:border-gray-300 non-selectable shadow-md "
+    >
       <div
-        v-if="filteredHits() && filteredHits().hits.length > 0"
-        class="autocomplete w-full rounded-t-none rounded-b-md  border border-gray-300 hover:border-gray-300 non-selectable shadow-md "
-      >
-        <div
-          v-for="item in filteredHits().hits"
-          :key="item.id"
-          class="transition duration-500 ease-in-out appearance-none relative w-full px-4 py-3 text-gray-400 font-medium hover:text-gray-900 hover:bg-gray-100 focus:z-10"
-          v-html="item.searchString"
-        ></div>
-      </div>
-      <!-- / Autocomplete -->
+        v-for="item in filteredHits().hits"
+        :key="item.id"
+        class="transition duration-500 ease-in-out appearance-none relative w-full px-4 py-3 text-gray-400 font-medium hover:text-gray-900 hover:bg-gray-100 focus:z-10"
+        v-html="item._formatted.searchString"
+      ></div>
     </div>
-    <!-- Wrapper   -->
-  </template>
+    <!-- / Autocomplete -->
+  </div>
+  <!-- Wrapper   -->
 </template>
 
 <script lang="ts">
@@ -77,9 +64,10 @@ export default defineComponent({
   },
   methods: {
     filteredHits(): any {
-      if (this.autocompleteData) {
+      /* Todo: instead of overriding <em> globally use _matchedInfo property to highlight text  */
+      if (this.autocompleteData && this.autocompleteData.hits.length > 0) {
         return this.autocompleteData;
-      } 
+      }
     },
   },
   // computed: {
@@ -94,6 +82,15 @@ export default defineComponent({
   // }
 });
 </script>
+
+<style>
+/* Perhaps not best to override em */
+
+em {
+  font-style: normal !important;
+  color: rgba(17, 24, 39, var(--tw-text-opacity));
+}
+</style>
 
 <style scoped>
 .non-selectable {
