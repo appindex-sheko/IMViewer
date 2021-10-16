@@ -17,8 +17,8 @@
         id="brand"
         class="non-selectable flex items-center justify-center mb-10 text-gray-700 text-5xl font-medium"
       >
-       <img class="im-logo mr-5" src="/img/Logo-object-empty.27c03592.png" alt="IM logo" data-v-098ea5e8="">
-       
+       <!-- <img class="im-logo mr-5" src="/img/Logo-object-empty.27c03592.png" alt="IM logo" data-v-098ea5e8=""> -->
+       <img class="search-logo mb-10" src="search-icon.png" alt="">
       </div>
       <!-- /Brand  -->
 
@@ -59,6 +59,7 @@
         id="examples"
         class="mx-auto max-w-3xl my-7 px-4 text-gray-900 text-lg"
       >
+      <a class="mr-3 font-bold" href="">Try </a>
         <b>Heart rate</b> and <b>blood glucose</b> for patients with
         <b>diabetes</b>
       </div>
@@ -414,6 +415,10 @@ export default defineComponent({
 
 <style scoped>
 
+.search-logo {
+  width: 100px;
+  height: auto;
+}
 
 .icon {
   padding: 15px;
