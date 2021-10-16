@@ -1,13 +1,13 @@
 <template>
   <!-- Wrapper   -->
   <div
-    class="searchbox w-full relative transition duration-500 ease-in-out appearance-none rounded-none border border-gray-300 shadow-md relative rounded-md hover:shadow-md focus:z-10 focus:shadow-md focus:border-gray-300"
+    class="searchbox w-full transition duration-500 ease-in-out appearance-none rounded-none border border-gray-200 relative rounded-md focus:z-10 focus:border-gray-200"
   >
     <!-- Searchbox  -->
-    <div>
+    <div class="">
       <input
         type="text"
-        class="relative w-full px-4 py-3 placeholder-gray-400 text-gray-900 font-medium rounded-md  focus:outline-none"
+        class="relative transition duration-500 ease-in-out w-full px-4 py-3 placeholder-gray-400 text-gray-900 font-medium rounded-md focus:outline-none focus:shadowwlg hover:shadowwlg "
         placeholder="Type to Search"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
@@ -18,7 +18,7 @@
     <!-- Autocomplete  -->
     <div
       v-if="filteredHits() && modelValue != ''"
-      class="autocomplete w-full rounded-t-none rounded-b-md  border border-gray-300 hover:border-gray-300 non-selectable shadow-md "
+      class="autocomplete w-full rounded-t-none rounded-b-md  border border-gray-200 hover:border-gray-200 non-selectable shadowwlg"
     >
       <div
         v-for="item in filteredHits().hits"
@@ -70,16 +70,6 @@ export default defineComponent({
       }
     },
   },
-  // computed: {
-  //   filteredAutocompleteHits(): any {
-  //     if (this.autocompleteData) {
-  //       return this.initialAutocompleteData;
-
-  //     } else {
-  //       return this.exampleAutocompleteHits;
-  //     }
-  //   }
-  // }
 });
 </script>
 
@@ -90,6 +80,8 @@ em {
   font-style: normal !important;
   color: rgba(17, 24, 39, var(--tw-text-opacity));
 }
+
+
 </style>
 
 <style scoped>
@@ -100,11 +92,12 @@ em {
   user-select: none; /* Likely future */
 }
 
-.searchbox {
+.searchbox,
+.autocomplete {
   font-size: 16px !important;
 }
 
-.searchbox .autocomplete {
+.autocomplete {
   position: absolute;
   background: #fff;
   margin-top: -3px;
@@ -112,5 +105,16 @@ em {
   width: calc(100% + 2px);
   z-index: 989;
   cursor: default;
+  border-bottom: 1px solid rgb(207, 210, 218);
+  border-left: 1px solid rgb(207, 210, 218);
+  border-right: 1px solid rgb(207, 210, 218);
+}
+
+.searchbox:hover,
+.searchbox input:focus,
+.searchbox:focus,
+.autocomplete {
+  border-color: rgb(207, 210, 218);
+  box-shadow: rgb(207, 210, 218) 0px 0px 6px;
 }
 </style>

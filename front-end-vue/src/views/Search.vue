@@ -31,7 +31,7 @@
         />
         <button
           class="transition duration-200 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
-            @click="fetchAutocomplete()"
+            @click="activePageName = 'SearchResults'"
         >
           <span class="absolute left-0 inset-y-0 flex items-center pl-3">
             <svg
@@ -67,7 +67,7 @@
     <!-- /Page: Home -->
 
     <!-- Page: Results -->
-    <div id="page-search" v-if="activePageName == 'Search'" class="page">
+    <div id="page-search" v-if="activePageName == 'SearchResults'" class="page">
       <!-- Searchbox  -->
       <div id="searchbox-top" class="mx-auto w-full max-w-4xl flex mb-4">
         <Searchbox
@@ -410,7 +410,11 @@ export default defineComponent({
 });
 </script>
 
+
+
 <style scoped>
+
+
 .icon {
   padding: 15px;
 }
