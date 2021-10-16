@@ -29,18 +29,15 @@
 
       <!-- Autocomplete  -->
       <div
-       v-if="autocompleteData && autocompleteData.hits.length > 0"
+        v-if="filteredHits() && filteredHits().hits.length > 0"
         class="autocomplete w-full rounded-t-none rounded-b-md  border border-gray-300 hover:border-gray-300 non-selectable shadow-md "
       >
         <div
-          v-for="item in autocompleteData.hits"
+          v-for="item in filteredHits().hits"
           :key="item.id"
           class="transition duration-500 ease-in-out appearance-none relative w-full px-4 py-3 text-gray-400 font-medium hover:text-gray-900 hover:bg-gray-100 focus:z-10"
           v-html="item.searchString"
-        >      
-        
-         
-        </div>
+        ></div>
       </div>
       <!-- / Autocomplete -->
     </div>
@@ -78,14 +75,11 @@ export default defineComponent({
       componentState: "default", // Options #"default", #"hovered", #"Focus",
     };
   },
-  watch: {
-    // a computed getter
-    initialAutocompleteData(): any {
-      // `this` points to the vm instance
-      if (this.initialAutocompleteData) {
-        // this.autocompleteHits = this.initialAutocompleteData.data.hits;
-        console.log("new autocomplete", this.initialAutocompleteData);
-      }
+  methods: {
+    filteredHits(): any {
+      if (this.autocompleteData) {
+        return this.autocompleteData;
+      } 
     },
   },
   // computed: {
