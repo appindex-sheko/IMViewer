@@ -19,7 +19,7 @@
       <div>
         <input
           type="text"
-          class="relative w-full px-4 py-3 placeholder-gray-400 text-gray-900 font-medium rounded-t-md round-b-none  focus:outline-none"
+          class="relative w-full px-4 py-3 placeholder-gray-400 text-gray-900 font-medium rounded-md  focus:outline-none"
           placeholder="Type to Search"
           :value="modelValue"
           @input="$emit('update:modelValue', $event.target.value)"
@@ -29,7 +29,7 @@
 
       <!-- Autocomplete  -->
       <div
-       v-if="autocompleteData"
+       v-if="autocompleteData && autocompleteData.hits.length > 0"
         class="autocomplete w-full rounded-t-none rounded-b-md  border border-gray-300 hover:border-gray-300 non-selectable shadow-md "
       >
         <div
