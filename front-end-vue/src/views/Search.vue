@@ -180,6 +180,9 @@ import SearchResults from "@/components/search/SearchResults.vue";
 import HorizontalNavbar from "@/components/search/HorizontalNavbar.vue";
 
 import SearchService from "@/services/SearchService";
+import SearchClient from "@/services/SearchClient";
+
+const { MeiliSearch } = require('meilisearch')
 
 export default defineComponent({
   name: "Search",
@@ -387,11 +390,23 @@ export default defineComponent({
     });
   },
   methods: {
-    async fetchAutocomplete(): Promise<void> {
-      await SearchService.getAutocomplete(this.searchString)
+    async getAutocompleteREST(): Promise<void> {
+      await SearchService.fetchAutocompleteREST(this.searchString)
         .then((res: any) => {
           console.log("fetched ", res);
           this.autocompleteData = res.data;
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load autocomplete results", err)
+          );
+        });
+    },
+    async getAutocompleteSearch(): Promise<void> {
+      await SearchClient.fetchAutocompleteSearch(this.searchString)
+        .then((res: any) => {
+          console.log("fetched ", res);
+          this.autocompleteData = res;
         })
         .catch((err: any) => {
           this.$toast.add(
@@ -404,7 +419,7 @@ export default defineComponent({
     // whenever question changes, this function will run
     searchString(newSearchString, oldearchString) {
       if (newSearchString && newSearchString != "") {
-       this.fetchAutocomplete();
+       this.getAutocompleteSearch();
       }
     },
   },
