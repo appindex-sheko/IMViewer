@@ -32,7 +32,7 @@
           class="transition duration-200 ease-in-out group ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
           @click="showSearchResults()"
         >
-            <HeroIcon
+          <HeroIcon
             class=""
             strokewidth="2"
             width="24"
@@ -48,7 +48,7 @@
         id="examples"
         class="mx-auto max-w-3xl my-7 px-4 text-gray-900 text-lg"
       >
-        <a class="mr-3 font-bold" >Try </a>
+        <a class="mr-3 font-bold">Try </a>
         <b>Heart rate</b> and <b>blood glucose</b> for patients with
         <b>diabetes</b>
       </div>
@@ -69,7 +69,7 @@
           class="transition duration-200 ease-in-out group ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
           @click="showSearchResults()"
         >
-            <HeroIcon
+          <HeroIcon
             class=""
             strokewidth="2"
             width="24"
@@ -95,7 +95,7 @@
             <!-- <div>Filter and sort</div> -->
             <SearchResults
               class="w-full"
-              :results="searchResult || exampleResults"
+              :results="searchResults || exampleResults"
               :value="searchString"
             />
           </div>
@@ -106,7 +106,7 @@
         <!-- Tab: Data  -->
         <div v-if="activeTabIndex == 1" class="content-tab">
           Data
-        </div> 
+        </div>
         <!-- /Tab: Data  -->
 
         <!-- Tab: Explore  -->
@@ -171,7 +171,7 @@ export default defineComponent({
     Searchbox,
     SearchResults,
     HorizontalNavbar,
-    HeroIcon
+    HeroIcon,
   },
   data() {
     return {
@@ -217,7 +217,6 @@ export default defineComponent({
         },
       ],
       modulesData: null,
-      searchResult: null,
       exampleResults: [
         {
           url:
@@ -246,6 +245,7 @@ export default defineComponent({
           icon: "tables",
         },
       ],
+      searchResults: [],
       autocompleteData: null,
       tableHeight: 600,
     };
@@ -259,7 +259,7 @@ export default defineComponent({
       iri: "http://endhealth.info/im#Search",
     });
 
-    //loads modules and tasks
+    //loads moduless (contains tasks),
     this.getInitialData();
   },
   methods: {
@@ -276,10 +276,9 @@ export default defineComponent({
         });
     },
     async getInitialData(): Promise<void> {
-      // the code here works, but the server wont create an index for Modules data for some reason #todo fetch ModulesData dynamically using method blow
-      await SearchClient.;()
+      await SearchClient.search("Modules", "")
         .then((res: any) => {
-          console.log("fetched module data", res);
+          console.log("Fetched module data", res);
           this.modulesData = res;
         })
         .catch((err: any) => {
@@ -288,17 +287,51 @@ export default defineComponent({
           );
         });
 
-        // #todo:other fetches
-    },
-    showSearchResults(searchString: string): void {
-      this.activePageName = 'SearchResults';
+      await SearchClient.search("Modules", "")
+        .then((res: any) => {
+          console.log("Fetched module data", res);
+          this.modulesData = res;
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load module data", err)
+          );
+        });
 
-      
-    }
+      // #todo:other fetches
+    },
+    async search(index: string, searchString: string): Promise<any> {
+      await SearchClient.search(index, searchString)
+        .then((res: any) => {
+          console.log("fetched IMSearch", res);
+          Promise.resolve(res);
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load module data", err)
+          );
+        });
+    },
+    async showSearchResults(): Promise<void> {
+      // this.activePageName = 'SearchResults';
+
+      // let resultTemplates;
+
+      //find all results for dataseteditor -> push to resultTemplates
+
+      // if (this.searchString && this.searchString != "") {
+      //   imEntities =
+      // }
+
+      //if any results are up, push it to the searchResults alongside examples
+      if (this.searchString && this.searchString != "") {
+        SearchClient.searchDatasets(this.searchString);
+      }
+    },
   },
   watch: {
     // whenever question changes, this function will run
-    searchString(newSearchString, oldearchString) {
+    searchString(newSearchString: any, oldearchString: any) {
       if (newSearchString && newSearchString != "") {
         this.getAutocompleteSearch();
       }
