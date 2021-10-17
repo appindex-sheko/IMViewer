@@ -260,7 +260,7 @@ export default defineComponent({
     });
 
     //loads modules and tasks
-    this.getModulesData();
+    this.getInitialData();
   },
   methods: {
     async getAutocompleteSearch(): Promise<void> {
@@ -275,9 +275,9 @@ export default defineComponent({
           );
         });
     },
-    async getModulesData(): Promise<void> {
+    async getInitialData(): Promise<void> {
       // the code here works, but the server wont create an index for Modules data for some reason #todo fetch ModulesData dynamically using method blow
-      await SearchClient.fetchModulesData()
+      await SearchClient.;()
         .then((res: any) => {
           console.log("fetched module data", res);
           this.modulesData = res;
@@ -287,6 +287,8 @@ export default defineComponent({
             LoggerService.error("Could not load module data", err)
           );
         });
+
+        // #todo:other fetches
     },
     showSearchResults(searchString: string): void {
       this.activePageName = 'SearchResults';
