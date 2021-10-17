@@ -30,16 +30,19 @@ export default class SearchService {
       });
   }
 
-  public static async fetchAutocompleteClient(searchString: string): Promise<AxiosResponse<any>> {
-    return axios.post(this.meili_api + "indexes/AutocompleteSearch/search",
-      {
-        q: searchString,
-        attributesToHighlight: ["searchString"]
-      }
-      ,
-      {
-        headers: this.meili_headers
-      });
-  }
-
 }
+
+
+//old component method
+// async getAutocompleteREST(): Promise<void> {
+//   await SearchService.fetchAutocompleteREST(this.searchString)
+//     .then((res: any) => {
+//       console.log("fetched ", res);
+//       this.autocompleteData = res.data;
+//     })
+//     .catch((err: any) => {
+//       this.$toast.add(
+//         LoggerService.error("Could not load autocomplete results", err)
+//       );
+//     });
+// },

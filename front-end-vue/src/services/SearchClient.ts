@@ -8,25 +8,46 @@ export default class SearchClient {
     static meili_api = "http://167.99.194.138/"
     static meili_api_key_public = "68942f3e956f95db5b18963e1be76a78eb620dff0e6f56f4239be1b76c3e93af";
 
-
+    static client = new MeiliSearch({
+        host: SearchClient.meili_api,
+        apiKey: SearchClient.meili_api_key_public,
+    });
 
 
     public static async fetchAutocompleteSearch(searchString: string): Promise<any> {
-        //meilisearch.client = clean code
-        const client = new MeiliSearch({
-            host: SearchClient.meili_api,
-            apiKey: SearchClient.meili_api_key_public,
-        });
         
-        const index = client.index('AutocompleteSearch');
+        const _index = SearchClient.client.index('AutocompleteSearch');
         // #todo: change search from auto-relevancy to literal matching e.g. use `"${searchString}"`
-        const search = await index
+        const search = await _index
             .search(
                 searchString,
                 { attributesToHighlight: ['searchString'] }
-                );
+            );
         return search;
     }
+
+
+
+    public static async search(index: string, searchString: string, attributesToHighlight: any): Promise<any> {
+        //meilisearch.client = clean code
+        // const client = new MeiliSearch({
+        //     host: SearchClient.meili_api,
+        //     apiKey: SearchClient.meili_api_key_public,
+        // });
+
+        const _index = SearchClient.client.index(index);
+        // #todo: change search from auto-relevancy to literal matching e.g. use `"${searchString}"`
+        const search = await _index
+            .search(
+                searchString,
+                attributesToHighlight
+            );
+        return search;
+    }
+
+
+
+
 
 }
 

@@ -12,13 +12,13 @@
       class="page flex flex-col items-center justify-center"
     >
       <!-- Brand  -->
-     
+
       <div
         id="brand"
         class="non-selectable flex items-center justify-center mb-10 text-gray-700 text-5xl font-medium"
       >
-       <!-- <img class="im-logo mr-5" src="/img/Logo-object-empty.27c03592.png" alt="IM logo" data-v-098ea5e8=""> -->
-       <img class="search-logo mb-10" src="search-icon.png" alt="">
+        <!-- <img class="im-logo mr-5" src="/img/Logo-object-empty.27c03592.png" alt="IM logo" data-v-098ea5e8=""> -->
+        <img class="search-logo mb-10" src="search-icon.png" alt="" />
       </div>
       <!-- /Brand  -->
 
@@ -27,11 +27,10 @@
         <Searchbox
           v-model="searchString"
           :autocompleteData="autocompleteData"
-        
         />
         <button
           class="transition duration-200 ease-in-out w-14 group relative ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
-            @click="activePageName = 'SearchResults'"
+          @click="activePageName = 'SearchResults'"
         >
           <span class="absolute left-0 inset-y-0 flex items-center pl-3">
             <svg
@@ -59,7 +58,7 @@
         id="examples"
         class="mx-auto max-w-3xl my-7 px-4 text-gray-900 text-lg"
       >
-      <a class="mr-3 font-bold" href="">Try </a>
+        <a class="mr-3 font-bold" href="">Try </a>
         <b>Heart rate</b> and <b>blood glucose</b> for patients with
         <b>diabetes</b>
       </div>
@@ -182,7 +181,7 @@ import HorizontalNavbar from "@/components/search/HorizontalNavbar.vue";
 import SearchService from "@/services/SearchService";
 import SearchClient from "@/services/SearchClient";
 
-const { MeiliSearch } = require('meilisearch')
+const { MeiliSearch } = require("meilisearch");
 
 export default defineComponent({
   name: "Search",
@@ -390,18 +389,6 @@ export default defineComponent({
     });
   },
   methods: {
-    async getAutocompleteREST(): Promise<void> {
-      await SearchService.fetchAutocompleteREST(this.searchString)
-        .then((res: any) => {
-          console.log("fetched ", res);
-          this.autocompleteData = res.data;
-        })
-        .catch((err: any) => {
-          this.$toast.add(
-            LoggerService.error("Could not load autocomplete results", err)
-          );
-        });
-    },
     async getAutocompleteSearch(): Promise<void> {
       await SearchClient.fetchAutocompleteSearch(this.searchString)
         .then((res: any) => {
@@ -419,17 +406,14 @@ export default defineComponent({
     // whenever question changes, this function will run
     searchString(newSearchString, oldearchString) {
       if (newSearchString && newSearchString != "") {
-       this.getAutocompleteSearch();
+        this.getAutocompleteSearch();
       }
     },
   },
 });
 </script>
 
-
-
 <style scoped>
-
 .search-logo {
   width: 100px;
   height: auto;
