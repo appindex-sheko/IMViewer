@@ -12,7 +12,7 @@
       >
         <!-- Icon -->
         <div class="inline-flex mr-2">
-          <TailwindIcon
+          <HeroIcon
             strokewidth="2"
             width="24"
             height="24"
@@ -32,14 +32,14 @@
 
 <script lang="ts">
 import { ref, onMounted, defineComponent } from "vue";
-import TailwindIcon from "@/components/search/TailwindIcon.vue";
+import HeroIcon from "@/components/search/HeroIcon.vue";
 
 export default defineComponent({
   name: "HorizontalNavbar",
   props: ["items", "modelValue"],
   emits: ["update:modelValue"],
   components: {
-    TailwindIcon,
+    HeroIcon,
   },
   data() {
     return {
@@ -60,7 +60,7 @@ export default defineComponent({
 #tab-buttons {
   width: 100%;
   margin-top: 30px;
-  padding-bottom: 5px;
+  padding-bottom: 2px;
   text-align: center;
   border-bottom: solid 2px #dde1e2;
 }
@@ -74,6 +74,6 @@ export default defineComponent({
 
 .tab-button.active {
   color: #3b82f6;
-  border-bottom: solid 3px #3b82f6;
+  border-bottom: solid 2px #3b82f6;
 }
 </style>

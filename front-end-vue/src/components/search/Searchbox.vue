@@ -112,9 +112,13 @@ em {
 
 .searchbox:hover,
 .searchbox input:focus,
-.searchbox:focus,
+.searchbox:focus {
+ border-color: rgb(207, 210, 218);
+  box-shadow: rgb(207, 210, 218) 0px 0px 6px;
+}
+
 .autocomplete {
   border-color: rgb(207, 210, 218);
-  box-shadow: rgb(207, 210, 218) 0px 0px 6px;
+  box-shadow: rgb(207, 210, 218) 0px 2px 6px;
 }
 </style>

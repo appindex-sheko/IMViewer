@@ -4,7 +4,7 @@
     @click="activePageName = 'Search'"
   >
     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-      <TailwindIcon
+      <HeroIcon
             strokewidth="2"
             width="24"
             height="24"
@@ -18,7 +18,7 @@
     @click="activePageName = 'Search'"
   >
     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-      <TailwindIcon
+      <HeroIcon
             strokewidth="2"
             width="24"
             height="24"
@@ -32,12 +32,12 @@
 <script lang="ts">
 import { ref, onMounted, defineComponent } from "vue";
 
-import TailwindIcon from "@/components/search/TailwindIcon.vue";
+import HeroIcon from "@/components/search/HeroIcon.vue";
 
 export default defineComponent({
   name: "IconButton",
   components: {
-      TailwindIcon
+      HeroIcon
   },
   props: ["icon"],
 });

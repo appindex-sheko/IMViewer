@@ -20,7 +20,7 @@
 import { ref, onMounted, defineComponent } from "vue";
 
 export default defineComponent({
-  name: "TailwindIcon",
+  name: "HeroIcon",
   props: ["width", "height", "icon", "strokewidth"],
   data() {
     return {

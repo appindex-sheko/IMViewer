@@ -27,7 +27,7 @@
         </div>
 
         <!-- <div class="text-sm flex row-col items-center">
-          <TailwindIcon class="mr-2" strokewidth="1.5" width="16" height="16"  :icon="result.icon" />
+          <HeroIcon class="mr-2" strokewidth="1.5" width="16" height="16"  :icon="result.icon" />
           <div class="inline text-xs text-gray-700">
             {{ result.module }}
           </div>
@@ -48,11 +48,11 @@
 
 <script lang="ts">
 import { ref, onMounted, defineComponent } from "vue";
-import TailwindIcon from "@/components/search/TailwindIcon.vue";
+import HeroIcon from "@/components/search/HeroIcon.vue";
 
 export default defineComponent({
   name: "SearchResults",
-  //components: {TailwindIcon},
+  //components: {HeroIcon},
   props: ["results", "searchstring"],
   data() {
     return {

@@ -175,7 +175,7 @@ import Dialog from "primevue/dialog";
 import QueryTable from "@/components/dataset/QueryTable.vue";
 
 import Searchbox from "@/components/search/Searchbox.vue";
-import TailwindIcon from "@/components/search/TailwindIcon.vue";
+import HeroIcon from "@/components/search/HeroIcon.vue";
 import SearchResults from "@/components/search/SearchResults.vue";
 import HorizontalNavbar from "@/components/search/HorizontalNavbar.vue";
 
