@@ -6,7 +6,7 @@
 import { ref, onMounted, defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Stepper",
+  name: "TailwindButton",
   props: ["prop"],
 });
 </script>
