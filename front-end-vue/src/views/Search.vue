@@ -266,7 +266,6 @@ export default defineComponent({
     async getAutocompleteSearch(): Promise<void> {
       await SearchClient.fetchAutocompleteSearch(this.searchString)
         .then((res: any) => {
-          console.log("fetched autocompletesearch data", res);
           this.autocompleteData = res;
         })
         .catch((err: any) => {
@@ -278,26 +277,13 @@ export default defineComponent({
     async getInitialData(): Promise<void> {
       await SearchClient.search("Modules", "")
         .then((res: any) => {
-          console.log("Fetched module data", res);
           this.modulesData = res;
         })
         .catch((err: any) => {
           this.$toast.add(
-            LoggerService.error("Could not load module data", err)
+            LoggerService.error("Could not load initial module data", err)
           );
         });
-
-      await SearchClient.search("Modules", "")
-        .then((res: any) => {
-          console.log("Fetched module data", res);
-          this.modulesData = res;
-        })
-        .catch((err: any) => {
-          this.$toast.add(
-            LoggerService.error("Could not load module data", err)
-          );
-        });
-
       // #todo:other fetches
     },
     async search(index: string, searchString: string): Promise<any> {
