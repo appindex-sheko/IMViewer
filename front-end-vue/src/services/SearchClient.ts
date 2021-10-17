@@ -18,15 +18,28 @@ export default class SearchClient {
         
         const _index = SearchClient.client.index('AutocompleteSearch');
         // #todo: change search from auto-relevancy to literal matching e.g. use `"${searchString}"`
-        const search = await _index
+        const _search = await _index
             .search(
                 searchString,
                 { attributesToHighlight: ['searchString'] }
             );
-        return search;
+        return _search;
     }
 
 
+
+    
+    public static async fetchModulesData(): Promise<any> {
+        
+        const _index = SearchClient.client.index('Modules');
+        // #todo: change search from auto-relevancy to literal matching e.g. use `"${searchString}"`
+        const _search = await _index
+            .search("");
+        return _search;
+    }
+
+
+    
 
     public static async search(index: string, searchString: string, attributesToHighlight: any): Promise<any> {
         //meilisearch.client = clean code
@@ -37,12 +50,12 @@ export default class SearchClient {
 
         const _index = SearchClient.client.index(index);
         // #todo: change search from auto-relevancy to literal matching e.g. use `"${searchString}"`
-        const search = await _index
+        const _search = await _index
             .search(
                 searchString,
                 attributesToHighlight
             );
-        return search;
+        return _search;
     }
 
 

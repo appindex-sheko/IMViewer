@@ -48,7 +48,7 @@
         id="examples"
         class="mx-auto max-w-3xl my-7 px-4 text-gray-900 text-lg"
       >
-        <a class="mr-3 font-bold" href="">Try </a>
+        <a class="mr-3 font-bold" >Try </a>
         <b>Heart rate</b> and <b>blood glucose</b> for patients with
         <b>diabetes</b>
       </div>
@@ -95,7 +95,7 @@
             <!-- <div>Filter and sort</div> -->
             <SearchResults
               class="w-full"
-              :results="exampleResults"
+              :results="searchResult || exampleResults"
               :value="searchString"
             />
           </div>
@@ -106,7 +106,7 @@
         <!-- Tab: Data  -->
         <div v-if="activeTabIndex == 1" class="content-tab">
           Data
-        </div>
+        </div> 
         <!-- /Tab: Data  -->
 
         <!-- Tab: Explore  -->
@@ -216,120 +216,8 @@ export default defineComponent({
           visible: true,
         },
       ],
-      actions: [
-        {
-          id: "im:Search",
-          module: "search",
-          label: "Search",
-          comment: "",
-          actions: [
-            {
-              action: "search",
-              label: "Search",
-              comment: "Search for data, organisations and other resources",
-            },
-          ],
-        },
-        {
-          id: "im:DatasetEditor",
-          module: "data",
-          label: "Data",
-          comment: "",
-          actions: [
-            {
-              action: "createDataset",
-              label: "Create New Dataset",
-              comment:
-                "Define the data you want to extract from Health Records",
-            },
-            {
-              action: "viewDatasets",
-              label: "View Existing Dataset",
-              comment:
-                "Browse through existing Datasets and copy it into your library",
-            },
-          ],
-        },
-        {
-          id: "im:Discover",
-          module: "discover",
-          label: "Discover",
-          comment:
-            "Get statistical insight into patients, organisations and Conditions",
-          actions: [
-            {
-              action: "viewConditionProfile",
-              label: "View Condition Profile",
-              comment:
-                "Get statistical insight from the Health Records for a condition by area, sex, age, ethnicity or organisation",
-            },
-            {
-              action: "searchConditionProfile",
-              label: "Search for Conditions",
-              comment: "Search for conditions",
-            },
-            {
-              action: "viewHealthRecord",
-              label: "View Health Record",
-              comment:
-                "View healthrecords for a patient in your Organisation or in your Dataset.",
-            },
-          ],
-        },
-        {
-          id: "im:OrganisationBrowser",
-          module: "organisations",
-          label: "Organisations",
-          comment: "",
-          actions: [
-            {
-              action: "view",
-              label: "View Organisations",
-              comment:
-                "View Organisations in the Browser e.g. on a Map, Globe or List",
-            },
-            {
-              action: "createList",
-              label: "Create New List",
-              comment:
-                "Create a New List of Organisations you wish to see data for",
-            },
-          ],
-        },
-        {
-          id: "im:Dictionary",
-          module: "dictionary",
-          label: "Dictionary",
-          comment: "Interpret your question with a dictionary.",
-          actions: [
-            {
-              action: "analysePhrase",
-              label: "Analyse Phrase",
-              comment:
-                "Analyse one or more words in a phrase using a powerful dictionary that models the structure and content of health records",
-            },
-          ],
-        },
-        {
-          id: "",
-          module: "Resources",
-          label: "resources",
-          comment: "",
-          actions: [
-            {
-              action: "viewWebpage",
-              label: "Visit Website",
-              comment: "Open the website in a new window",
-            },
-            {
-              action: "searchResources",
-              label: "Search for Resources",
-              comment:
-                "Search for drugs, calculators, guidelines and research papers",
-            },
-          ],
-        },
-      ],
+      modulesData: null,
+      searchResult: null,
       exampleResults: [
         {
           url:
@@ -363,18 +251,22 @@ export default defineComponent({
     };
   },
   async mounted() {
+    //ensures sidebar is focused on search Icon
     this.$store.commit("updateSelectedEntityType", "Search");
     this.$store.commit("updateSideNavHierarchyFocus", {
       name: "Search",
       fullName: "Search",
       iri: "http://endhealth.info/im#Search",
     });
+
+    //loads modules and tasks
+    this.getModulesData();
   },
   methods: {
     async getAutocompleteSearch(): Promise<void> {
       await SearchClient.fetchAutocompleteSearch(this.searchString)
         .then((res: any) => {
-          console.log("fetched ", res);
+          console.log("fetched autocompletesearch data", res);
           this.autocompleteData = res;
         })
         .catch((err: any) => {
@@ -383,8 +275,22 @@ export default defineComponent({
           );
         });
     },
-    showSearchResults(): void {
+    async getModulesData(): Promise<void> {
+      // the code here works, but the server wont create an index for Modules data for some reason #todo fetch ModulesData dynamically using method blow
+      await SearchClient.fetchModulesData()
+        .then((res: any) => {
+          console.log("fetched module data", res);
+          this.modulesData = res;
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load module data", err)
+          );
+        });
+    },
+    showSearchResults(searchString: string): void {
       this.activePageName = 'SearchResults';
+
       
     }
   },
