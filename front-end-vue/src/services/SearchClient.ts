@@ -50,6 +50,12 @@ export default class SearchClient {
     }
 
 
+    public static checkRequiredEntityIris(array: any, target: any): boolean {
+        return target.every((item: any) => array.includes(item));
+
+    }
+
+
     public static async searchDatasets(searchString: string): Promise<any> {
 
 
@@ -59,8 +65,7 @@ export default class SearchClient {
         const _imEntityData: any[] = [];
         const _imEntityIDataModelIris: any[] = [];
 
-        //all the matched result templates
-        const _resultTemplatesData: any[] = [];
+
 
         // final results for the dataset editor to be returned based on _matchedResultTemplates and _imEntityData
         const _resultTemplates: any[] = [];
@@ -83,43 +88,37 @@ export default class SearchClient {
         if (_imEntityData && _imEntityData.length > 0) {
             _imEntityData.forEach((data: any) => {
                 data.hits.forEach((entity: any) => {
-                    _imEntityIDataModelIris.push(entity.matchedDataModelIri);
+                    entity.matchedDataModelIri.forEach((iri: any) =>  _imEntityIDataModelIris.push(iri));
+                   
                 });
             });
             // console.log("fetched _imEntityIris", _imEntityIris);
 
         }
 
-      
+
+
+        //find matching RersultTemplates
         const _index = SearchClient.client.index("ResultTemplate");
-        // #todo change requiredEntityIds to requiredEntityIis
-        const _requiredEntityIds = _imEntityIDataModelIris.map((x: any) => { return 'requiredEntityIds = "' + x + '"'} )
-        console.log("_imEntityIris", _requiredEntityIds);
-        // #todo: change search from auto-relevancy to literal matching e.g. use `"${searchString}"`
-        const _result = await _index
-            .search(
-                "",
-                {
-                    filter: '(' + _requiredEntityIds.join(" AND ")+ ')'
-                }
-            );
+        const _resultTemplatesData = await _index
+            .search(_imEntityIDataModelIris.join(" "));
 
-        console.log("_result is", _result);
 
-        //gets result templates
-        // await SearchClient.search("ResultTemplate", _imEntityIris.join(" "))
-        //     .then((res: any) => {
-        //         console.log("fetched ResultTemplate", res);
-        //         _resultTemplates.push(res);
-        //         //  Promise.resolve(res);
-        //     })
-        //     .catch((err: any) => {
-        //         console.log("could not fetch IMSearch data", err);
-        //     })
+        //filter out all ResultTemplates where ResultTemplates.requiredEntityIris matches the _imEntityIDataModelIris extract from the searchString
+        let _validTemplates;
+        if (_resultTemplatesData && _resultTemplatesData.nbHits > 0) {
+            _validTemplates = _resultTemplatesData.hits.filter((resultTemplate: any) => {
+                // console.log("checking items", SearchClient.checkRequiredEntityIris(resultTemplate.requiredEntityIris, _imEntityIDataModelIris));
+                return SearchClient.checkRequiredEntityIris(_imEntityIDataModelIris, resultTemplate.requiredEntityIris);
+            });
+        }
+
+        console.log("_validTemplates is", _validTemplates);
 
 
 
-        return _imEntityData;
+
+        return _validTemplates;
     }
 
 
