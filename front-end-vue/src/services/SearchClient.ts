@@ -1,6 +1,6 @@
 const { MeiliSearch } = require('meilisearch')
 const { v4 } = require('uuid');
-
+const _ = require('lodash');
 
 
 export default class SearchClient {
@@ -52,10 +52,6 @@ export default class SearchClient {
     }
 
 
-    public static checkRequiredEntityIris(array: any, target: any): boolean {
-        return target.every((item: any) => array.includes(item));
-
-    }
 
 
     public static async searchNewDatasets(searchString: string): Promise<any> {
@@ -63,10 +59,13 @@ export default class SearchClient {
 
         // all the words in a searchString
         const _searchWords = searchString.split(" ");
+        const _matchedSearchWords: any[] = [];
         // all the matched entities (at least one for each word)
         const _imEntityData: any[] = [];
         const _imEntities: any[] = [];
         const _imEntityDataModelIris: any[] = [];
+        let _uniqueIMEntityDataModelIris: any[] = [];
+        let _uniqueIMEntityDataModelIrisCounted: any[] = [];
 
 
 
@@ -80,6 +79,7 @@ export default class SearchClient {
                 .then((res: any) => {
                     // console.log("fetched IMSearch", res);
                     _imEntityData.push(res);
+                    _matchedSearchWords.push({ searchWord: word, imEntities: res });
                     //  Promise.resolve(res);
                 })
                 .catch((err: any) => {
@@ -105,11 +105,13 @@ export default class SearchClient {
 
 
         //find matching RersultTemplates
-        const _index = SearchClient.client.index("ResultTemplate");
+        const _index = SearchClient.client.index("ResultTemplates");    //#todo: filter current search by Module/Task (Data.createDataset) after you add ResultTemplates for other modules to the same index
+
+
         const _resultTemplatesData = await _index
             .search(_imEntityDataModelIris.join(" "));
 
-
+        // template validation 
         //filter out all ResultTemplates where ResultTemplates.requiredEntityIris matches the _imEntityDataModelIris extract from the searchString
         let _validTemplates;
         if (_resultTemplatesData && _resultTemplatesData.nbHits > 0) {
@@ -121,19 +123,143 @@ export default class SearchClient {
 
         // console.log("_imEntityDataModelIris", _imEntityDataModelIris);
         console.log("_validTemplates is", _validTemplates);
-        console.log("_imEntityIris is", _imEntities);
+        console.log("_imEntities is", _imEntities);
 
-        const _uuid = v4().replace(/-/g, "");
-
-        const result = [
-
-        ]
+        //interpolating labels for results based on template
 
 
-        return _validTemplates;
+        let _interpolatedTemplates = null;
+        if (_validTemplates.length > 0) {
+
+            //sort out unique datamodel IRIs and count them 
+
+            _uniqueIMEntityDataModelIris = _imEntityDataModelIris.filter(SearchClient.onlyUnique);
+            _uniqueIMEntityDataModelIrisCounted = _uniqueIMEntityDataModelIris.map((uniqueIri: any) => {
+
+                const countOccurrences = (arr: any, val: any) => arr.reduce((a: any, v: any) => (v === val ? a + 1 : a), 0);
+                
+                return {
+                    uniqueDataModelIri: uniqueIri,
+                    count: countOccurrences(_imEntityDataModelIris, uniqueIri),
+                    naturalLanguage: ""
+                }
+            });
+            //prepare natural language
+            _uniqueIMEntityDataModelIrisCounted = _uniqueIMEntityDataModelIrisCounted.map((iri: any) => {
+                
+                console.log("find",  _imEntities.find((DataModelEntity: any) => DataModelEntity.iri = iri.uniqueDataModelIri)["rdfs:label"])
+
+                switch (iri.count) {
+                    case 1:
+                       
+                        iri.naturalLanguage = _imEntities.find(DataModelEntity => DataModelEntity.iri = iri.uniqueDataModelIri)["rdfs:label"];
+                        console.log(iri.uniqueDataModelIri, iri.naturalLanguage)
+                        break;
+                    case 2:
+                        // code block
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            console.log("_imEntityDataModelIris", _imEntityDataModelIris);
+            console.log("_uniqueIMEntityDataModelIrisCounted", _uniqueIMEntityDataModelIrisCounted);
+
+
+
+
+            _interpolatedTemplates = _validTemplates.map((template: any) => {
+
+
+                // console.log("_uniqueIMEntityDataModelIrisCounted", _uniqueIMEntityDataModelIrisCounted);
+
+                //interpolate
+                _uniqueIMEntityDataModelIrisCounted.forEach((iri: any) => {
+
+
+
+                    template.label = SearchClient.interpolate(template.labelTemplate)({
+                        uniqueDataModelIri: 'quick',
+                        color: 'brown',
+                        mammal: 'dog'
+                    });
+                });
+
+
+
+            });
+
+
+            const _data = {
+                matchedIMEntities: _matchedSearchWords,
+                results: _interpolatedTemplates
+            };
+
+
+            const _uuid = v4().replace(/-/g, "");
+
+            // the same _searchResultResource is used for every module, just the type / label / and resouce (data / metadata) will vary
+            const _searchResultResource = {
+                id: _uuid,
+                resourceType: "im:SearchResult",
+                label: `Search Results for "${searchString}"`,
+                resources: {
+                    data: _data,
+                    meta: {
+                        dateNow: Date.now(),
+                        module: "Data",
+                        task: "createDataset"
+                    }
+                }
+            }
+
+
+            const _errorResource = {
+                id: _uuid,
+                resourceType: "Error",
+                label: `No Search Results for "${searchString}"`,
+            }
+
+
+            if (_interpolatedTemplates) {
+                return _interpolatedTemplates;
+            } else {
+                return _errorResource;
+            }
+        }
+
     }
 
 
+    ////////////////////////// helper functions
+    public static checkRequiredEntityIris(array: any, target: any): boolean {
+        return target.every((item: any) => array.includes(item));
+
+    }
+
+
+    public static interpolate(labelTemplate: string) {
+        return function interpolate(o: any) {
+            return labelTemplate.replace(/{([^{}]*)}/g, (a: any, b: any) => {
+                const r = o[b];
+                return typeof r === 'string' || typeof r === 'number' ? r : a;
+            });
+        }
+    }
+
+    // public static prepareString (item: any, count: any): any {
+
+    // }
+
+    // helps array.filter to only keep unique values e.g. array = array.filter(SearchClient.onlyUnique);
+    public static onlyUnique(value: any, index: any, self: any) {
+        return self.indexOf(value) === index;
+    }
+
+    public static countOccurrences = (array: any, value: any): any => {
+        array.reduce((a: any, v: any) => (v === value ? a + 1 : a), 0);
+    }
 
 
 
