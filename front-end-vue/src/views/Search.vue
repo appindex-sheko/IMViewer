@@ -311,7 +311,7 @@ export default defineComponent({
 
       //if any results are up, push it to the searchResults alongside examples
       if (this.searchString && this.searchString != "") {
-        SearchClient.searchDatasets(this.searchString);
+        SearchClient.searchNewDatasets(this.searchString);
       }
     },
   },
