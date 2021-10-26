@@ -74,6 +74,6 @@ export default defineComponent({
 
 .tab-button.active {
   color: #3b82f6;
-  border-bottom: solid 2px #3b82f6;
+  border-bottom: solid 2px #3b82f6; 
 }
 </style>

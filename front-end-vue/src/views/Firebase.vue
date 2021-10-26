@@ -1,0 +1,382 @@
+<template>
+  <!-- General -->
+  <ConfirmDialog></ConfirmDialog>
+  <!-- /General -->
+
+  <!-- Content Wrapper -->
+  <main id="main-container" class="px-5-md">
+    <!-- Page: Home -->
+    <div
+      id="page-home"
+      v-if="activePageName == 'Home'"
+      class="page flex flex-col items-center justify-center"
+    >
+      <!-- Brand  -->
+
+      <div
+        id="brand"
+        class="non-selectable flex items-center justify-center mb-10 text-gray-700 text-5xl font-medium"
+      >
+        <!-- <img class="im-logo mr-5" src="/img/Logo-object-empty.27c03592.png" alt="IM logo" data-v-098ea5e8=""> -->
+        <img class="search-logo mb-10" src="search-icon.png" alt="" />
+      </div>
+      <!-- /Brand  -->
+
+      <!-- Searchbox  -->
+      <div id="searchbox-main" class="mx-auto w-full max-w-3xl flex px-5-sm">
+        <Searchbox
+          v-model="searchString"
+          :autocompleteData="autocompleteData"
+        />
+        <button
+          class="transition duration-200 ease-in-out group ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+          @click="showSearchResults()"
+        >
+          <HeroIcon
+            class=""
+            strokewidth="2"
+            width="24"
+            height="24"
+            icon="search_default"
+          />
+        </button>
+      </div>
+      <!-- /Searchbox  -->
+
+      <!-- Examples  -->
+      <div
+        id="examples"
+        class="mx-auto max-w-3xl my-7 px-4 text-gray-900 text-lg"
+      >
+        <a class="mr-3 font-bold">Try </a>
+        <b>Heart rate</b> and <b>blood glucose</b> for patients with
+        <b>diabetes</b>
+      </div>
+      <!-- /Examples  -->
+    </div>
+    <!-- /Page: Home -->
+
+    <!-- Page: Results -->
+    <div id="page-search" v-if="activePageName == 'SearchResults'" class="page">
+      <!-- Searchbox  -->
+      <div id="searchbox-top" class="mx-auto w-full max-w-4xl flex mb-4">
+        <Searchbox
+          class="w-full"
+          v-model="searchString"
+          :autocompleteData="autocompleteData"
+        />
+        <button
+          class="transition duration-200 ease-in-out group ml-3 py-2 px-4 border border-transparent rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+          @click="showSearchResults()"
+        >
+          <HeroIcon
+            class=""
+            strokewidth="2"
+            width="24"
+            height="24"
+            icon="search"
+          />
+        </button>
+      </div>
+      <!-- /Searchbox  -->
+
+      <!-- Tab Buttons  -->
+      <div id="tab-buttons">
+        <HorizontalNavbar v-model="activeTabIndex" :items="tabs" />
+      </div>
+      <!-- /Tab Buttons -->
+
+      <!-- Tabs -->
+      <div class="">
+        <!-- Tab: Search -->
+        <div v-if="activeTabIndex == 0" class="content-tab flex pt-5">
+          <!-- <div class="w-full max-w-md">Filters Expanded</div> -->
+          <div class="w-full max-w-4xl mx-auto">
+            <!-- <div>Filter and sort</div> -->
+            <SearchResults
+              class="w-full"
+              :results="searchResults || exampleResults"
+              :value="searchString"
+            />
+          </div>
+          <!-- <div class="w-full max-w-md">See also, more info on hovered item</div> -->
+        </div>
+        <!-- /Tab: Search  -->
+
+        <!-- Tab: Data  -->
+        <div v-if="activeTabIndex == 1" class="content-tab">
+          Data
+        </div>
+        <!-- /Tab: Data  -->
+
+        <!-- Tab: Explore  -->
+        <div v-if="activeTabIndex == 2" class="content-tab">
+          Explore
+        </div>
+        <!-- /Tab: Explore  -->
+
+        <!-- Tab: Organisations  -->
+        <div v-if="activeTabIndex == 3" class="content-tab">
+          Organisations
+        </div>
+        <!-- /Tab: Organisations  -->
+
+        <!-- Tab: Dictionary  -->
+        <div v-if="activeTabIndex == 4" class="content-tab">
+          Dictionary
+        </div>
+        <!-- /Tab: Dictionary  -->
+
+        <!-- Tab: Resources  -->
+        <div v-if="activeTabIndex == 5" class="content-tab">
+          Resources
+        </div>
+        <!-- /Tab: Resources  -->
+      </div>
+      <!-- /Tabs -->
+    </div>
+    <!-- /Page: SearchResults-->
+  </main>
+  <!-- /Content Wrapper -->
+</template>
+
+<script lang="ts">
+import { ref, onMounted, defineComponent } from "vue";
+
+import ConfirmDialog from "primevue/confirmdialog";
+import LoggerService from "@/services/LoggerService";
+import Tooltip from "primevue/tooltip";
+
+import Chips from "primevue/chips";
+import MegaMenu from "primevue/megamenu";
+
+import OverlayPanel from "primevue/overlaypanel";
+import Dialog from "primevue/dialog";
+import QueryTable from "@/components/dataset/QueryTable.vue";
+
+import Searchbox from "@/components/search/Searchbox.vue";
+import HeroIcon from "@/components/search/HeroIcon.vue";
+import SearchResults from "@/components/search/SearchResults.vue";
+import HorizontalNavbar from "@/components/search/HorizontalNavbar.vue";
+
+import SearchService from "@/services/SearchService";
+import SearchClient from "@/services/SearchClient";
+
+const { MeiliSearch } = require("meilisearch");
+
+export default defineComponent({
+  name: "Search",
+  components: {
+    ConfirmDialog,
+    Searchbox,
+    SearchResults,
+    HorizontalNavbar,
+    HeroIcon,
+  },
+  data() {
+    return {
+      searchString: "",
+      activePageName: "Home", //Options #Home #SearchResults
+      activeTabIndex: 0,
+      tabs: [
+        {
+          index: 0,
+          name: "Search",
+          icon: "search_default",
+          visible: true,
+        },
+        {
+          index: 1,
+          name: "Data",
+          icon: "table_default",
+          visible: true,
+        },
+        {
+          index: 2,
+          name: "Explore",
+          icon: "globe_default",
+          visible: true,
+        },
+        {
+          index: 3,
+          name: "Organisations",
+          icon: "home_default",
+          visible: true,
+        },
+        {
+          index: 4,
+          name: "Dictionary",
+          icon: "bookOpen_default",
+          visible: true,
+        },
+        {
+          index: 6,
+          name: "Resources",
+          icon: "newspaper_default",
+          visible: true,
+        },
+      ],
+      modulesData: null,
+      exampleResults: [
+        {
+          url:
+            "https://im.endeavourhealth.net/#/search?q=comborbidities+associated+with+diabetes+in+east+london",
+          title: "Create Dataset",
+          description: "Extract data from health records",
+          module: "data",
+          icon: "tables",
+        },
+        {
+          url:
+            "https://im.endeavourhealth.net/#/search?q=comborbidities+associated+with+diabetes",
+          title: "Browse Organisations",
+          description:
+            "View organisations on a map and add them to lists to source data",
+          module: "data",
+          icon: "tables",
+        },
+        {
+          url:
+            "https://im.endeavourhealth.net/#/search?q=comborbidities+associated+with+diabetes",
+          title: "View Disease Profile",
+          description:
+            "Find conditions, symptoms, observations and other health record entries associated with diabetes",
+          module: "data",
+          icon: "tables",
+        },
+      ],
+      searchResults: [],
+      autocompleteData: null,
+      tableHeight: 600,
+    };
+  },
+  async mounted() {
+    //ensures sidebar is focused on search Icon
+    this.$store.commit("updateSelectedEntityType", "Search");
+    this.$store.commit("updateSideNavHierarchyFocus", {
+      name: "Search",
+      fullName: "Search",
+      iri: "http://endhealth.info/im#Search",
+    });
+
+    //loads moduless (contains tasks),
+    this.getInitialData();
+  },
+  methods: {
+    async getAutocompleteSearch(): Promise<void> {
+      await SearchClient.fetchAutocompleteSearch(this.searchString)
+        .then((res: any) => {
+          this.autocompleteData = res;
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load autocomplete results", err)
+          );
+        });
+    },
+    async getInitialData(): Promise<void> {
+      await SearchClient.search("Modules", "")
+        .then((res: any) => {
+          this.modulesData = res;
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load initial module data", err)
+          );
+        });
+      // #todo:other fetches
+    },
+    async search(index: string, searchString: string): Promise<any> {
+      await SearchClient.search(index, searchString)
+        .then((res: any) => {
+          console.log("fetched IMSearch", res);
+          Promise.resolve(res);
+        })
+        .catch((err: any) => {
+          this.$toast.add(
+            LoggerService.error("Could not load module data", err)
+          );
+        });
+    },
+    async showSearchResults(): Promise<void> {
+      this.activePageName = 'SearchResults';
+
+      // let resultTemplates;
+
+      //find all results for dataseteditor -> push to resultTemplates
+
+      // if (this.searchString && this.searchString != "") {
+      //   imEntities =
+      // }
+
+      //if any results are up, push it to the searchResults alongside examples
+      if (this.searchString && this.searchString != "") {
+        SearchClient.searchNewDatasets(this.searchString);
+      }
+    },
+  },
+  watch: {
+    // whenever question changes, this function will run
+    searchString(newSearchString: any, oldearchString: any) {
+      if (newSearchString && newSearchString != "") {
+        this.getAutocompleteSearch();
+      }
+    },
+  },
+});
+</script>
+
+<style scoped>
+.search-logo {
+  width: 100px;
+  height: auto;
+}
+
+.icon {
+  padding: 15px;
+}
+
+.non-selectable {
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Likely future */
+}
+
+#main-container {
+  /* margin: 0.5rem; */
+  padding: 1rem 0;
+  /* height: calc(100vh - 1rem); */
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+  background-color: #ffffff; /* Grey f8f9fb*/
+  /* border: 1px solid #dde1e2; */
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+}
+
+.tab-content {
+  flex: 0 1 auto;
+  display: flex;
+}
+
+.filter-container {
+  max-width: 300px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4b5563d1; /*darker: #4B5563*/
+}
+
+.overlay-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4b5563d1; /*darker: #4B5563*/
+}
+</style>

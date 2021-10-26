@@ -37,7 +37,7 @@
             strokewidth="2"
             width="24"
             height="24"
-            icon="search"
+            icon="search_default"
           />
         </button>
       </div>
@@ -182,37 +182,37 @@ export default defineComponent({
         {
           index: 0,
           name: "Search",
-          icon: "search",
+          icon: "search_default",
           visible: true,
         },
         {
           index: 1,
           name: "Data",
-          icon: "table",
+          icon: "table_default",
           visible: true,
         },
         {
           index: 2,
           name: "Explore",
-          icon: "globe",
+          icon: "globe_default",
           visible: true,
         },
         {
           index: 3,
           name: "Organisations",
-          icon: "home",
+          icon: "home_default",
           visible: true,
         },
         {
           index: 4,
           name: "Dictionary",
-          icon: "bookOpen",
+          icon: "bookOpen_default",
           visible: true,
         },
         {
           index: 6,
           name: "Resources",
-          icon: "newspaper",
+          icon: "newspaper_default",
           visible: true,
         },
       ],
@@ -299,7 +299,7 @@ export default defineComponent({
         });
     },
     async showSearchResults(): Promise<void> {
-      // this.activePageName = 'SearchResults';
+      this.activePageName = 'SearchResults';
 
       // let resultTemplates;
 

@@ -88,6 +88,8 @@ export default class SearchClient {
         }));
 
         //gets the Datamodel IRIs for each IM entity matched in search (e.g. Diabetes Concept Set-> ProblemOrCondition DataModel)
+        //and match against templates
+        //#todo: allow other entities to match against template as well (im class, concepts)
         if (_imEntityData && _imEntityData.length > 0) {
             _imEntityData.forEach((data: any) => {
                 data.hits.forEach((entity: any) => {
@@ -145,30 +147,31 @@ export default class SearchClient {
                 }
             });
             //prepare natural language
-            _uniqueIMEntityDataModelIrisCounted = _uniqueIMEntityDataModelIrisCounted.map((iri: any) => {
+            // #####################
+            // _uniqueIMEntityDataModelIrisCounted = _uniqueIMEntityDataModelIrisCounted.map((iri: any) => {
                 
-                console.log("find",  _imEntities.find((DataModelEntity: any) => DataModelEntity.iri = iri.uniqueDataModelIri)["rdfs:label"])
+            //     console.log("find",  _imEntities.find((DataModelEntity: any) => DataModelEntity.iri = iri.uniqueDataModelIri)["rdfs:label"])
 
-                switch (iri.count) {
-                    case 1:
+            //     switch (iri.count) {
+            //         case 1:
                        
-                        iri.naturalLanguage = _imEntities.find(DataModelEntity => DataModelEntity.iri = iri.uniqueDataModelIri)["rdfs:label"];
-                        console.log(iri.uniqueDataModelIri, iri.naturalLanguage)
-                        break;
-                    case 2:
-                        // code block
-                        break;
-                    default:
-                        break;
-                }
-            });
+            //             iri.naturalLanguage = _imEntities.find(DataModelEntity => DataModelEntity.iri = iri.uniqueDataModelIri)["rdfs:label"];
+            //             console.log(iri.uniqueDataModelIri, iri.naturalLanguage)
+            //             break;
+            //         case 2:
+            //             // code block
+            //             break;
+            //         default:
+            //             break;
+            //     }
+            // });
 
-            console.log("_imEntityDataModelIris", _imEntityDataModelIris);
-            console.log("_uniqueIMEntityDataModelIrisCounted", _uniqueIMEntityDataModelIrisCounted);
-
-
+             console.log("_imEntityDataModelIris", _imEntityDataModelIris);
+             console.log("_uniqueIMEntityDataModelIrisCounted", _uniqueIMEntityDataModelIrisCounted);
 
 
+
+            //for each label that is in the template, interpolate the prepared natural language string
             _interpolatedTemplates = _validTemplates.map((template: any) => {
 
 
@@ -179,16 +182,18 @@ export default class SearchClient {
 
 
 
-                    template.label = SearchClient.interpolate(template.labelTemplate)({
-                        uniqueDataModelIri: 'quick',
-                        color: 'brown',
-                        mammal: 'dog'
-                    });
+                    // template.label = SearchClient.interpolate(template.labelTemplate)({
+                    //     uniqueDataModelIri: 'quick',
+                    //     color: 'brown',
+                    //     mammal: 'dog'
+                    // });
                 });
 
 
 
             });
+
+           
 
 
             const _data = {
@@ -196,7 +201,7 @@ export default class SearchClient {
                 results: _interpolatedTemplates
             };
 
-
+            //geneate uuid without hyphens
             const _uuid = v4().replace(/-/g, "");
 
             // the same _searchResultResource is used for every module, just the type / label / and resouce (data / metadata) will vary
